@@ -1,0 +1,9 @@
+* SCM 140 ADSR
+
+Source: [[https://github.com/gerb-ster/SCM-140-ADSR/][SCM-140-ADSR]] on Github
+
+The following modifications were made by me:
+
+- Converted schematics and board to Kicad
+- Added component values to silk screen
+- Added a PCB faceplate in Kicad
