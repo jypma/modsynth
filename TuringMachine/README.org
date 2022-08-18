@@ -1,0 +1,8 @@
+* Turing machine
+
+Based on [[https://github.com/TomWhitwell/TuringMachine/][Turing Machine]] on github.
+
+My modifications:
+
+- Converted schematics to Kicad
+- Panel isn't converted, since Eagle source for that isn't available. Only raw gerbers exist.
