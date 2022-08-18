@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/home/jan/workspace/TH-555-VCO/schematics/src/mainboard/mainboard-kicad/mainboard.kicad_sch</source>
+    <date>Wed 06 Jul 2022 01:51:43 PM CEST</date>
+    <tool>Eeschema (6.0.5)</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>mainboard.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3de95bce-3cbd-4e64-80dc-50799dc6bc32</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a193cfab-ca72-491b-a74f-a6efd0f5e41b</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>0.1uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c898ce60-e53d-47b5-955c-5be0d44f08e8</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>470pF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1c5f707a-650a-4315-a2dd-b03a2906ab97</tstamps>
+    </comp>
+    <comp ref="C5">
+      <value>100pF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b9977528-1191-41b1-ba1d-186af68ef196</tstamps>
+    </comp>
+    <comp ref="C6">
+      <value>0.0022uF</value>
+      <footprint>mainboard:C050-025X075</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-025X075" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c3c014c1-b15c-4eb5-9a15-c8dcb9ba1fbb</tstamps>
+    </comp>
+    <comp ref="C7">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cc7c1624-200a-46d4-8f0a-53b2f4c8b766</tstamps>
+    </comp>
+    <comp ref="C8">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>786f0443-ec4e-466d-9f13-c51a9208aa69</tstamps>
+    </comp>
+    <comp ref="C9">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a6666d09-6c7f-48d1-a1ef-e7472b64aa58</tstamps>
+    </comp>
+    <comp ref="C10">
+      <value>0.01uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c19b45e9-6cbc-418d-89fb-47e439b116ab</tstamps>
+    </comp>
+    <comp ref="C11">
+      <value>10uF/50v</value>
+      <footprint>mainboard:E2,5-6</footprint>
+      <libsource lib="mainboard-eagle-import" part="CPOL-USE2.5-6" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a8e1b4d1-7a30-492e-96e7-2270a74c6d7c</tstamps>
+    </comp>
+    <comp ref="C12">
+      <value>10uF/50v</value>
+      <footprint>mainboard:E2,5-6</footprint>
+      <libsource lib="mainboard-eagle-import" part="CPOL-USE2.5-6" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ae714ddf-f4fa-4dc0-ae44-0bcbf947ab9b</tstamps>
+    </comp>
+    <comp ref="C13">
+      <value>0.001uF</value>
+      <footprint>mainboard:C050-024X044</footprint>
+      <libsource lib="mainboard-eagle-import" part="C-EU050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>00900d14-23d5-4c0d-8f94-a071af480b13</tstamps>
+    </comp>
+    <comp ref="D2">
+      <value>1N4148DO35-7</value>
+      <footprint>mainboard:DO35-7</footprint>
+      <libsource lib="mainboard-eagle-import" part="1N4148DO35-7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bd804eba-4a7b-498c-8eb8-79bbc7a3b3e8</tstamps>
+    </comp>
+    <comp ref="D3">
+      <value>1N4148DO35-7</value>
+      <footprint>mainboard:DO35-7</footprint>
+      <libsource lib="mainboard-eagle-import" part="1N4148DO35-7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e55e08c6-533b-41d4-9f61-748b743694d6</tstamps>
+    </comp>
+    <comp ref="IC1">
+      <value>555N</value>
+      <footprint>mainboard:DIL08</footprint>
+      <libsource lib="mainboard-eagle-import" part="555N" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1132ab62-29a2-4ea8-a347-ed1182d145ec</tstamps>
+    </comp>
+    <comp ref="IC2">
+      <value>LM13700N</value>
+      <footprint>Package_SO:SO-16_5.3x10.2mm_P1.27mm</footprint>
+      <libsource lib="mainboard-eagle-import" part="LM13700N" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>83d29412-3f29-4c82-a40e-04f8a4ba77e1 3193153e-7748-4a43-abff-e008ed29b4e4 580b3386-f608-45e3-af89-3cac7209ec17 071a40ce-02f4-4320-adaf-134c1c6f6436</tstamps>
+    </comp>
+    <comp ref="IC3">
+      <value>TL074P</value>
+      <footprint>Package_SO:SO-14_5.3x10.2mm_P1.27mm</footprint>
+      <libsource lib="mainboard-eagle-import" part="TL074P" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e087df3c-01b8-44c5-9c81-761ed80a0c1f 81a74df4-3f15-475e-bb4f-9ffd21bc8c44 7091f7ce-253d-4648-b58a-ed0c6668379c 8e51e8a3-e433-4bb5-9e46-983f1197fe54 295ce1a6-32b0-4c33-a786-798c6381e055</tstamps>
+    </comp>
+    <comp ref="IC4">
+      <value>TL074P</value>
+      <footprint>Package_SO:SO-14_5.3x10.2mm_P1.27mm</footprint>
+      <libsource lib="mainboard-eagle-import" part="TL074P" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>67d03486-aeb3-4bf5-99a3-a2302333b714 1f7a877d-6f7a-4a79-a109-8e2f6d4b30a9 ddf729ce-b750-4d9a-b981-e3e506cf2485 704cdedd-a6d2-40b4-a004-7d0a503b8d02 0bdfce04-8627-4f08-a28e-787af3e6a883</tstamps>
+    </comp>
+    <comp ref="JP1">
+      <value>PINHD-1X3</value>
+      <footprint>mainboard:1X03</footprint>
+      <libsource lib="mainboard-eagle-import" part="PINHD-1X3" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f40dea20-76a3-45a3-ad8b-e998092e55a9</tstamps>
+    </comp>
+    <comp ref="JP2">
+      <value>PINHD-1X6</value>
+      <footprint>mainboard:1X06</footprint>
+      <libsource lib="mainboard-eagle-import" part="PINHD-1X6" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a8fbb96d-9af4-42b5-b2c9-b39e9d6847c9</tstamps>
+    </comp>
+    <comp ref="JP3">
+      <value>ML10</value>
+      <footprint>mainboard:ML10</footprint>
+      <libsource lib="mainboard-eagle-import" part="ML10" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d44b0250-0ce6-45cc-912d-f851f0c83a3b</tstamps>
+    </comp>
+    <comp ref="JP4">
+      <value>PINHD-1X3</value>
+      <footprint>mainboard:1X03</footprint>
+      <libsource lib="mainboard-eagle-import" part="PINHD-1X3" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3cd9d0b3-cf54-4187-9f49-5b56a118b34f</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>10k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a00ddb01-2f51-4cb1-aff1-d790f800ddfb</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>10k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0e0d048b-7ab2-4eb5-93d1-19210033fe1a</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>10k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5280e40e-6f6c-47ae-b14d-6481c5c32927</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>1k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1ad5c0f7-2531-4557-a01b-089b20f6e528</tstamps>
+    </comp>
+    <comp ref="R6">
+      <value>150k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f7216f15-dac9-4af7-82c6-fd0b95a4a103</tstamps>
+    </comp>
+    <comp ref="R7">
+      <value>100k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0bb8879d-857f-41d2-8d0a-828bcbe88dde</tstamps>
+    </comp>
+    <comp ref="R8">
+      <value>1M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a85b3311-9215-4b31-833b-51a52d744792</tstamps>
+    </comp>
+    <comp ref="R9">
+      <value>137k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f2b7c9ee-7793-433c-9adb-95e768112d2f</tstamps>
+    </comp>
+    <comp ref="R11">
+      <value>100k</value>
+      <footprint>mainboard:RJ9W</footprint>
+      <libsource lib="mainboard-eagle-import" part="TRIM_US-RJ9W" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fe8f11d4-6946-4ff7-998d-a863b73d6acc</tstamps>
+    </comp>
+    <comp ref="R12">
+      <value>4.7k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a28ff2dd-fd78-4a27-8d1a-185bbd81c21c</tstamps>
+    </comp>
+    <comp ref="R13">
+      <value>100k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9b3c06bc-5513-492c-a684-7afa5702b61c</tstamps>
+    </comp>
+    <comp ref="R14">
+      <value>100k</value>
+      <footprint>mainboard:RJ9W</footprint>
+      <libsource lib="mainboard-eagle-import" part="TRIM_US-RJ9W" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>49b3a699-2676-48ce-86fa-4f9c3af3c305</tstamps>
+    </comp>
+    <comp ref="R15">
+      <value>1M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f4828f46-a4d4-492b-b43d-b7822fad5649</tstamps>
+    </comp>
+    <comp ref="R16">
+      <value>1.5M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>25bf33a2-5b90-4191-8d85-15a22c0991a1</tstamps>
+    </comp>
+    <comp ref="R17">
+      <value>22k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a1f5c37e-ad3b-41a2-b92e-4c140e66ed7c</tstamps>
+    </comp>
+    <comp ref="R18">
+      <value>100</value>
+      <footprint>mainboard:RJ9W</footprint>
+      <libsource lib="mainboard-eagle-import" part="TRIM_US-RJ9W" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>553dcba3-5b44-470d-ae7d-5be1585d5eaf</tstamps>
+    </comp>
+    <comp ref="R19">
+      <value>390</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d0f2006d-f808-4378-a75e-c0cdd7a68f59</tstamps>
+    </comp>
+    <comp ref="R20">
+      <value>2k</value>
+      <footprint>mainboard:R-5</footprint>
+      <libsource lib="mainboard-eagle-import" part="THERMISTOR-5" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>aa0e4d83-8d75-403c-af2c-9b95a3ef23ca</tstamps>
+    </comp>
+    <comp ref="R21">
+      <value>1M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0f7afc6f-a5c3-4555-885b-3c7f11f29723</tstamps>
+    </comp>
+    <comp ref="R26">
+      <value>1.5k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>29b28337-1066-45ea-8e60-c98f8208ed4f</tstamps>
+    </comp>
+    <comp ref="R27">
+      <value>10k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>30e313b0-e789-4ce2-a2b1-643a60b45889</tstamps>
+    </comp>
+    <comp ref="R28">
+      <value>4.7k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>88f319ae-8af0-4fe0-a03d-9ffde9ae1011</tstamps>
+    </comp>
+    <comp ref="R29">
+      <value>1.5k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cd0178b7-54a4-4893-8ffd-d61d81e6dc05</tstamps>
+    </comp>
+    <comp ref="R30">
+      <value>10k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>77ac7d3b-ac4b-40a8-8bbc-d5daa6d99bc0</tstamps>
+    </comp>
+    <comp ref="R31">
+      <value>20k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>39b25120-64f9-4e32-ad76-102f22782ca9</tstamps>
+    </comp>
+    <comp ref="R32">
+      <value>20k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1056e8fa-f686-4931-9f08-c12f832d1d8f</tstamps>
+    </comp>
+    <comp ref="R33">
+      <value>2k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4adf3401-8dea-40c2-b34e-97916ba2d047</tstamps>
+    </comp>
+    <comp ref="R34">
+      <value>2k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2c544368-63ea-44da-930e-f08e54ca1bf0</tstamps>
+    </comp>
+    <comp ref="R35">
+      <value>390</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c67d3bfd-cbc8-480c-ae4e-bea9bef95012</tstamps>
+    </comp>
+    <comp ref="R36">
+      <value>100k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0e3cb132-eba6-40d4-9cb4-95e23608a633</tstamps>
+    </comp>
+    <comp ref="R37">
+      <value>39k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5a03de53-64ac-4c0b-bfcf-36169f7e1c03</tstamps>
+    </comp>
+    <comp ref="R38">
+      <value>1M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>281af25f-4a20-4d47-83d7-a20c30ae3a3e</tstamps>
+    </comp>
+    <comp ref="R39">
+      <value>100k</value>
+      <footprint>mainboard:RJ9W</footprint>
+      <libsource lib="mainboard-eagle-import" part="TRIM_US-RJ9W" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1fe8615a-42aa-48fe-a86f-4792125b7e56</tstamps>
+    </comp>
+    <comp ref="R40">
+      <value>25k</value>
+      <footprint>mainboard:RJ9W</footprint>
+      <libsource lib="mainboard-eagle-import" part="TRIM_US-RJ9W" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b750dbad-6fbf-4775-bc8d-0bb093eaf0f7</tstamps>
+    </comp>
+    <comp ref="R41">
+      <value>22k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7716a2b4-71b6-4fd3-88c4-886df7330c7a</tstamps>
+    </comp>
+    <comp ref="R42">
+      <value>300k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6baa3d44-ac53-4a7f-9b23-d2091db69e72</tstamps>
+    </comp>
+    <comp ref="R43">
+      <value>5.6k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e91aacfb-b5aa-4d0d-a8c3-1e46b06ecce1</tstamps>
+    </comp>
+    <comp ref="R44">
+      <value>1k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>62f567ed-d8bf-47e7-8501-04834fb7d0f1</tstamps>
+    </comp>
+    <comp ref="R45">
+      <value>120k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fe79a113-b459-4255-aea4-600329c899de</tstamps>
+    </comp>
+    <comp ref="R46">
+      <value>100k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>165db1ff-32bf-44f6-ba5d-12db5da6dade</tstamps>
+    </comp>
+    <comp ref="R47">
+      <value>330k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f1fb3f9c-f7fc-4d19-bac1-24de5b43ff20</tstamps>
+    </comp>
+    <comp ref="R48">
+      <value>2.2k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7567ef9c-ba36-46a9-b466-e843418ed1ad</tstamps>
+    </comp>
+    <comp ref="R49">
+      <value>2.2M</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6edebed9-ba50-43d4-8912-1ae259f7fdfc</tstamps>
+    </comp>
+    <comp ref="R50">
+      <value>2k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0a4d54e8-a8bc-45c5-8896-97b86850ef22</tstamps>
+    </comp>
+    <comp ref="R51">
+      <value>1.8k</value>
+      <footprint>mainboard:0204_7</footprint>
+      <libsource lib="mainboard-eagle-import" part="R-US_0204{slash}7" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e4be5c4f-c213-4bdd-8284-37725c914ae2</tstamps>
+    </comp>
+    <comp ref="T3">
+      <value>-NPN-TO92-EBC</value>
+      <footprint>mainboard:TO92-EBC</footprint>
+      <libsource lib="mainboard-eagle-import" part="-NPN-TO92-EBC" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d908e8ca-6975-48c5-b3f2-3a6aa0757ec5</tstamps>
+    </comp>
+    <comp ref="T4">
+      <value>-PNP-TO92-EBC</value>
+      <footprint>mainboard:TO92-EBC</footprint>
+      <libsource lib="mainboard-eagle-import" part="-PNP-TO92-EBC" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f9480266-a722-4fe0-9189-4efc7b08f6d4</tstamps>
+    </comp>
+    <comp ref="T5">
+      <value>-PNP-TO92-EBC</value>
+      <footprint>mainboard:TO92-EBC</footprint>
+      <libsource lib="mainboard-eagle-import" part="-PNP-TO92-EBC" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="mainboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3e829505-ecd5-46f4-afe4-6383eb52f900</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="mainboard-eagle-import" part="-NPN-TO92-EBC">
+      <fields>
+        <field name="Reference">T</field>
+        <field name="Value">-NPN-TO92-EBC</field>
+        <field name="Footprint">mainboard:TO92-EBC</field>
+      </fields>
+      <pins>
+        <pin num="B" name="B" type="passive"/>
+        <pin num="C" name="C" type="passive"/>
+        <pin num="E" name="E" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="-PNP-TO92-EBC">
+      <fields>
+        <field name="Reference">T</field>
+        <field name="Value">-PNP-TO92-EBC</field>
+        <field name="Footprint">mainboard:TO92-EBC</field>
+      </fields>
+      <pins>
+        <pin num="B" name="B" type="passive"/>
+        <pin num="C" name="C" type="passive"/>
+        <pin num="E" name="E" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="1N4148DO35-7">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">1N4148DO35-7</field>
+        <field name="Footprint">mainboard:DO35-7</field>
+      </fields>
+      <pins>
+        <pin num="A" name="A" type="passive"/>
+        <pin num="C" name="C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="555N">
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">555N</field>
+        <field name="Footprint">mainboard:DIL08</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="TR" type="input"/>
+        <pin num="3" name="Q" type="output"/>
+        <pin num="4" name="R" type="input"/>
+        <pin num="5" name="CV" type="input"/>
+        <pin num="6" name="THR" type="input"/>
+        <pin num="7" name="DIS" type="input"/>
+        <pin num="8" name="V+" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="C-EU050-024X044">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C-EU050-024X044</field>
+        <field name="Footprint">mainboard:C050-024X044</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="C-EU050-025X075">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C-EU050-025X075</field>
+        <field name="Footprint">mainboard:C050-025X075</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="CPOL-USE2.5-6">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CPOL-USE2.5-6</field>
+        <field name="Footprint">mainboard:E2,5-6</field>
+      </fields>
+      <pins>
+        <pin num="+" name="+" type="passive"/>
+        <pin num="-" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="LM13700N">
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">LM13700N</field>
+        <field name="Footprint">mainboard:DIL16</field>
+      </fields>
+      <pins>
+        <pin num="1" name="IABC" type="bidirectional"/>
+        <pin num="2" name="ID" type="bidirectional"/>
+        <pin num="3" name="+IN" type="bidirectional"/>
+        <pin num="4" name="-IN" type="bidirectional"/>
+        <pin num="5" name="OUT" type="bidirectional"/>
+        <pin num="6" name="V-" type="bidirectional"/>
+        <pin num="7" name="IN" type="bidirectional"/>
+        <pin num="8" name="OUT" type="bidirectional"/>
+        <pin num="9" name="OUT" type="bidirectional"/>
+        <pin num="10" name="IN" type="bidirectional"/>
+        <pin num="11" name="V+" type="bidirectional"/>
+        <pin num="12" name="OUT" type="bidirectional"/>
+        <pin num="13" name="-IN" type="bidirectional"/>
+        <pin num="14" name="+IN" type="bidirectional"/>
+        <pin num="15" name="ID" type="bidirectional"/>
+        <pin num="16" name="IABC" type="bidirectional"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="ML10">
+      <fields>
+        <field name="Reference">SV</field>
+        <field name="Value">ML10</field>
+        <field name="Footprint">mainboard:ML10</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+        <pin num="7" name="7" type="passive"/>
+        <pin num="8" name="8" type="passive"/>
+        <pin num="9" name="9" type="passive"/>
+        <pin num="10" name="10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="PINHD-1X3">
+      <fields>
+        <field name="Reference">JP</field>
+        <field name="Value">PINHD-1X3</field>
+        <field name="Footprint">mainboard:1X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="PINHD-1X6">
+      <fields>
+        <field name="Reference">JP</field>
+        <field name="Value">PINHD-1X6</field>
+        <field name="Footprint">mainboard:1X06</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="R-US_0204{slash}7">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R-US_0204{slash}7</field>
+        <field name="Footprint">mainboard:0204_7</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="THERMISTOR-5">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">THERMISTOR-5</field>
+        <field name="Footprint">mainboard:R-5</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="TL074P">
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">TL074P</field>
+        <field name="Footprint">mainboard:DIL14</field>
+      </fields>
+      <pins>
+        <pin num="1" name="OUT" type="output"/>
+        <pin num="2" name="-IN" type="input"/>
+        <pin num="3" name="+IN" type="input"/>
+        <pin num="4" name="V+" type="power_in"/>
+        <pin num="5" name="+IN" type="input"/>
+        <pin num="6" name="-IN" type="input"/>
+        <pin num="7" name="OUT" type="output"/>
+        <pin num="8" name="OUT" type="output"/>
+        <pin num="9" name="-IN" type="input"/>
+        <pin num="10" name="+IN" type="input"/>
+        <pin num="11" name="V-" type="power_in"/>
+        <pin num="12" name="+IN" type="input"/>
+        <pin num="13" name="-IN" type="input"/>
+        <pin num="14" name="OUT" type="output"/>
+      </pins>
+    </libpart>
+    <libpart lib="mainboard-eagle-import" part="TRIM_US-RJ9W">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">TRIM_US-RJ9W</field>
+        <field name="Footprint">mainboard:RJ9W</field>
+      </fields>
+      <pins>
+        <pin num="A" name="A" type="passive"/>
+        <pin num="E" name="E" type="passive"/>
+        <pin num="S" name="S" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="mainboard-eagle-import">
+      <uri>/home/jan/workspace/TH-555-VCO/schematics/src/mainboard/mainboard-kicad/mainboard-eagle-import.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+12V">
+      <node ref="C1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C11" pin="+" pinfunction="+" pintype="passive"/>
+      <node ref="C2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C3" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C7" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="IC1" pin="8" pinfunction="V+" pintype="power_in"/>
+      <node ref="IC2" pin="11" pinfunction="V+" pintype="bidirectional"/>
+      <node ref="IC3" pin="4" pinfunction="V+" pintype="power_in"/>
+      <node ref="IC4" pin="4" pinfunction="V+" pintype="power_in"/>
+      <node ref="JP3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="JP3" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="JP4" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R11" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="R12" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R27" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R30" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R39" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="R40" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="R42" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="2" name="-12V">
+      <node ref="C10" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C12" pin="-" pinfunction="-" pintype="passive"/>
+      <node ref="C8" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C9" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="IC2" pin="6" pinfunction="V-" pintype="bidirectional"/>
+      <node ref="IC3" pin="11" pinfunction="V-" pintype="power_in"/>
+      <node ref="IC4" pin="11" pinfunction="V-" pintype="power_in"/>
+      <node ref="JP3" pin="10" pinfunction="10" pintype="passive"/>
+      <node ref="JP3" pin="9" pinfunction="9" pintype="passive"/>
+      <node ref="JP4" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="R11" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="R16" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R39" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="R43" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R6" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="3" name="/HARD-SYNC-IN">
+      <node ref="C4" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="JP1" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="4" name="/LIN-FM">
+      <node ref="JP1" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="R15" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="5" name="/MULTI-IN">
+      <node ref="IC3" pin="2" pinfunction="-IN" pintype="input"/>
+      <node ref="JP1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R20" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R21" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="6" name="/PULSE-OUT">
+      <node ref="JP2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R50" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R51" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="7" name="/PULSE-WIDTH">
+      <node ref="JP2" pin="6" pinfunction="6" pintype="passive"/>
+      <node ref="R47" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="8" name="/PWM-IN">
+      <node ref="JP2" pin="5" pinfunction="5" pintype="passive"/>
+      <node ref="R46" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="9" name="/RAMP-OUT">
+      <node ref="JP2" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="R5" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="10" name="/SINE-OUT">
+      <node ref="JP2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R44" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="11" name="/TRIANGLE-OUT">
+      <node ref="JP2" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="R33" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R34" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="12" name="GND">
+      <node ref="C1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C10" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C11" pin="-" pinfunction="-" pintype="passive"/>
+      <node ref="C12" pin="+" pinfunction="+" pintype="passive"/>
+      <node ref="C13" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C6" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C7" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="C8" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="C9" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="D2" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="IC1" pin="1" pinfunction="GND" pintype="power_in"/>
+      <node ref="IC2" pin="14" pinfunction="+IN" pintype="bidirectional"/>
+      <node ref="IC3" pin="3" pinfunction="+IN" pintype="input"/>
+      <node ref="IC3" pin="5" pinfunction="+IN" pintype="input"/>
+      <node ref="IC4" pin="10" pinfunction="+IN" pintype="input"/>
+      <node ref="IC4" pin="5" pinfunction="+IN" pintype="input"/>
+      <node ref="JP3" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="JP3" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="JP3" pin="5" pinfunction="5" pintype="passive"/>
+      <node ref="JP3" pin="6" pinfunction="6" pintype="passive"/>
+      <node ref="JP3" pin="7" pinfunction="7" pintype="passive"/>
+      <node ref="JP3" pin="8" pinfunction="8" pintype="passive"/>
+      <node ref="JP4" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R14" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="R19" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R26" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R29" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R32" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R34" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R35" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R51" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="T3" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="T4" pin="B" pinfunction="B" pintype="passive"/>
+    </net>
+    <net code="13" name="Net-(C4-Pad2)">
+      <node ref="C4" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R13" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="14" name="Net-(C5-Pad1)">
+      <node ref="C5" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="IC3" pin="6" pinfunction="-IN" pintype="input"/>
+      <node ref="R15" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R16" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="T4" pin="C" pinfunction="C" pintype="passive"/>
+    </net>
+    <net code="15" name="Net-(C5-Pad2)">
+      <node ref="C5" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="D3" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="IC3" pin="7" pinfunction="OUT" pintype="output"/>
+      <node ref="R17" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="16" name="Net-(C6-Pad1)">
+      <node ref="C6" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="IC2" pin="5" pinfunction="OUT" pintype="bidirectional"/>
+      <node ref="IC3" pin="10" pinfunction="+IN" pintype="input"/>
+    </net>
+    <net code="17" name="Net-(C13-Pad2)">
+      <node ref="C13" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="IC1" pin="5" pinfunction="CV" pintype="input"/>
+    </net>
+    <net code="18" name="Net-(D2-PadC)">
+      <node ref="D2" pin="C" pinfunction="C" pintype="passive"/>
+      <node ref="R13" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="T3" pin="B" pinfunction="B" pintype="passive"/>
+    </net>
+    <net code="19" name="Net-(D3-PadC)">
+      <node ref="D3" pin="C" pinfunction="C" pintype="passive"/>
+      <node ref="R14" pin="E" pinfunction="E" pintype="passive"/>
+    </net>
+    <net code="20" name="Net-(IC1-Pad2)">
+      <node ref="IC1" pin="2" pinfunction="TR" pintype="input"/>
+      <node ref="IC1" pin="6" pinfunction="THR" pintype="input"/>
+      <node ref="IC3" pin="8" pinfunction="OUT" pintype="output"/>
+      <node ref="IC3" pin="9" pinfunction="-IN" pintype="input"/>
+      <node ref="IC4" pin="12" pinfunction="+IN" pintype="input"/>
+      <node ref="R7" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="21" name="Net-(IC1-Pad3)">
+      <node ref="IC1" pin="3" pinfunction="Q" pintype="output"/>
+      <node ref="R28" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="22" name="Net-(IC1-Pad4)">
+      <node ref="IC1" pin="4" pinfunction="R" pintype="input"/>
+      <node ref="R12" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="T3" pin="C" pinfunction="C" pintype="passive"/>
+    </net>
+    <net code="23" name="Net-(IC1-Pad7)">
+      <node ref="IC1" pin="7" pinfunction="DIS" pintype="input"/>
+      <node ref="IC4" pin="3" pinfunction="+IN" pintype="input"/>
+      <node ref="R3" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="24" name="Net-(IC2-Pad1)">
+      <node ref="IC2" pin="1" pinfunction="IABC" pintype="bidirectional"/>
+      <node ref="T5" pin="C" pinfunction="C" pintype="passive"/>
+    </net>
+    <net code="25" name="Net-(IC2-Pad3)">
+      <node ref="IC2" pin="3" pinfunction="+IN" pintype="bidirectional"/>
+      <node ref="R28" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R29" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="26" name="Net-(IC2-Pad4)">
+      <node ref="IC2" pin="4" pinfunction="-IN" pintype="bidirectional"/>
+      <node ref="R26" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R27" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="27" name="Net-(IC2-Pad9)">
+      <node ref="IC2" pin="9" pinfunction="OUT" pintype="bidirectional"/>
+      <node ref="R43" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R44" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="28" name="Net-(IC2-Pad10)">
+      <node ref="IC2" pin="10" pinfunction="IN" pintype="bidirectional"/>
+      <node ref="IC2" pin="12" pinfunction="OUT" pintype="bidirectional"/>
+      <node ref="R37" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R42" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="29" name="Net-(IC2-Pad13)">
+      <node ref="IC2" pin="13" pinfunction="-IN" pintype="bidirectional"/>
+      <node ref="R35" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R36" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R38" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="30" name="Net-(IC2-Pad16)">
+      <node ref="IC2" pin="16" pinfunction="IABC" pintype="bidirectional"/>
+      <node ref="R41" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="31" name="Net-(IC3-Pad1)">
+      <node ref="IC3" pin="1" pinfunction="OUT" pintype="output"/>
+      <node ref="R18" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="R20" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="32" name="Net-(IC3-Pad12)">
+      <node ref="IC3" pin="12" pinfunction="+IN" pintype="input"/>
+      <node ref="R48" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R49" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="33" name="Net-(IC3-Pad13)">
+      <node ref="IC3" pin="13" pinfunction="-IN" pintype="input"/>
+      <node ref="IC4" pin="8" pinfunction="OUT" pintype="output"/>
+      <node ref="R45" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="34" name="Net-(IC3-Pad14)">
+      <node ref="IC3" pin="14" pinfunction="OUT" pintype="output"/>
+      <node ref="R49" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R50" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="35" name="Net-(IC4-Pad1)">
+      <node ref="IC4" pin="1" pinfunction="OUT" pintype="output"/>
+      <node ref="R2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R5" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="36" name="Net-(IC4-Pad2)">
+      <node ref="IC4" pin="2" pinfunction="-IN" pintype="input"/>
+      <node ref="R2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R4" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="37" name="Net-(IC4-Pad6)">
+      <node ref="IC4" pin="6" pinfunction="-IN" pintype="input"/>
+      <node ref="R6" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R7" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R8" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R9" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="38" name="Net-(IC4-Pad7)">
+      <node ref="IC4" pin="7" pinfunction="OUT" pintype="output"/>
+      <node ref="R3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R4" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R9" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="39" name="Net-(IC4-Pad9)">
+      <node ref="IC4" pin="9" pinfunction="-IN" pintype="input"/>
+      <node ref="R45" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R46" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R47" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="40" name="Net-(IC4-Pad13)">
+      <node ref="IC4" pin="13" pinfunction="-IN" pintype="input"/>
+      <node ref="R30" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R31" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R32" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="41" name="Net-(IC4-Pad14)">
+      <node ref="IC4" pin="14" pinfunction="OUT" pintype="output"/>
+      <node ref="R31" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R33" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R36" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R37" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R48" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="42" name="Net-(R11-PadS)">
+      <node ref="R11" pin="S" pinfunction="S" pintype="passive"/>
+      <node ref="R8" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="43" name="Net-(R14-PadS)">
+      <node ref="R14" pin="S" pinfunction="S" pintype="passive"/>
+      <node ref="R21" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="44" name="Net-(R17-Pad2)">
+      <node ref="R17" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="T4" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="T5" pin="E" pinfunction="E" pintype="passive"/>
+    </net>
+    <net code="45" name="Net-(R18-PadA)">
+      <node ref="R18" pin="A" pinfunction="A" pintype="passive"/>
+      <node ref="R19" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="46" name="Net-(R18-PadS)">
+      <node ref="R18" pin="S" pinfunction="S" pintype="passive"/>
+      <node ref="T5" pin="B" pinfunction="B" pintype="passive"/>
+    </net>
+    <net code="47" name="Net-(R38-Pad1)">
+      <node ref="R38" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R39" pin="S" pinfunction="S" pintype="passive"/>
+    </net>
+    <net code="48" name="Net-(R40-PadE)">
+      <node ref="R40" pin="E" pinfunction="E" pintype="passive"/>
+      <node ref="R40" pin="S" pinfunction="S" pintype="passive"/>
+      <node ref="R41" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="49" name="unconnected-(IC2-Pad2)">
+      <node ref="IC2" pin="2" pinfunction="ID" pintype="bidirectional"/>
+    </net>
+    <net code="50" name="unconnected-(IC2-Pad15)">
+      <node ref="IC2" pin="15" pinfunction="ID" pintype="bidirectional"/>
+    </net>
+  </nets>
+</export>

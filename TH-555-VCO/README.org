@@ -1,0 +1,10 @@
+* Thomas Henry 555 VCO
+
+Source: [[https://github.com/gerb-ster/TH-555-VCO][TH-555-VCO]] on Github
+
+The following modifications were made by me:
+
+- Converted schematics and board to Kicad
+- Replaced footprints for TL074 and LM13700 to SMD (since those are available on LCSC)
+- Added component values to silk screen
+- Added a PCB faceplate in Kicad

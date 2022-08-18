@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/home/jan/workspace/TH-555-VCO/schematics/src/ioboard/ioboard-kicad/ioboard.kicad_sch</source>
+    <date>Wed 06 Jul 2022 01:53:31 PM CEST</date>
+    <tool>Eeschema (6.0.5)</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>ioboard.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>.22uf</value>
+      <footprint>ioboard:C050-024X044</footprint>
+      <libsource lib="ioboard-eagle-import" part="C-US050-024X044" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b9503f59-0f50-4e35-bcbf-32498b0976d8</tstamps>
+    </comp>
+    <comp ref="COURSE0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4d8966d8-5486-4e7d-8339-a51f15bbdb58</tstamps>
+    </comp>
+    <comp ref="CV0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a9dffeb0-9a7c-4332-a0a4-afe8f802ab6f</tstamps>
+    </comp>
+    <comp ref="EXP-FM-ATTN0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fdcafc40-33a7-446e-b7f5-6ea4694b41b4</tstamps>
+    </comp>
+    <comp ref="EXP-FM-IN0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>16c888b5-03eb-4b4c-8368-36a6390ee807</tstamps>
+    </comp>
+    <comp ref="FINE0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8cc0e900-fc81-4239-9032-85f8cc27d773</tstamps>
+    </comp>
+    <comp ref="INIT-PWM0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>dfe49d6e-ab29-4ca4-a82c-b7009b374071</tstamps>
+    </comp>
+    <comp ref="JP2">
+      <value>PINHD-1X6</value>
+      <footprint>ioboard:1X06</footprint>
+      <libsource lib="ioboard-eagle-import" part="PINHD-1X6" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>965317d7-8b61-4519-b419-bd6fa8e7385a</tstamps>
+    </comp>
+    <comp ref="JP3">
+      <value>PINHD-1X3</value>
+      <footprint>ioboard:1X03</footprint>
+      <libsource lib="ioboard-eagle-import" part="PINHD-1X3" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>16850883-5355-454d-8289-074f30510277</tstamps>
+    </comp>
+    <comp ref="JP4">
+      <value>PINHD-1X3</value>
+      <footprint>ioboard:1X03</footprint>
+      <libsource lib="ioboard-eagle-import" part="PINHD-1X3" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>25ea5c06-5463-4263-9af8-d5361703abce</tstamps>
+    </comp>
+    <comp ref="LIN-FM-ATTN0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ea5ba637-dd17-4cfa-8c27-e7e87e642301</tstamps>
+    </comp>
+    <comp ref="LIN-FM-IN0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b6a3eaf8-13a8-456d-a355-dc9fa9f18f32</tstamps>
+    </comp>
+    <comp ref="PULSE0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b13dbf64-e3a8-4da1-9d79-5d683b3e9691</tstamps>
+    </comp>
+    <comp ref="PWM-MOD-ATTN0">
+      <value>100k</value>
+      <footprint>ioboard:EVUF</footprint>
+      <libsource lib="ioboard-eagle-import" part="ALPHA-9MMA" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a27e4742-e3c7-40d3-acac-bf8080cc4813</tstamps>
+    </comp>
+    <comp ref="PWM-MOD-IN0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>845bf3f7-5b72-401b-be9d-dc976bdf728b</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>100k</value>
+      <footprint>ioboard:0207_10</footprint>
+      <libsource lib="ioboard-eagle-import" part="R-US_0207{slash}10" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a8adc72e-3e39-49b3-a8a0-0459fb484bfc</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>3.3M</value>
+      <footprint>ioboard:0207_10</footprint>
+      <libsource lib="ioboard-eagle-import" part="R-US_0207{slash}10" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>23dfb196-651c-45c8-85c4-602f2bbf15cc</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>100k</value>
+      <footprint>ioboard:0207_10</footprint>
+      <libsource lib="ioboard-eagle-import" part="R-US_0207{slash}10" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>017ffb66-5206-4836-9296-b21537fa0e68</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>100k</value>
+      <footprint>ioboard:0207_10</footprint>
+      <libsource lib="ioboard-eagle-import" part="R-US_0207{slash}10" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cfcf1aae-5ffd-45dc-b400-44891444586f</tstamps>
+    </comp>
+    <comp ref="RAMP0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ad8737a9-494a-4bd0-b278-e49f6df32839</tstamps>
+    </comp>
+    <comp ref="SINE0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f263ea05-7e2d-43e2-b274-1f5f390b2d20</tstamps>
+    </comp>
+    <comp ref="SYNC0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e0896641-9472-47d0-ba6b-0afa03b1254f</tstamps>
+    </comp>
+    <comp ref="TRIANGLE0">
+      <value>PJ301BMPJ301BM</value>
+      <footprint>ioboard:PJ301BM</footprint>
+      <libsource lib="ioboard-eagle-import" part="PJ301BMPJ301BM" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ioboard.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eb925238-69d9-4699-9a77-7b0f5e85162b</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="ioboard-eagle-import" part="ALPHA-9MMA">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">ALPHA-9MMA</field>
+        <field name="Footprint">ioboard:EVUF</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="S" type="passive"/>
+        <pin num="3" name="E" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ioboard-eagle-import" part="C-US050-024X044">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C-US050-024X044</field>
+        <field name="Footprint">ioboard:C050-024X044</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ioboard-eagle-import" part="PINHD-1X3">
+      <fields>
+        <field name="Reference">JP</field>
+        <field name="Value">PINHD-1X3</field>
+        <field name="Footprint">ioboard:1X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ioboard-eagle-import" part="PINHD-1X6">
+      <fields>
+        <field name="Reference">JP</field>
+        <field name="Value">PINHD-1X6</field>
+        <field name="Footprint">ioboard:1X06</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+        <pin num="5" name="5" type="passive"/>
+        <pin num="6" name="6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ioboard-eagle-import" part="PJ301BMPJ301BM">
+      <fields>
+        <field name="Value">PJ301BMPJ301BM</field>
+        <field name="Footprint">ioboard:PJ301BM</field>
+      </fields>
+      <pins>
+        <pin num="GND1" name="5" type="passive"/>
+        <pin num="GND2" name="5" type="passive"/>
+        <pin num="SWITCH" name="4" type="passive"/>
+        <pin num="TIP" name="3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ioboard-eagle-import" part="R-US_0207{slash}10">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R-US_0207{slash}10</field>
+        <field name="Footprint">ioboard:0207_10</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="ioboard-eagle-import">
+      <uri>/home/jan/workspace/TH-555-VCO/schematics/src/ioboard/ioboard-kicad/ioboard-eagle-import.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+12V">
+      <node ref="COURSE0" pin="3" pinfunction="E" pintype="passive"/>
+      <node ref="FINE0" pin="3" pinfunction="E" pintype="passive"/>
+      <node ref="INIT-PWM0" pin="3" pinfunction="E" pintype="passive"/>
+      <node ref="JP4" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="2" name="-12V">
+      <node ref="COURSE0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="FINE0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="INIT-PWM0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="JP4" pin="3" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="3" name="/HARD-SYNC">
+      <node ref="JP3" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="SYNC0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="4" name="/LIN-FM">
+      <node ref="JP3" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="LIN-FM-ATTN0" pin="2" pinfunction="S" pintype="passive"/>
+    </net>
+    <net code="5" name="/MULTI-IN">
+      <node ref="JP3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R3" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="R4" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="6" name="/PULSE-OUT">
+      <node ref="JP2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="PULSE0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="7" name="/PULSE-WIDTH">
+      <node ref="INIT-PWM0" pin="2" pinfunction="S" pintype="passive"/>
+      <node ref="JP2" pin="6" pinfunction="6" pintype="passive"/>
+    </net>
+    <net code="8" name="/PWM-IN">
+      <node ref="JP2" pin="5" pinfunction="5" pintype="passive"/>
+      <node ref="PWM-MOD-ATTN0" pin="2" pinfunction="S" pintype="passive"/>
+    </net>
+    <net code="9" name="/RAMP-OUT">
+      <node ref="JP2" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="RAMP0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="10" name="/SINE-OUT">
+      <node ref="JP2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="SINE0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="11" name="/TRI-OUT">
+      <node ref="JP2" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="TRIANGLE0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="12" name="GND">
+      <node ref="CV0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="CV0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="EXP-FM-ATTN0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="EXP-FM-IN0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="EXP-FM-IN0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="JP4" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="LIN-FM-ATTN0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="LIN-FM-IN0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="LIN-FM-IN0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="PULSE0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="PULSE0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="PWM-MOD-ATTN0" pin="1" pinfunction="A" pintype="passive"/>
+      <node ref="PWM-MOD-IN0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="PWM-MOD-IN0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="RAMP0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="RAMP0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="SINE0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="SINE0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="SYNC0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="SYNC0" pin="GND2" pinfunction="5" pintype="passive"/>
+      <node ref="TRIANGLE0" pin="GND1" pinfunction="5" pintype="passive"/>
+      <node ref="TRIANGLE0" pin="GND2" pinfunction="5" pintype="passive"/>
+    </net>
+    <net code="13" name="Net-(C1-Pad1)">
+      <node ref="C1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="LIN-FM-IN0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="14" name="Net-(C1-Pad2)">
+      <node ref="C1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="LIN-FM-ATTN0" pin="3" pinfunction="E" pintype="passive"/>
+    </net>
+    <net code="15" name="Net-(COURSE0-Pad2)">
+      <node ref="COURSE0" pin="2" pinfunction="S" pintype="passive"/>
+      <node ref="R1" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="16" name="Net-(CV0-PadTIP)">
+      <node ref="CV0" pin="TIP" pinfunction="3" pintype="passive"/>
+      <node ref="R3" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="17" name="Net-(EXP-FM-ATTN0-Pad2)">
+      <node ref="EXP-FM-ATTN0" pin="2" pinfunction="S" pintype="passive"/>
+      <node ref="R4" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="18" name="Net-(EXP-FM-ATTN0-Pad3)">
+      <node ref="EXP-FM-ATTN0" pin="3" pinfunction="E" pintype="passive"/>
+      <node ref="EXP-FM-IN0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="19" name="Net-(FINE0-Pad2)">
+      <node ref="FINE0" pin="2" pinfunction="S" pintype="passive"/>
+      <node ref="R2" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="20" name="Net-(PWM-MOD-ATTN0-Pad3)">
+      <node ref="PWM-MOD-ATTN0" pin="3" pinfunction="E" pintype="passive"/>
+      <node ref="PWM-MOD-IN0" pin="TIP" pinfunction="3" pintype="passive"/>
+    </net>
+    <net code="21" name="unconnected-(CV0-PadSWITCH)">
+      <node ref="CV0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="22" name="unconnected-(EXP-FM-IN0-PadSWITCH)">
+      <node ref="EXP-FM-IN0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="23" name="unconnected-(LIN-FM-IN0-PadSWITCH)">
+      <node ref="LIN-FM-IN0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="24" name="unconnected-(PULSE0-PadSWITCH)">
+      <node ref="PULSE0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="25" name="unconnected-(PWM-MOD-IN0-PadSWITCH)">
+      <node ref="PWM-MOD-IN0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="26" name="unconnected-(RAMP0-PadSWITCH)">
+      <node ref="RAMP0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="27" name="unconnected-(SINE0-PadSWITCH)">
+      <node ref="SINE0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="28" name="unconnected-(SYNC0-PadSWITCH)">
+      <node ref="SYNC0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+    <net code="29" name="unconnected-(TRIANGLE0-PadSWITCH)">
+      <node ref="TRIANGLE0" pin="SWITCH" pinfunction="4" pintype="passive"/>
+    </net>
+  </nets>
+</export>
