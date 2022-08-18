@@ -1,0 +1,6 @@
+* Ornament and crime
+
+From [[https://ornament-and-cri.me/][https://ornament-and-cri.me/]], where a full description is available. All functional PCBs are used unchanged.
+
+Changes by me:
+- Added PCB front plate
