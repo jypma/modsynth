@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "Library")(type "KiCad")(uri "/home/jan/workspace/TH-555-VCO/faceplates/faceplate-kicad/Library.pretty")(options "")(descr ""))
+)
