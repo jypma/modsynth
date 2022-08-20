@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "ioboard")(type "KiCad")(uri "$(KIPRJMOD)/ioboard.pretty")(options "")(descr ""))
+)
