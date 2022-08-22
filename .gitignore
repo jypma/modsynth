@@ -1,4 +1,2 @@
-gerbers/*
-*-backups/*
-
-/QuadAttenuverter/mainboard/mainboard-backups/*.zip
+/**/gerbers/*
+/**/*-backups/*.zip
