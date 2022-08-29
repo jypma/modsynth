@@ -2872,8 +2872,8 @@
   (symbol (lib_id "Device:C") (at 122.555 170.815 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 1e10f547-542d-4e39-bb1f-868ef88ad8bd)
-    (property "Reference" "22pF4" (id 0) (at 122.555 167.005 90))
-    (property "Value" "C" (id 1) (at 122.555 174.625 90))
+    (property "Reference" "C14" (id 0) (at 122.555 167.005 90))
+    (property "Value" "22pF" (id 1) (at 122.555 174.625 90))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" (id 2) (at 126.365 169.8498 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -3523,8 +3523,8 @@
   (symbol (lib_id "Device:C") (at 121.92 125.73 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 619b4a24-dbe5-4d77-a0e4-9efc2cdbe4a1)
-    (property "Reference" "22pF2" (id 0) (at 121.92 121.92 90))
-    (property "Value" "C" (id 1) (at 121.92 129.54 90))
+    (property "Reference" "C11" (id 0) (at 121.92 121.92 90))
+    (property "Value" "22pF" (id 1) (at 121.92 129.54 90))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" (id 2) (at 125.73 124.7648 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -4626,8 +4626,8 @@
   (symbol (lib_id "Device:C") (at 122.555 38.1 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid cf08a499-63ac-4d34-9db9-13bdec934fb1)
-    (property "Reference" "22pF1" (id 0) (at 122.555 34.29 90))
-    (property "Value" "C" (id 1) (at 122.555 41.91 90))
+    (property "Reference" "C12" (id 0) (at 122.555 34.29 90))
+    (property "Value" "22pF" (id 1) (at 122.555 41.91 90))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" (id 2) (at 126.365 37.1348 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5062,8 +5062,8 @@
   (symbol (lib_id "Device:C") (at 122.555 81.28 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid f6bf49e3-46e7-4f79-9c27-b1bd1311d85a)
-    (property "Reference" "22pF3" (id 0) (at 122.555 77.47 90))
-    (property "Value" "C" (id 1) (at 122.555 85.09 90))
+    (property "Reference" "C13" (id 0) (at 122.555 77.47 90))
+    (property "Value" "22pF" (id 1) (at 122.555 85.09 90))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder" (id 2) (at 126.365 80.3148 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5357,18 +5357,6 @@
     (path "/e1c94cf3-8fe0-40d7-a670-220160ec1031"
       (reference "#PWR0155") (unit 1) (value "GND") (footprint "")
     )
-    (path "/cf08a499-63ac-4d34-9db9-13bdec934fb1"
-      (reference "22pF1") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
-    )
-    (path "/619b4a24-dbe5-4d77-a0e4-9efc2cdbe4a1"
-      (reference "22pF2") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
-    )
-    (path "/f6bf49e3-46e7-4f79-9c27-b1bd1311d85a"
-      (reference "22pF3") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
-    )
-    (path "/1e10f547-542d-4e39-bb1f-868ef88ad8bd"
-      (reference "22pF4") (unit 1) (value "C") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
-    )
     (path "/2744eae7-e0bd-481e-b42c-af00034b2d86"
       (reference "C1") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
     )
@@ -5398,6 +5386,18 @@
     )
     (path "/11924a7f-9b6a-4330-8bad-f05c27966995"
       (reference "C10") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
+    )
+    (path "/619b4a24-dbe5-4d77-a0e4-9efc2cdbe4a1"
+      (reference "C11") (unit 1) (value "22pF") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
+    )
+    (path "/cf08a499-63ac-4d34-9db9-13bdec934fb1"
+      (reference "C12") (unit 1) (value "22pF") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
+    )
+    (path "/f6bf49e3-46e7-4f79-9c27-b1bd1311d85a"
+      (reference "C13") (unit 1) (value "22pF") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
+    )
+    (path "/1e10f547-542d-4e39-bb1f-868ef88ad8bd"
+      (reference "C14") (unit 1) (value "22pF") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
     )
     (path "/bb61042d-c611-4ef3-baea-41d687cdc4ff"
       (reference "D1") (unit 1) (value "1N4007") (footprint "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal")
