@@ -9,8 +9,10 @@ function handleDir {
     WORKDIR=.
     SUBDIR=$1
 
+    echo "Handling ${SUBDIR}"
+
     cp kibot_generated.kibot.yaml $SUBDIR
-    docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY \
+    docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY \
            -v $(pwd)/$WORKDIR:/home/$USER/workdir \
            --user $USER_ID:$GROUP_ID \
            --env NO_AT_BRIDGE=1 \
@@ -23,10 +25,15 @@ function handleDir {
            --volume="/etc/group:/etc/group:ro" \
            --volume="/etc/passwd:/etc/passwd:ro" \
            --volume="/etc/shadow:/etc/shadow:ro" \
-           setsoft/kicad_auto_test:${VERSION} /bin/bash -c "cd workdir/$SUBDIR; kibot -v"
-    rm ${SUBDIR}/kibot_generated.kibot.yaml
+           setsoft/kicad_auto_test:${VERSION} /bin/bash -c "cd workdir/$SUBDIR; kibot"
+
+    rm ${WORKDIR}/${SUBDIR}/kibot_generated.kibot.yaml
 }
 
-#handleDir QuadAttenuverter/ioboard
-#handleDir QuadAttenuverter/mainboard
+# Can't do this in parallel, since there's contention on files in ~/.config/kicad
+
+handleDir QuadAttenuverter/ioboard
+handleDir QuadAttenuverter/mainboard
 handleDir QuadAttenuverter/faceplate
+
+wait
