@@ -2433,6 +2433,9 @@
   (gr_line (start 90.04 54.5) (end 89.58 55.18) (layer "F.SilkS") (width 0.15) (tstamp b54f348e-ac1f-4e54-b12f-703a3443ff30))
   (gr_line (start 90.93 50.5) (end 90.59 51.81) (layer "F.SilkS") (width 0.15) (tstamp b897ba18-1ecd-435b-847a-a15955eba1fb))
   (gr_rect (start 62.81 147.1) (end 98.37 39.15) (layer "Edge.Cuts") (width 0.1) (fill none) (tstamp b684f530-9c1f-4bb8-9368-d47be5f3035c))
+  (gr_text "DualMixer\nmainboard-v1" (at 81.26 46.16) (layer "F.SilkS") (tstamp 74cbfb4b-bf4d-4e05-b54e-fbfdaaec5740)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
 
   (segment (start 85.2675 99.65) (end 85.5775 99.96) (width 0.25) (layer "F.Cu") (net 1) (tstamp 022902f4-d1ee-4ba8-a6a6-5217a9959648))
   (segment (start 94.19 98.69) (end 92.12 100.76) (width 0.25) (layer "F.Cu") (net 1) (tstamp 21555be0-936a-4b39-948a-dd1c1c43be66))
