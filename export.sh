@@ -49,6 +49,9 @@ function handleDir {
 
 # handleDir TH-555-VCO/faceplate-kicad
 # handleDir TH-555-VCO/ioboard-kicad
-handleDir TH-555-VCO/mainboard-kicad
+# handleDir TH-555-VCO/mainboard-kicad
+
+handleDir OrnamentCrime/faceplate
+
 
 wait
