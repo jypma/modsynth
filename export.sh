@@ -51,7 +51,11 @@ function handleDir {
 # handleDir TH-555-VCO/ioboard-kicad
 # handleDir TH-555-VCO/mainboard-kicad
 
-handleDir OrnamentCrime/faceplate
+# handleDir OrnamentCrime/faceplate
 
+#handleDir adapter-soic16
+
+handleDir TuringMachine/TuringBack
+handleDir TuringMachine/TuringFront
 
 wait

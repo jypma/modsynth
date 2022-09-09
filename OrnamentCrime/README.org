@@ -4,6 +4,7 @@ From [[https://ornament-and-cri.me/][https://ornament-and-cri.me/]], where a ful
 
 Changes by me:
 - Added PCB front plate
+- Normal, cheap, 6x6 tactile buttons can be soldered to the current button footprint by flattening the legs. A [[https://cad.onshape.com/documents/e7815c3b6a7c64ea29c56868/w/138a4ec4b4cdb0bee4855473/e/5fd778d5bc32cc2b5d2f75c1][Cap]] for standard tactiles is available on OnShape.
 
 ** To do
 
