@@ -19,6 +19,18 @@ Based off a variety of simple opamp circuits, with the following design goals:
 
 ![bottom](mainboard/export/PCB/2D_render/jlcpcb_green_enig/mainboard-bottom.jpg)
 
+## IO Board
+
+### Schematic
+
+![schematic](ioboard/export/Schematic/ioboard-schematic.svg)
+
+### PCB
+
+![top](ioboard/export/PCB/2D_render/jlcpcb_green_enig/ioboard-top.jpg)
+
+![bottom](ioboard/export/PCB/2D_render/jlcpcb_green_enig/ioboard-bottom.jpg)
+
 ## Face plate
 
 ![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
