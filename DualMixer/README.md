@@ -6,3 +6,19 @@ Based off a variety of simple opamp circuits, with the following design goals:
 - Individual buffers for each input, to limit cross-talk between connected oscillators
 - As close to unity output when one input connected and fully opened (hence, output A can be connected to input B1 for a 7-channel mixer)
 - Peak LED for each output
+
+## Main board
+
+### Schematic
+
+![schematic](mainboard/export/Schematic/mainboard-schematic.svg)
+
+### PCB
+
+![top](export/PCB/2D_render/jlcpcb_green_enig/mainboard-top.jpg)
+
+![bottom](export/PCB/2D_render/jlcpcb_green_enig/mainboard-bottom.jpg)
+
+## Face plate
+
+![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
