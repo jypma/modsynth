@@ -32,31 +32,31 @@ function handleDir {
 
 # Can't do this in parallel, since there's contention on files in ~/.config/kicad
 
-# handleDir QuadAttenuverter/ioboard
-# handleDir QuadAttenuverter/mainboard
-# handleDir QuadAttenuverter/faceplate
+handleDir QuadAttenuverter/ioboard
+handleDir QuadAttenuverter/mainboard
+handleDir QuadAttenuverter/faceplate
 
-# handleDir DualMixer/ioboard
-# handleDir DualMixer/mainboard
-# handleDir DualMixer/faceplate
+handleDir DualMixer/ioboard
+handleDir DualMixer/mainboard
+handleDir DualMixer/faceplate
 
-# handleDir RayWilson-Dual-VCA/ioboard
-# handleDir RayWilson-Dual-VCA/faceplate
+handleDir RayWilson-Dual-VCA/ioboard
+handleDir RayWilson-Dual-VCA/faceplate
 
-# handleDir SCM-140-ADSR/faceplate_kicad
-# handleDir SCM-140-ADSR/ioboard_kicad
-# handleDir SCM-140-ADSR/mainboard_kicad
+handleDir SCM-140-ADSR/faceplate_kicad
+handleDir SCM-140-ADSR/ioboard_kicad
+handleDir SCM-140-ADSR/mainboard_kicad
 
-# handleDir TH-555-VCO/faceplate-kicad
-# handleDir TH-555-VCO/ioboard-kicad
-# handleDir TH-555-VCO/mainboard-kicad
+handleDir TH-555-VCO/faceplate-kicad
+handleDir TH-555-VCO/ioboard-kicad
+handleDir TH-555-VCO/mainboard-kicad
 
 handleDir OrnamentCrime/faceplate
 
-#handleDir TuringMachine/TuringBack
-#handleDir TuringMachine/TuringFront
+handleDir TuringMachine/TuringBack
+handleDir TuringMachine/TuringFront
 
-#handleDir adapter-soic16
+handleDir adapter-soic16
 handleDir power-board
 
 

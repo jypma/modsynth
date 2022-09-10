@@ -26,17 +26,17 @@ variants:
   - _rot_footprint
 
 outputs:
-- name: basic_boardview
-  comment: Board View export
-  type: boardview
-  dir: export/Assembly
-- name: generic_bom_html
-  comment: Generic Bill of Materials in HTML format
-  type: bom
-  dir: export/BoM/Generic
-  options:
-    format: HTML
-    count_smd_tht: true
+# - name: basic_boardview
+#   comment: Board View export
+#   type: boardview
+#   dir: export/Assembly
+# - name: generic_bom_html
+#   comment: Generic Bill of Materials in HTML format
+#   type: bom
+#   dir: export/BoM/Generic
+#   options:
+#     format: HTML
+#     count_smd_tht: true
 - name: generic_bom_csv
   comment: Generic Bill of Materials in CSV format
   type: bom
@@ -44,34 +44,34 @@ outputs:
   options:
     format: CSV
     count_smd_tht: true
-- name: generic_bom_txt
-  comment: Generic Bill of Materials in TXT format
-  type: bom
-  dir: export/BoM/Generic
-  options:
-    format: TXT
-    count_smd_tht: true
-- name: generic_bom_tsv
-  comment: Generic Bill of Materials in TSV format
-  type: bom
-  dir: export/BoM/Generic
-  options:
-    format: TSV
-    count_smd_tht: true
-- name: generic_bom_xml
-  comment: Generic Bill of Materials in XML format
-  type: bom
-  dir: export/BoM/Generic
-  options:
-    format: XML
-    count_smd_tht: true
-- name: generic_bom_xlsx
-  comment: Generic Bill of Materials in XLSX format
-  type: bom
-  dir: export/BoM/Generic
-  options:
-    format: XLSX
-    count_smd_tht: true
+# - name: generic_bom_txt
+#   comment: Generic Bill of Materials in TXT format
+#   type: bom
+#   dir: export/BoM/Generic
+#   options:
+#     format: TXT
+#     count_smd_tht: true
+# - name: generic_bom_tsv
+#   comment: Generic Bill of Materials in TSV format
+#   type: bom
+#   dir: export/BoM/Generic
+#   options:
+#     format: TSV
+#     count_smd_tht: true
+# - name: generic_bom_xml
+#   comment: Generic Bill of Materials in XML format
+#   type: bom
+#   dir: export/BoM/Generic
+#   options:
+#     format: XML
+#     count_smd_tht: true
+# - name: generic_bom_xlsx
+#   comment: Generic Bill of Materials in XLSX format
+#   type: bom
+#   dir: export/BoM/Generic
+#   options:
+#     format: XLSX
+#     count_smd_tht: true
 - name: positional_bom_html
   comment: Positional Bill of Materials in HTML format
   type: bom
@@ -104,72 +104,84 @@ outputs:
     count_smd_tht: true
     html:
       style: modern-red
-- name: positional_bom_xlsx
-  comment: Positional Bill of Materials in XLSX format
-  type: bom
-  dir: export/BoM/Positional
-  options:
-    format: XLSX
-    columns: *id001
-    count_smd_tht: true
-    xlsx:
-      style: modern-red
-- name: costs_bom_xlsx
-  comment: Costs Bill of Materials in XLSX format
-  type: bom
-  dir: export/BoM/Costs
-  options:
-    format: XLSX
-    count_smd_tht: true
-    xlsx:
-      style: modern-green
-      kicost: true
-      specs: true
-    variant: place_holder
-- name: macrofab_xyrs
-  comment: Pick and place file, XYRS style
-  type: bom
-  options:
-    variant: place_holder
-    output: '%f_MacroFab.XYRS'
-    units: mils
-    group_fields: []
-    sort_style: ref
-    use_aux_axis_as_origin: true
-    ignore_dnf: false
-    footprint_populate_values: 0,1
-    footprint_type_values: 1,2,0
-    csv:
-      separator: "\t"
-      hide_pcb_info: true
-      hide_stats_info: true
-      hide_header: true
-    columns:
-    - field: References
-      name: Designator
-    - field: Footprint X
-      name: X-Loc
-    - field: Footprint Y
-      name: Y-Loc
-    - field: Footprint Rot
-      name: Rotation
-    - field: Footprint Side
-      name: Side
-    - field: Footprint Type
-      name: Type
-    - field: Footprint X-Size
-      name: X-Size
-    - field: Footprint Y-Size
-      name: Y-Size
-    - field: Value
-    - field: Footprint
-    - field: Footprint Populate
-      name: Populate
-  dir: export/Position
-# - name: basic_dxf
-#   comment: Individual layers in DXF format
-#   type: dxf
-#   dir: Individual_Layers/DXF
+# - name: positional_bom_xlsx
+#   comment: Positional Bill of Materials in XLSX format
+#   type: bom
+#   dir: export/BoM/Positional
+#   options:
+#     format: XLSX
+#     columns: *id001
+#     count_smd_tht: true
+#     xlsx:
+#       style: modern-red
+# - name: costs_bom_xlsx
+#   comment: Costs Bill of Materials in XLSX format
+#   type: bom
+#   dir: export/BoM/Costs
+#   options:
+#     format: XLSX
+#     count_smd_tht: true
+#     xlsx:
+#       style: modern-green
+#       kicost: true
+#       specs: true
+#     variant: place_holder
+# - name: macrofab_xyrs
+#   comment: Pick and place file, XYRS style
+#   type: bom
+#   options:
+#     variant: place_holder
+#     output: '%f_MacroFab.XYRS'
+#     units: mils
+#     group_fields: []
+#     sort_style: ref
+#     use_aux_axis_as_origin: true
+#     ignore_dnf: false
+#     footprint_populate_values: 0,1
+#     footprint_type_values: 1,2,0
+#     csv:
+#       separator: "\t"
+#       hide_pcb_info: true
+#       hide_stats_info: true
+#       hide_header: true
+#     columns:
+#     - field: References
+#       name: Designator
+#     - field: Footprint X
+#       name: X-Loc
+#     - field: Footprint Y
+#       name: Y-Loc
+#     - field: Footprint Rot
+#       name: Rotation
+#     - field: Footprint Side
+#       name: Side
+#     - field: Footprint Type
+#       name: Type
+#     - field: Footprint X-Size
+#       name: X-Size
+#     - field: Footprint Y-Size
+#       name: Y-Size
+#     - field: Value
+#     - field: Footprint
+#     - field: Footprint Populate
+#       name: Populate
+#   dir: export/Position
+# - name: basic_excellon
+#   comment: Drill files in EXCELLON format
+#   type: excellon
+#   dir: export/Gerbers_and_Drill
+#   options:
+#     map: pdf
+# - name: basic_gerb_drill
+#   comment: Drill files in GERB_DRILL format
+#   type: gerb_drill
+#   dir: export/Gerbers_and_Drill
+#   options:
+#     map: gerber
+# - name: gerber_modern
+#   comment: Gerbers in modern format, recommended by the standard
+#   type: gerber
+#   dir: export/Gerbers_and_Drill
 #   layers:
 #   - layer: F.Cu
 #     suffix: F_Cu
@@ -204,60 +216,6 @@ outputs:
 #   - layer: F.Fab
 #     suffix: F_Fab
 #     description: Front documentation
-- name: basic_excellon
-  comment: Drill files in EXCELLON format
-  type: excellon
-  dir: export/Gerbers_and_Drill
-  options:
-    map: pdf
-#- name: basic_gencad
-#  comment: PCB in GenCAD format
-#  type: gencad
-#  dir: Export
-- name: basic_gerb_drill
-  comment: Drill files in GERB_DRILL format
-  type: gerb_drill
-  dir: export/Gerbers_and_Drill
-  options:
-    map: gerber
-- name: gerber_modern
-  comment: Gerbers in modern format, recommended by the standard
-  type: gerber
-  dir: export/Gerbers_and_Drill
-  layers:
-  - layer: F.Cu
-    suffix: F_Cu
-    description: Front copper
-  - layer: B.Cu
-    suffix: B_Cu
-    description: Bottom copper
-  - layer: F.Paste
-    suffix: F_Paste
-    description: Front solder paste
-  - layer: F.Silkscreen
-    suffix: F_Silkscreen
-    description: Front silkscreen (artwork)
-  - layer: B.Mask
-    suffix: B_Mask
-    description: Bottom soldermask (negative)
-  - layer: F.Mask
-    suffix: F_Mask
-    description: Front soldermask (negative)
-  - layer: User.Drawings
-    suffix: User_Drawings
-    description: User drawings
-  - layer: User.Comments
-    suffix: User_Comments
-    description: User comments
-  - layer: Edge.Cuts
-    suffix: Edge_Cuts
-    description: Board shape
-  - layer: F.Courtyard
-    suffix: F_Courtyard
-    description: Front courtyard area
-  - layer: F.Fab
-    suffix: F_Fab
-    description: Front documentation
 - name: PCBWay_gerbers
   comment: Gerbers compatible with PCBWay
   type: gerber
@@ -507,64 +465,10 @@ outputs:
       dest: /
     - from_output: JLCPCB_bom
       dest: /
-# - name: basic_hpgl
-#   comment: Individual layers in HPGL format
-#   type: hpgl
-#   dir: Individual_Layers/HPGL
-#   layers:
-#   - layer: F.Cu
-#     suffix: F_Cu
-#     description: Front copper
-#   - layer: B.Cu
-#     suffix: B_Cu
-#     description: Bottom copper
-#   - layer: F.Paste
-#     suffix: F_Paste
-#     description: Front solder paste
-#   - layer: F.Silkscreen
-#     suffix: F_Silkscreen
-#     description: Front silkscreen (artwork)
-#   - layer: B.Mask
-#     suffix: B_Mask
-#     description: Bottom soldermask (negative)
-#   - layer: F.Mask
-#     suffix: F_Mask
-#     description: Front soldermask (negative)
-#   - layer: User.Drawings
-#     suffix: User_Drawings
-#     description: User drawings
-#   - layer: User.Comments
-#     suffix: User_Comments
-#     description: User comments
-#   - layer: Edge.Cuts
-#     suffix: Edge_Cuts
-#     description: Board shape
-#   - layer: F.Courtyard
-#     suffix: F_Courtyard
-#     description: Front courtyard area
-#   - layer: F.Fab
-#     suffix: F_Fab
-#     description: Front documentation
 - name: basic_ibom
   comment: Interactive HTML BoM
   type: ibom
   dir: export/Assembly
-# - name: basic_navigate_results
-#   comment: Web page to browse the results
-#   type: navigate_results
-#   dir: Browse
-#   options:
-#     link_from_root: index.html
-#- name: classic_netlist
-#  comment: Schematic netlist in KiCad format
-#  type: netlist
-#  dir: Export
-#- name: ipc_netlist
-#  comment: IPC-D-356 netlist for testing
-#  type: netlist
-#  dir: Export
-#  options:
-#    format: ipc
 - name: basic_pcb_print_pdf
   comment: PCB
   type: pcb_print
@@ -684,84 +588,6 @@ outputs:
       sheet: Front documentation
     keep_temporal_files: true
     add_background: true
-# - name: basic_pcb_print_eps
-#   comment: PCB
-#   type: pcb_print
-#   dir: export/PCB/EPS
-#   options:
-#     format: EPS
-#     pages:
-#     - layers:
-#       - layer: F.Cu
-#       - layer: F.Mask
-#         color: '#14332440'
-#       - layer: F.Paste
-#       - layer: F.Silkscreen
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front copper
-#     - layers:
-#       - layer: B.Cu
-#       - layer: B.Mask
-#         color: '#14332440'
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       mirror: true
-#       sheet: Bottom copper
-#     - layers:
-#       - layer: F.Courtyard
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front courtyard area
-#     - layers:
-#       - layer: F.Fab
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front documentation
-#     keep_temporal_files: true
-# - name: basic_pcb_print_ps
-#   comment: PCB
-#   type: pcb_print
-#   dir: export/PCB/PS
-#   options:
-#     format: PS
-#     pages:
-#     - layers:
-#       - layer: F.Cu
-#       - layer: F.Mask
-#         color: '#14332440'
-#       - layer: F.Paste
-#       - layer: F.Silkscreen
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front copper
-#     - layers:
-#       - layer: B.Cu
-#       - layer: B.Mask
-#         color: '#14332440'
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       mirror: true
-#       sheet: Bottom copper
-#     - layers:
-#       - layer: F.Courtyard
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front courtyard area
-#     - layers:
-#       - layer: F.Fab
-#       - layer: Edge.Cuts
-#       - layer: User.Drawings
-#       - layer: User.Comments
-#       sheet: Front documentation
-#     keep_temporal_files: true
 - name: basic_pcbdraw_svg_jlcpcb_green_enig_top
   comment: PCB 2D render in SVG format, using jlcpcb-green-enig style
   type: pcbdraw
@@ -783,48 +609,48 @@ outputs:
   options:
     style: jlcpcb-green-enig
     format: jpg
-- name: basic_pcbdraw_svg_set_blue_enig_top
-  comment: PCB 2D render in SVG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: svg
-- name: basic_pcbdraw_png_set_blue_enig_top
-  comment: PCB 2D render in PNG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: png
-- name: basic_pcbdraw_jpg_set_blue_enig_top
-  comment: PCB 2D render in JPG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: jpg
-- name: basic_pcbdraw_svg_set_red_hasl_top
-  comment: PCB 2D render in SVG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: svg
-- name: basic_pcbdraw_png_set_red_hasl_top
-  comment: PCB 2D render in PNG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: png
-- name: basic_pcbdraw_jpg_set_red_hasl_top
-  comment: PCB 2D render in JPG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: jpg
+# - name: basic_pcbdraw_svg_set_blue_enig_top
+#   comment: PCB 2D render in SVG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: svg
+# - name: basic_pcbdraw_png_set_blue_enig_top
+#   comment: PCB 2D render in PNG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: png
+# - name: basic_pcbdraw_jpg_set_blue_enig_top
+#   comment: PCB 2D render in JPG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: jpg
+# - name: basic_pcbdraw_svg_set_red_hasl_top
+#   comment: PCB 2D render in SVG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: svg
+# - name: basic_pcbdraw_png_set_red_hasl_top
+#   comment: PCB 2D render in PNG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: png
+# - name: basic_pcbdraw_jpg_set_red_hasl_top
+#   comment: PCB 2D render in JPG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: jpg
 - name: basic_pcbdraw_svg_jlcpcb_green_enig_bottom
   comment: PCB 2D render in SVG format, using jlcpcb-green-enig style
   type: pcbdraw
@@ -849,240 +675,74 @@ outputs:
     style: jlcpcb-green-enig
     format: jpg
     bottom: true
-- name: basic_pcbdraw_svg_set_blue_enig_bottom
-  comment: PCB 2D render in SVG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: svg
-    bottom: true
-- name: basic_pcbdraw_png_set_blue_enig_bottom
-  comment: PCB 2D render in PNG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: png
-    bottom: true
-- name: basic_pcbdraw_jpg_set_blue_enig_bottom
-  comment: PCB 2D render in JPG format, using set-blue-enig style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_blue_enig
-  options:
-    style: set-blue-enig
-    format: jpg
-    bottom: true
-- name: basic_pcbdraw_svg_set_red_hasl_bottom
-  comment: PCB 2D render in SVG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: svg
-    bottom: true
-- name: basic_pcbdraw_png_set_red_hasl_bottom
-  comment: PCB 2D render in PNG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: png
-    bottom: true
-- name: basic_pcbdraw_jpg_set_red_hasl_bottom
-  comment: PCB 2D render in JPG format, using set-red-hasl style
-  type: pcbdraw
-  dir: export/PCB/2D_render/set_red_hasl
-  options:
-    style: set-red-hasl
-    format: jpg
-    bottom: true
-# - name: basic_pdf
-#   comment: Individual layers in PDF format
-#   type: pdf
-#   dir: Individual_Layers/PDF
-#   layers:
-#   - layer: F.Cu
-#     suffix: F_Cu
-#     description: Front copper
-#   - layer: B.Cu
-#     suffix: B_Cu
-#     description: Bottom copper
-#   - layer: F.Paste
-#     suffix: F_Paste
-#     description: Front solder paste
-#   - layer: F.Silkscreen
-#     suffix: F_Silkscreen
-#     description: Front silkscreen (artwork)
-#   - layer: B.Mask
-#     suffix: B_Mask
-#     description: Bottom soldermask (negative)
-#   - layer: F.Mask
-#     suffix: F_Mask
-#     description: Front soldermask (negative)
-#   - layer: User.Drawings
-#     suffix: User_Drawings
-#     description: User drawings
-#   - layer: User.Comments
-#     suffix: User_Comments
-#     description: User comments
-#   - layer: Edge.Cuts
-#     suffix: Edge_Cuts
-#     description: Board shape
-#   - layer: F.Courtyard
-#     suffix: F_Courtyard
-#     description: Front courtyard area
-#   - layer: F.Fab
-#     suffix: F_Fab
-#     description: Front documentation
+# - name: basic_pcbdraw_svg_set_blue_enig_bottom
+#   comment: PCB 2D render in SVG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: svg
+#     bottom: true
+# - name: basic_pcbdraw_png_set_blue_enig_bottom
+#   comment: PCB 2D render in PNG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: png
+#     bottom: true
+# - name: basic_pcbdraw_jpg_set_blue_enig_bottom
+#   comment: PCB 2D render in JPG format, using set-blue-enig style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_blue_enig
+#   options:
+#     style: set-blue-enig
+#     format: jpg
+#     bottom: true
+# - name: basic_pcbdraw_svg_set_red_hasl_bottom
+#   comment: PCB 2D render in SVG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: svg
+#     bottom: true
+# - name: basic_pcbdraw_png_set_red_hasl_bottom
+#   comment: PCB 2D render in PNG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: png
+#     bottom: true
+# - name: basic_pcbdraw_jpg_set_red_hasl_bottom
+#   comment: PCB 2D render in JPG format, using set-red-hasl style
+#   type: pcbdraw
+#   dir: export/PCB/2D_render/set_red_hasl
+#   options:
+#     style: set-red-hasl
+#     format: jpg
+#     bottom: true
 - name: basic_pdf_sch_print
   comment: Schematic in PDF format
   type: pdf_sch_print
   dir: export/Schematic
-- name: basic_position_ASCII
-  comment: Components position for Pick & Place
-  type: position
-  dir: export/Position
-  options:
-    format: ASCII
-    only_smd: false
-    separate_files_for_front_and_back: false
-- name: basic_position_CSV
-  comment: Components position for Pick & Place
-  type: position
-  dir: export/Position
-  options:
-    format: CSV
-    only_smd: false
-    separate_files_for_front_and_back: false
-# - name: basic_ps
-#   comment: Individual layers in PS format
-#   type: ps
-#   dir: Individual_Layers/PS
-#   layers:
-#   - layer: F.Cu
-#     suffix: F_Cu
-#     description: Front copper
-#   - layer: B.Cu
-#     suffix: B_Cu
-#     description: Bottom copper
-#   - layer: F.Paste
-#     suffix: F_Paste
-#     description: Front solder paste
-#   - layer: F.Silkscreen
-#     suffix: F_Silkscreen
-#     description: Front silkscreen (artwork)
-#   - layer: B.Mask
-#     suffix: B_Mask
-#     description: Bottom soldermask (negative)
-#   - layer: F.Mask
-#     suffix: F_Mask
-#     description: Front soldermask (negative)
-#   - layer: User.Drawings
-#     suffix: User_Drawings
-#     description: User drawings
-#   - layer: User.Comments
-#     suffix: User_Comments
-#     description: User comments
-#   - layer: Edge.Cuts
-#     suffix: Edge_Cuts
-#     description: Board shape
-#   - layer: F.Courtyard
-#     suffix: F_Courtyard
-#     description: Front courtyard area
-#   - layer: F.Fab
-#     suffix: F_Fab
-#     description: Front documentation
-# - name: basic_qr_lib_example
-#   comment: QR code symbol and footprint example
-#   type: qr_lib
-#   dir: QR_libs
+# - name: basic_position_ASCII
+#   comment: Components position for Pick & Place
+#   type: position
+#   dir: export/Position
 #   options:
-#     qrs:
-#     - correction_level: medium
-#       name: QR_data
-#       pcb_negative: true
-#     - correction_level: medium
-#       name: QR_kibot
-#       text: https://github.com/INTI-CMNB/KiBot/
-#     use_sch_dir: false
-# - name: basic_render_3d_top
-#   comment: 3D view from top
-#   type: render_3d
-#   dir: 3D
+#     format: ASCII
+#     only_smd: false
+#     separate_files_for_front_and_back: false
+# - name: basic_position_CSV
+#   comment: Components position for Pick & Place
+#   type: position
+#   dir: export/Position
 #   options:
-#     ray_tracing: true
-#     orthographic: true
-# - name: basic_render_3d_30deg
-#   comment: 3D view from 30 degrees
-#   type: render_3d
-#   dir: 3D
-#   output_id: 30deg
-#   options:
-#     ray_tracing: true
-#     rotate_x: 3
-#     rotate_z: -2
-# - name: basic_render_3d_bottom
-#   comment: 3D view from bottom
-#   type: render_3d
-#   dir: 3D
-#   options:
-#     ray_tracing: true
-#     orthographic: true
-#     view: bottom
-# - name: report_simple
-#   comment: Simple design report
-#   type: report
-#   output_id: _simple
-#   options:
-#     template: simple_ASCII
-# - name: report_full
-#   comment: Full design report
-#   type: report
-#   options:
-#     template: full_SVG
-# - name: basic_step
-#   comment: 3D model in STEP format
-#   type: step
-#   dir: 3D
-# - name: basic_svg
-#   comment: Individual layers in SVG format
-#   type: svg
-#   dir: Individual_Layers/SVG
-#   layers:
-#   - layer: F.Cu
-#     suffix: F_Cu
-#     description: Front copper
-#   - layer: B.Cu
-#     suffix: B_Cu
-#     description: Bottom copper
-#   - layer: F.Paste
-#     suffix: F_Paste
-#     description: Front solder paste
-#   - layer: F.Silkscreen
-#     suffix: F_Silkscreen
-#     description: Front silkscreen (artwork)
-#   - layer: B.Mask
-#     suffix: B_Mask
-#     description: Bottom soldermask (negative)
-#   - layer: F.Mask
-#     suffix: F_Mask
-#     description: Front soldermask (negative)
-#   - layer: User.Drawings
-#     suffix: User_Drawings
-#     description: User drawings
-#   - layer: User.Comments
-#     suffix: User_Comments
-#     description: User comments
-#   - layer: Edge.Cuts
-#     suffix: Edge_Cuts
-#     description: Board shape
-#   - layer: F.Courtyard
-#     suffix: F_Courtyard
-#     description: Front courtyard area
-#   - layer: F.Fab
-#     suffix: F_Fab
-#     description: Front documentation
+#     format: CSV
+#     only_smd: false
+#     separate_files_for_front_and_back: false
 - name: basic_svg_sch_print
   comment: Schematic in SVG format
   type: svg_sch_print
