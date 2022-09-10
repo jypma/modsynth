@@ -53,9 +53,11 @@ function handleDir {
 
 # handleDir OrnamentCrime/faceplate
 
-#handleDir adapter-soic16
+#handleDir TuringMachine/TuringBack
+#handleDir TuringMachine/TuringFront
 
-handleDir TuringMachine/TuringBack
-handleDir TuringMachine/TuringFront
+#handleDir adapter-soic16
+handleDir power-board
+
 
 wait

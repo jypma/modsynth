@@ -4,7 +4,7 @@ This repository contains a collection of eurorack module open hardware designs. 
 
 All schematics and boards are in Kicad format, and schematics, board and gerber exports are automated using KiBot and docker (see [export.sh](export.sh)).
 
-## Module overview
+## Modules
 
 The following modules are available:
 
@@ -15,6 +15,11 @@ The following modules are available:
 - [Roland System 100 ADSR](SCM-140-ADSR) as designed by Gerbrand Sterrenburg
 - Thomas Henry's [555 VCO](TH-555-VCO) as designed by Gerbrand Sterrenburg
 - Music Thing Modular's [Turing Machine](TuringMachine), a well-known open hardware design
+
+## Utilities
+
+- A 16-bin [DIP to SOIC](adapter-soic16) adapter board (to mount SOIC chips on DIP sockets)
+- A [Power distribution board](power-board) for eurorack modules
 
 ## Combined bill of material and shopping list
 
