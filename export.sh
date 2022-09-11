@@ -44,12 +44,12 @@ handleDir RayWilson-Dual-VCA/ioboard
 handleDir RayWilson-Dual-VCA/faceplate
 
 handleDir SCM-140-ADSR/faceplate_kicad
-handleDir SCM-140-ADSR/ioboard_kicad
-handleDir SCM-140-ADSR/mainboard_kicad
+handleDir SCM-140-ADSR/ioboard
+handleDir SCM-140-ADSR/mainboard
 
 handleDir TH-555-VCO/faceplate-kicad
-handleDir TH-555-VCO/ioboard-kicad
-handleDir TH-555-VCO/mainboard-kicad
+handleDir TH-555-VCO/ioboard
+handleDir TH-555-VCO/mainboard
 
 handleDir OrnamentCrime/faceplate
 

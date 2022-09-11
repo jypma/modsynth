@@ -1,11 +1,12 @@
-# Quad Attenuverter
+# SCM 140 ADSR
 
-Based on the design by `[Grumble]` from [synthforum.nl](https://www.synthforum.nl/threads/3811825/page-2), with the following modifications:
+Source: [SCM-140-ADSR](https://github.com/gerb-ster/SCM-140-ADSR/) on Github
 
-- Redrawn in Kicad as a main and io-board
-- Made potentiometers more center-sensitive through extra resistors
-- Added PCBs for main and io-board
-- Added a PCB front panel
+The following modifications were made by me:
+
+- Converted schematics and board to Kicad
+- Added component values to silk screen
+- Added a PCB faceplate in Kicad
 
 ## Main board
 
@@ -33,4 +34,4 @@ Based on the design by `[Grumble]` from [synthforum.nl](https://www.synthforum.n
 
 ## Face plate
 
-![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
+![faceplate](faceplate_kicad/export/PCB/2D_render/jlcpcb_green_enig/faceplate_kicad-top.jpg)
