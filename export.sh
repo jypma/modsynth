@@ -28,6 +28,9 @@ function handleDir {
            setsoft/kicad_auto_test:${VERSION} /bin/bash -c "cd workdir/$SUBDIR; kibot"
 
     rm ${WORKDIR}/${SUBDIR}/kibot_generated.kibot.yaml
+
+    # The generated SVG has a date timestamp in its title, let's get rid of that so we don't create a diff each time.
+    sed -E -i 's/svg date [0-9 /:]+/svg/g' ${SUBDIR}/export/Schematic/*.svg
 }
 
 # Can't do this in parallel, since there's contention on files in ~/.config/kicad
