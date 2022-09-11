@@ -25,4 +25,4 @@ The following modules are available:
 
 I'm maintaining a merged [bill of material](bom.org) for all modules, with component lists in stock at time of writing.
 
-The only exception is the Teensy 4.0 / 4.1 / 4.2 required for _Ornament & Crime_. Those are impossible to find at the moment (I happen to have some, hence it's on the list).
+The only exception is the Teensy 3.0 / 3.1 / 3.2 required for _Ornament & Crime_. Those are impossible to find at the moment (I happen to have some, hence it's on the list).
