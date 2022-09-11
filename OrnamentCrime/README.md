@@ -8,13 +8,17 @@ Changes by me:
 
 ## Faceplate
 
-- A USB A header was added to allow convenient use of MIDI firmware, and upgrading. Vcc is connected through a Shottky diode, to (hopefully) prevent double-power issues.
+- A USB A header was added to allow convenient use of MIDI firmware, and upgrading. Vcc is connected through a Shottky diode, to (hopefully) prevent double-power issues. So far, powering and uploading firmware works fine through the diode.q
 
 ### Schematic
 ![schematic](faceplate/export/Schematic/faceplate-schematic.svg)
 
 ### PCB
+Front:
 ![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
+
+Back:
+![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-bottom.jpg)
 
 ## To do
 
