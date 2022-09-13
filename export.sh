@@ -43,6 +43,7 @@ handleDir DualMixer/ioboard
 handleDir DualMixer/mainboard
 handleDir DualMixer/faceplate
 
+handleDir RayWilson-Dual-VCA/mainboard
 handleDir RayWilson-Dual-VCA/ioboard
 handleDir RayWilson-Dual-VCA/faceplate
 

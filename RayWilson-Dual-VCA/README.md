@@ -7,12 +7,21 @@ The following modifications were made by me:
 - Converted schematics and board to Kicad
 - Added component values to silk screen
 - Added a PCB faceplate in Kicad
+- Split up into separate main and io board
 
-## To do
+## Main board
 
-- The original design combines both main and ioboard into a single schematic and perforated circuit board. JLCPCB adds an extra fee for this, and it would be cheaper there to submit it as two separate boards. Hence, the design should be split up.
+### Schematic
 
-## Main and IO Board
+![schematic](mainboard/export/Schematic/mainboard-schematic.svg)
+
+### PCB
+
+![top](mainboard/export/PCB/2D_render/jlcpcb_green_enig/mainboard-top.jpg)
+
+![bottom](mainboard/export/PCB/2D_render/jlcpcb_green_enig/mainboard-bottom.jpg)
+
+## IO board
 
 ### Schematic
 
