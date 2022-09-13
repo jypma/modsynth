@@ -1,4 +1,4 @@
-20415087671333516
+20416749770677545
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -57672,6 +57672,13 @@ LED diameter 3.0mm 2 pins
 0
 2
 2
+Library
+MountingHole_3.2mm_M3_NoCourt
+Mounting Hole 3.2mm, no annular, M3
+mounting hole 3.2mm no annular m3
+0
+0
+0
 Library
 MountingHole_6.4mm_M6_MiniPad_TopBottom
 Mounting Hole 6.4mm, M6
