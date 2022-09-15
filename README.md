@@ -11,9 +11,10 @@ The following modules are available:
 - A [Dual 4-channel mixer](DualMixer) module designed by me (based on basic opamp mixer essentials)
 - [Ornament & Crime](OrnamentCrime), a well-known open hardware design
 - A [Quad Attenuverter](QuadAttenuverter) with offset, based on an internet design
-- Ray Wilson's  [Dual-VCA](RayWilson-Dual-VCA) as designed by Gerbrand Sterrenburg
-- [Roland System 100 ADSR](SCM-140-ADSR) as designed by Gerbrand Sterrenburg
-- Thomas Henry's [555 VCO](TH-555-VCO) as designed by Gerbrand Sterrenburg
+- Ray Wilson's  [Dual-VCA](RayWilson-Dual-VCA) as originally designed by Gerbrand Sterrenburg
+- [Roland System 100 ADSR](SCM-140-ADSR) as originally designed by Gerbrand Sterrenburg
+- Thomas Henry's [555 VCO](TH-555-VCO) as originally designed by Gerbrand Sterrenburg
+- The YUSynth [Steiner VCF](Steiner-VCF) as originally designed by Gerbrand Sterrenburg
 - Music Thing Modular's [Turing Machine](TuringMachine), a well-known open hardware design
 
 ## Utilities
