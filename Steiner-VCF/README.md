@@ -36,4 +36,4 @@ The following modifications were made by me:
 
 ## Face plate
 
-![faceplate](faceplate_kicad/export/PCB/2D_render/jlcpcb_green_enig/faceplate_kicad-top.jpg)
+![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
