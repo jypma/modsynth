@@ -251,6 +251,9 @@ outputs:
   - layer: F.Silkscreen
     suffix: F_Silkscreen
     description: Front silkscreen (artwork)
+  - layer: B.Silkscreen
+    suffix: B_Silkscreen
+    description: Bottom silkscreen (artwork)
   - layer: B.Mask
     suffix: B_Mask
     description: Bottom soldermask (negative)
