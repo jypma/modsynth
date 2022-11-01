@@ -86,3 +86,7 @@ Need to check if the incoming ADC is precise enough.
 - Hints [here](https://note.com/solder_state/n/n17e028497eba) (incorporates pitch bend into the CV)
 - Original [midi2cv](https://github.com/elkayem/midi2cv)
 - Provide an internal connector to chain two modules, having two MIDI channels.
+
+# Simulation
+
+Output stage [here](https://falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmATNA7AhAOBjVIAWfbEfc8ycgUwFowwAoIyAThADZUiVlOQGTjj4CIMAXTbQ2jMO2Q4wONpBxERMSKmTimAJS44RyYkZGoMqKDdbhr1R9AQHzKYW9aPb1Bg5swLoYIYNbICNZEaCgRNhB21v6BTADuXDwx1iFhsZBMAE5cCRlCFhnUofB5aaWigh6o5anpvGjU3LyNvNUtIF1F1P15hR19GRFl3SBEGPDNRGwC-RNj3UwA5tOLKGYLAsj8Aa574ES8J9vedkjeyQDy9SaHOHB1jgVbSxknYGc2pnNCid+idTFNCHMAPbgZBFWw4ThLJziFCo6iw5BMIA)
