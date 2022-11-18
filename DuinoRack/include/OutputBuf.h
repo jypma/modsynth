@@ -33,8 +33,8 @@ namespace OutputBuf {
       return;
     }
 
-    // PC0, pin 14
-    PORTC |= (1 << 0);
+    // PC0, pin 14 (for measuring timing)
+    // PORTC |= (1 << 0);
 
     // Output the current frame
     MCP.fastWriteAGain(current[currentPos].cvA);
@@ -66,6 +66,6 @@ namespace OutputBuf {
     }
 
     // PC0, pin 14
-    PORTC &= ~(1 << 0);
+    //PORTC &= ~(1 << 0);
   }
 }

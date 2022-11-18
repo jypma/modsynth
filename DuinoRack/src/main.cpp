@@ -2,8 +2,17 @@
 #include <Wire.h>
 #include "OutputBuf.h"
 #include <lcdgfx.h>
+#include <Versatile_RotaryEncoder.h>
+#include <FuncGen.h>
+#include <Calibrate.h>
 
 // display: 300 bytes RAM
+
+Module currentMod;
+uint8_t currentModIdx = 0;
+
+auto encoder1 = Versatile_RotaryEncoder(2,3,4); // PD2, PD3, PD4
+auto encoder2 = Versatile_RotaryEncoder(5,6,7); // PD5, PD6, PD7
 
 OutputBuf::Buffer a, b;
 OutputFrame *current = b;
@@ -34,6 +43,17 @@ ISR(TIMER2_COMPA_vect){
   OutputBuf::advance();
 }
 
+void setModuleIdx(uint8_t idx) {
+  constexpr uint8_t MODULE_COUNT = 2;
+  currentModIdx = idx % MODULE_COUNT;
+  Serial.println("R!");
+  Serial.println(currentModIdx);
+  switch(currentModIdx) {
+    case 0: currentMod = FuncGen::module; break;
+    default: currentMod = Calibrate::module;
+  }
+}
+
 void drawText(uint8_t x, uint8_t y, const char *s) {
   if (!*s) return;
   display.setTextCursor(x, y);
@@ -44,19 +64,48 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
   }
 }
 
+void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
+  uint8_t ch = pgm_read_byte(s);
+  if (!ch) return;
+  display.setTextCursor(x, y);
+  while (ch) {
+    fillBuffer();
+    display.printChar(ch);
+    s++;
+    ch = pgm_read_byte(s);
+  }
+}
+
+void showModule() {
+  drawTextPgm(0, 8, currentMod.name);
+}
+
+void handleEncoder1Rotate(int8_t rotation) {
+  setModuleIdx(currentModIdx + rotation);
+  showModule();
+}
+
 void setup() {
-  //  SPI.usingInterrupt(255); // TODO check if really needed, it seems to just say "noInterrupts()"?
   pinMode(15, OUTPUT);
   pinMode(16, OUTPUT);
-  pinMode(14, OUTPUT);
+  //pinMode(14, OUTPUT);
+
+  // We need input pull-ups for our encoder inputs
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
 
   Serial.begin(115200);
+
+  setModuleIdx(0);
+  encoder1.setHandleRotate(handleEncoder1Rotate);
 
   display.begin();
   Serial.println("Writing");
   display.fill(0x00);
   display.setFixedFont(ssd1306xled_font6x8);
-  display.printFixed (0,  8, "Hello, world", STYLE_NORMAL);
+  showModule();
   Serial.println("Done");
 
   // fill table with sinus values for fast lookup
@@ -88,9 +137,12 @@ void setup() {
 
 void loop() {
   fillBuffer();
+  if (encoder1.ReadEncoder()) {}
+  fillBuffer();
+  if (encoder2.ReadEncoder()) {}
   uint32_t now = micros();
 
-  if (now % 1000 == 0) {
+  if (now % 10000 == 0) {
     Serial.println(OutputBuf::overruns);
   }
 
