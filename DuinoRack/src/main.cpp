@@ -1,15 +1,17 @@
 #include "MCP_DAC.h"
 #include <Wire.h>
-#include "OutputBuf.h"
 #include <lcdgfx.h>
 #include <Versatile_RotaryEncoder.h>
-#include <FuncGen.h>
-#include <Calibrate.h>
+#include "OutputBuf.h"
+#include "FuncGen.h"
+#include "Calibrate.h"
+#include "IO.h"
 
 // display: 300 bytes RAM
 
-Module currentMod;
+Module currentMod = FuncGen::module;
 uint8_t currentModIdx = 0;
+uint8_t currentControlIdx = 0;
 
 auto encoder1 = Versatile_RotaryEncoder(2,3,4); // PD2, PD3, PD4
 auto encoder2 = Versatile_RotaryEncoder(5,6,7); // PD5, PD6, PD7
@@ -28,7 +30,11 @@ uint16_t sine[361];
 uint16_t temp_sinePos = 0;
 
 void fillBuffer() {
-  if (OutputBuf::needNextBuffer()) {
+  if (encoder1.ReadEncoder()) {
+    Serial.println("E1");
+  } else if (encoder2.ReadEncoder()) {
+    Serial.println("E2");
+  } else if (OutputBuf::needNextBuffer()) {
     current = (current == a) ? b : a;
     for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
       temp_sinePos = (temp_sinePos + 1) % 360;
@@ -37,6 +43,8 @@ void fillBuffer() {
     }
     OutputBuf::setNextBuffer(current);
   }
+
+  IO::readIfNeeded();
 }
 
 ISR(TIMER2_COMPA_vect){
@@ -46,7 +54,6 @@ ISR(TIMER2_COMPA_vect){
 void setModuleIdx(uint8_t idx) {
   constexpr uint8_t MODULE_COUNT = 2;
   currentModIdx = idx % MODULE_COUNT;
-  Serial.println("R!");
   Serial.println(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
@@ -77,18 +84,28 @@ void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
 }
 
 void showModule() {
-  drawTextPgm(0, 8, currentMod.name);
+  if (currentControlIdx == 0) {
+    drawText(0, 8, ">");
+  } else {
+    drawText(0, 8, " ");
+  }
+  drawTextPgm(8, 8, currentMod.name);
 }
 
 void handleEncoder1Rotate(int8_t rotation) {
-  setModuleIdx(currentModIdx + rotation);
-  showModule();
+  Serial.println("R1!");
+  if (currentControlIdx == 0) {
+    setModuleIdx(currentModIdx + rotation);
+    showModule();
+  }
+}
+
+void handleEncoder2Rotate(int8_t rotation) {
+  currentControlIdx = (currentControlIdx + 1) % (currentMod.controlCount + 1);
 }
 
 void setup() {
-  pinMode(15, OUTPUT);
-  pinMode(16, OUTPUT);
-  //pinMode(14, OUTPUT);
+  IO::setup();
 
   // We need input pull-ups for our encoder inputs
   pinMode(2, INPUT_PULLUP);
@@ -100,6 +117,7 @@ void setup() {
 
   setModuleIdx(0);
   encoder1.setHandleRotate(handleEncoder1Rotate);
+  encoder2.setHandleRotate(handleEncoder2Rotate);
 
   display.begin();
   Serial.println("Writing");
@@ -137,22 +155,14 @@ void setup() {
 
 void loop() {
   fillBuffer();
-  if (encoder1.ReadEncoder()) {}
-  fillBuffer();
-  if (encoder2.ReadEncoder()) {}
   uint32_t now = micros();
 
-  if (now % 10000 == 0) {
+  if (now % 100000 == 0) {
     Serial.println(OutputBuf::overruns);
   }
 
-  if (now - lastTime > 500000)
+  if (now - lastTime > 100000)
   {
-    count++;
-    lastTime = now;
-    fillBuffer();
-    String txt = String(count);
-    drawText(0, 16, txt.c_str());
-    fillBuffer();
+    currentMod.draw();
   }
 }
