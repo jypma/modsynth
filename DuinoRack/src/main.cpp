@@ -132,7 +132,7 @@ void setup() {
   showModule();
   Serial.println("Done");
 
-  for (int16_t i = -4000; i < 4000; i += 100) {
+  for (int16_t i = -4000; i < 8000; i += 100) {
     Serial.print(i);
     Serial.print("  ->  ");
     Serial.println(IO::calcCV1Out(i));

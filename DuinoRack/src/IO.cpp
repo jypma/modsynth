@@ -11,10 +11,10 @@ int16_t cvIn1_4V = 276;
 int16_t cvIn2_0V = 700;
 int16_t cvIn2_4V = 300;
 
-int16_t cvOut1_0V = 1000;
-int16_t cvOut1_8V = 4000;
-int16_t cvOut2_0V = 1000;
-int16_t cvOut2_8V = 4000;
+int16_t cvOut1_0V = 1369;
+int16_t cvOut1_8V = 3868;
+int16_t cvOut2_0V = 1369;
+int16_t cvOut2_8V = 3868;
 
 int16_t getCV1In() {
   return (int32_t(cvIn1_0V) - cvIn1) * 4000 / (cvIn1_0V - cvIn1_4V);
@@ -25,11 +25,11 @@ int16_t getCV2In() {
 }
 
 uint16_t calcCV1Out(int16_t mV) {
-  return (int32_t(mV) * 4096 / 8 / (cvOut1_8V - cvOut1_0V)) + cvOut1_0V;
+  return (int32_t(mV) * (cvOut1_8V - cvOut1_0V) / 1000 / 8) + cvOut1_0V;
 }
 
 uint16_t calcCV2Out(int16_t mV) {
-  return (int32_t(mV) * 4096 / 8 / (cvOut2_8V - cvOut2_0V)) + cvOut2_0V;
+  return (int32_t(mV) * (cvOut2_8V - cvOut2_0V) / 1000 / 8) + cvOut2_0V;
 }
 
 void setup() {
