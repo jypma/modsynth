@@ -26,7 +26,7 @@ uint16_t count;
 uint32_t lastTime = 0;
 
 // LOOKUP TABLE SINE
-uint16_t sine[361];
+int16_t sine[361];
 uint16_t temp_sinePos = 0;
 
 void fillBuffer() {
@@ -38,7 +38,7 @@ void fillBuffer() {
     current = (current == a) ? b : a;
     for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
       temp_sinePos = (temp_sinePos + 1) % 360;
-      current[i].cvA = sine[temp_sinePos];
+      current[i].cvA = IO::calcCV1Out(sine[temp_sinePos]);
       current[i].cvB = temp_sinePos * 4; // more or less sawtooth
     }
     OutputBuf::setNextBuffer(current);
@@ -71,6 +71,11 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
   }
 }
 
+void drawDecimal(uint8_t x, uint8_t y, int16_t value) {
+  String s = String(value);
+  drawText(x, y, s.c_str());
+}
+
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
   uint8_t ch = pgm_read_byte(s);
   if (!ch) return;
@@ -93,18 +98,21 @@ void showModule() {
 }
 
 void handleEncoder1Rotate(int8_t rotation) {
-  Serial.println("R1!");
+  // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   if (currentControlIdx == 0) {
     setModuleIdx(currentModIdx + rotation);
-    showModule();
+  } else {
+    currentMod.adjust(rotation);
   }
 }
 
 void handleEncoder2Rotate(int8_t rotation) {
-  currentControlIdx = (currentControlIdx + 1) % (currentMod.controlCount + 1);
+  // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
+  currentControlIdx = (currentControlIdx + (currentMod.controlCount + 1) + rotation) % (currentMod.controlCount + 1);
 }
 
 void setup() {
+  Serial.begin(115200);
   IO::setup();
 
   // We need input pull-ups for our encoder inputs
@@ -112,8 +120,6 @@ void setup() {
   pinMode(3, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
-
-  Serial.begin(115200);
 
   setModuleIdx(0);
   encoder1.setHandleRotate(handleEncoder1Rotate);
@@ -126,10 +132,16 @@ void setup() {
   showModule();
   Serial.println("Done");
 
+  for (int16_t i = -4000; i < 4000; i += 100) {
+    Serial.print(i);
+    Serial.print("  ->  ");
+    Serial.println(IO::calcCV1Out(i));
+  }
+
   // fill table with sinus values for fast lookup
   for (int i = 0; i < 361; i++)
   {
-    sine[i] = 2047 + round(2047 * sin(i * PI / 180));
+    sine[i] = round(4000 * sin(i * PI / 180));
   }
 
   // fill initial buffer
@@ -163,6 +175,7 @@ void loop() {
 
   if (now - lastTime > 100000)
   {
+    showModule();
     currentMod.draw();
   }
 }

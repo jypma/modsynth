@@ -3,3 +3,5 @@
 /**/export/*
 /DuinoRack/.pio/
 /DuinoRack/.projectile
+/DuinoRack/.cache/
+/DuinoRack/compile_commands.json

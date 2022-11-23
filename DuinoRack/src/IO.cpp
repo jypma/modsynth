@@ -6,19 +6,30 @@ uint16_t cvIn1 = 0;
 uint16_t cvIn2 = 0;
 bool readingCv1 = true;
 
-int16_t cvIn1_0V = 700;
-int16_t cvIn1_4V = 300;
+int16_t cvIn1_0V = 545;
+int16_t cvIn1_4V = 276;
 int16_t cvIn2_0V = 700;
 int16_t cvIn2_4V = 300;
 
-int16_t getCV1() {                                // 2.7V (-8V)      0V (0V)
-  Serial.println(cvIn1);                          // 0               543
-  Serial.println(int32_t(cvIn1_0V - cvIn1));      // 700             157
-  return ((int32_t)(cvIn1_0V - cvIn1)) * 4000 / (cvIn1_0V - cvIn1_4V);
+int16_t cvOut1_0V = 1000;
+int16_t cvOut1_8V = 4000;
+int16_t cvOut2_0V = 1000;
+int16_t cvOut2_8V = 4000;
+
+int16_t getCV1In() {
+  return (int32_t(cvIn1_0V) - cvIn1) * 4000 / (cvIn1_0V - cvIn1_4V);
 }
 
-int16_t getCV2() {
-  return ((int32_t)(cvIn2_0V - cvIn2)) * 4000 / (cvIn2_0V - cvIn2_4V);
+int16_t getCV2In() {
+  return (int32_t(cvIn2_0V) - cvIn2) * 4000 / (cvIn2_0V - cvIn2_4V);
+}
+
+uint16_t calcCV1Out(int16_t mV) {
+  return (int32_t(mV) * 4096 / 8 / (cvOut1_8V - cvOut1_0V)) + cvOut1_0V;
+}
+
+uint16_t calcCV2Out(int16_t mV) {
+  return (int32_t(mV) * 4096 / 8 / (cvOut2_8V - cvOut2_0V)) + cvOut2_0V;
 }
 
 void setup() {
