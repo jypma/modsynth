@@ -5,7 +5,6 @@
 namespace FuncGen {
 
 const char title[] PROGMEM = "FuncGen   ";
-const char clear[] PROGMEM = "            ";
 
 void draw() {
   drawTextPgm(0, 16, clear);
@@ -13,10 +12,15 @@ void draw() {
   drawTextPgm(0, 32, clear);
 }
 
+void adjust(int8_t d) {
+
+}
+
 constexpr Module module = {
   title,
   0,
-  &draw
+  &draw,
+  &adjust
 };
 
 } // FuncGen

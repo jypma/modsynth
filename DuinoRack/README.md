@@ -122,7 +122,8 @@ Original [midi2cv](https://github.com/elkayem/midi2cv)
 
 # Simulation
 
-## Output stage (TL074, -12..+12V) [here](https://falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmATNA7AhAOBjVIAWfbEfc8ycgUwFowwAoIyAThADZUiVlOQGTjj4CIMAXTbQ2jMO2Q4wONpBxERMSKmTimAJS44RyYkZGoMqKDdbhr1R9AQHzKYW9aPb1Bg5swLoYIYNbICNZEaCgRNhB21v6BTADuXDwx1iFhsZBMAE5cCRlCFhnUofB5aaWigh6o5anpvGjU3LyNvNUtIF1F1P15hR19GRFl3SBEGPDNRGwC-RNj3UwA5tOLKGYLAsj8Aa574ES8J9vedkjeyQDy9SaHOHB1jgVbSxknYGc2pnNCid+idTFNCHMAPbgZBFWw4ThLJziFCo6iw5BMIA)
+## Output stage (TL074, -12..+12V)
+[here](https://falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmATNA7AhAOBjVIAWfbEfc8ycgUwFowwAoIyAThADZUiVlOQGTjj4CIMAXTbQ2jMO2Q4wONpBxERMSKmTimAJS44RyYkZGoMqKDdbhr1R9AQHzKYW9aPb1Bg5swLoYIYNbICNZEaCgRNhB21v6BTADuXDwx1iFhsZBMAE5cCRlCFhnUofB5aaWigh6o5anpvGjU3LyNvNUtIF1F1P15hR19GRFl3SBEGPDNRGwC-RNj3UwA5tOLKGYLAsj8Aa574ES8J9vedkjeyQDy9SaHOHB1jgVbSxknYGc2pnNCid+idTFNCHMAPbgZBFWw4ThLJziFCo6iw5BMIA)
 Try with 1% resistor and digital calibration, since it's far from the rails.
 
 
