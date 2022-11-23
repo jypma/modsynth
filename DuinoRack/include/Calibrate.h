@@ -80,16 +80,23 @@ void draw() {
   }
 }
 
-uint16_t add(int16_t in, int8_t d) {
+uint16_t addIn(int16_t in, int8_t d) {
   return constrain(in + d, 0, 1023);
+}
+uint16_t addOut(int16_t in, int8_t d) {
+  return constrain(in + d, 0, 4095);
 }
 
 void adjust(int8_t d) {
   switch (currentControlIdx) {
-    case 1: IO::cvIn1_0V = add(IO::cvIn1_0V, d); break;
-    case 2: IO::cvIn1_4V = add(IO::cvIn1_4V, d); break;
-    case 3: IO::cvIn2_0V = add(IO::cvIn2_0V, d); break;
-    case 4: IO::cvIn2_4V = add(IO::cvIn2_4V, d); break;
+    case 1: IO::cvIn1_0V = addIn(IO::cvIn1_0V, d); break;
+    case 2: IO::cvIn1_4V = addIn(IO::cvIn1_4V, d); break;
+    case 3: IO::cvIn2_0V = addIn(IO::cvIn2_0V, d); break;
+    case 4: IO::cvIn2_4V = addIn(IO::cvIn2_4V, d); break;
+    case 5: IO::cvOut1_0V = addOut(IO::cvOut1_0V, d); break;
+    case 6: IO::cvOut1_8V = addOut(IO::cvOut1_8V, d); break;
+    case 7: IO::cvOut2_0V = addOut(IO::cvOut2_0V, d); break;
+    case 8: IO::cvOut2_8V = addOut(IO::cvOut2_8V, d); break;
   }
 }
 
