@@ -10,18 +10,24 @@ namespace FuncGen {
 
 // LOOKUP TABLE SINE
 constexpr uint16_t TABLE_SIZE = 360;
-constexpr uint32_t sinePosScale = 65536;
+constexpr uint8_t sinePosScaleBits = 10;
+constexpr uint32_t sinePosScale = 1024;
 constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
+constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
+
 int16_t sine[TABLE_SIZE+1];
 uint32_t sinePos = 0;
 bool tableReady = false;
 uint16_t recalc = 0;
 uint32_t increment;
+uint8_t noteIdx = 0;
 
 const char title[] PROGMEM = "FuncGen   ";
+const char note[] PROGMEM = "Note: ";
 
 void draw() {
-  drawTextPgm(0, 16, clear);
+  drawTextPgm(0, 16, note);
+  drawDecimal(40, 16, noteIdx);
   drawTextPgm(0, 24, clear);
   drawTextPgm(0, 32, clear);
 }
@@ -41,18 +47,14 @@ void fillBuffer(OutputFrame *buf) {
   if (recalc == 0) {
     // TODO if this works, refactor getCV1In to return Q16n16 instead for a bit of extra speed?
     uint16_t in = IO::getCV1In();
-    //Q16n16 note = float_to_Q16n16(float(in) / float(1000.0));
-    Serial.println("---");
-    Serial.println(in);
     Q16n16 note = (((uint32_t(in) / 1000) << 16) | ((uint32_t(in % 1000) << 16) / 1000)) * 12;
-    Serial.println(note >> 16);
+    if (note > MAX_NOTE) {
+      note = MAX_NOTE;
+    }
+    noteIdx = (note >> 16);
     Q16n16 freq = Q16n16_mtof(note);
-    Serial.println(freq);
-    increment = (((((uint32_t(freq) >> 8) * TABLE_SIZE) >> 8) * sinePosScale) ) / 8000;
-    Serial.println(increment);
-    //OLD auto freq = pow(10, in / 1000.0);
-    //OLD uint32_t increment = uint32_t(freq * TABLE_SIZE) * sinePosScale / 8000; // divide by 8kHz, but x1024
-    recalc = 100;
+    increment = (((((uint32_t(freq) >> 8) * TABLE_SIZE) >> 8) << sinePosScaleBits) ) / 8000;
+    recalc = 10;
   } else {
     recalc--;
   }
@@ -64,7 +66,7 @@ void fillBuffer(OutputFrame *buf) {
       sinePos -= sinePosMod;
     }
     PORTC &= ~(1 << 2);
-    buf->cvA = IO::calcCV1Out(sine[sinePos >> 16]);
+    buf->cvA = IO::calcCV1Out(sine[sinePos >> sinePosScaleBits]);
     PORTC |= (1 << 2);
     buf->cvB = buf->cvA;
     PORTC &= ~(1 << 2);

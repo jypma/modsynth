@@ -162,6 +162,7 @@ void loop() {
   if (now - lastTime > 100000)
   {
     showModule();
-    //currentMod.draw();
+    fillBuffer();
+    currentMod.draw();
   }
 }
