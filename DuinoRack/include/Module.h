@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "OutputBuf.h"
 
 const char clear[] PROGMEM = "                ";
 
@@ -12,9 +13,11 @@ struct Module {
   Module() = delete;
   using Callback = void (*)();
   using AdjustCallback = void (*)(int8_t);
+  using BufferCallback = void (*)(OutputFrame *);
 
   const char *name;
   uint8_t controlCount;
   Callback draw;
   AdjustCallback adjust;
+  BufferCallback fillBuffer;
 };

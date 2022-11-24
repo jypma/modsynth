@@ -89,6 +89,7 @@ uint16_t addOut(int16_t in, int8_t d) {
 
 void adjust(int8_t d) {
   switch (currentControlIdx) {
+    // FIXME contrain with the other calibration value, so we don't set them equal
     case 1: IO::cvIn1_0V = addIn(IO::cvIn1_0V, d); break;
     case 2: IO::cvIn1_4V = addIn(IO::cvIn1_4V, d); break;
     case 3: IO::cvIn2_0V = addIn(IO::cvIn2_0V, d); break;
@@ -100,10 +101,19 @@ void adjust(int8_t d) {
   }
 }
 
+void fillBuffer(OutputFrame *buf) {
+  for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
+    buf->cvA = IO::calcCV1Out(0);
+    buf->cvB = IO::calcCV2Out(0);
+    buf++;
+  }
+}
+
 constexpr Module module = {
   title,
   8, // controlCount
   &draw,
-  &adjust
+  &adjust,
+  &fillBuffer
 };
 }

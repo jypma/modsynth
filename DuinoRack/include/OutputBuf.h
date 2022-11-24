@@ -7,7 +7,6 @@ extern MCP4821 MCP;
 
 struct OutputFrame {
   uint16_t cvA, cvB;
-  uint8_t gates;
 };
 
 #define OUTBUFSIZE 16
@@ -33,13 +32,14 @@ namespace OutputBuf {
       return;
     }
 
-    // PC0, pin 14 (for measuring timing)
-    // PORTC |= (1 << 0);
+    // PC2, pin 16 (for measuring timing)
+    //PORTC |= (1 << 2);
 
     // Output the current frame
     MCP.fastWriteAGain(current[currentPos].cvA);
     MCP.fastWriteBGain(current[currentPos].cvB);
 
+    /* TODO direct methods in IO for setting gates, no point buffering them
     // PC1, pin 15
     if ((current[currentPos].gates & 1) != 0) {
       PORTC |= (1 << 1);
@@ -53,6 +53,7 @@ namespace OutputBuf {
     } else {
       PORTC &= ~(1 << 2);
     }
+    */
 
     // Advance to the next frame or buffer
     if (currentPos < OUTBUFSIZE - 1) {
@@ -65,7 +66,7 @@ namespace OutputBuf {
       current = NULL;
     }
 
-    // PC0, pin 14
-    //PORTC &= ~(1 << 0);
+    // PC2, pin 14
+    //PORTC &= ~(1 << 2);
   }
 }
