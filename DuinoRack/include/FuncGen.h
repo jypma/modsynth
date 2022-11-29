@@ -21,24 +21,56 @@ bool tableReady = false;
 uint16_t recalc = 0;
 uint32_t increment;
 uint8_t noteIdx = 0;
+enum Wave: uint8_t { Sine = 0, Triangle = 1 };
+Wave wave = Sine;
 
 const char title[] PROGMEM = "FuncGen   ";
 const char note[] PROGMEM = "Note: ";
+const char wave_t[] PROGMEM = "  Wave: ";
+const char sine_t[] PROGMEM = "Sine    ";
+const char triangle_t[] PROGMEM = "Triangle";
 
 void draw() {
   drawTextPgm(0, 16, note);
   drawDecimal(40, 16, noteIdx);
-  drawTextPgm(0, 24, clear);
+  drawTextPgm(0, 24, wave_t);
+  switch(currentControlIdx) {
+  case 1: drawText(0, 24, ">"); break;
+  }
+  switch (wave) {
+  case Sine: drawTextPgm(52, 24, sine_t); break;
+  case Triangle: drawTextPgm(52, 24, triangle_t); break;
+  }
+
   drawTextPgm(0, 32, clear);
 }
 
+  inline uint16_t getTriangle(int32_t i) {
+    if (i < 90) {
+      return (i * 4000 / 90);
+    } else if (i < 270) {
+      return (int32_t(90) - (i - 90)) * 4000 / 90;
+    } else {
+      return ((i - 270) - 90) * 4000 / 90;
+    }
+  }
+
 void adjust(int8_t d) {
+  switch(currentControlIdx) {
+  case 1:
+    wave = Wave((wave + 1) % 2);
+    tableReady = false;
+    break;
+  }
+
   if (tableReady) return;
 
-  // fill table with sinus values for fast lookup
   for (uint16_t i = 0; i < TABLE_SIZE + 1; i++)
   {
-    sine[i] = round(4000 * sin(i * PI / 180));
+    switch(wave) {
+    case Sine: sine[i] = round(4000 * sin(i * PI / 180)); break;
+    case Triangle: sine[i] = getTriangle(i); break;
+    }
   }
   tableReady = true;
 }
@@ -76,7 +108,7 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  0,
+  1,
   &draw,
   &adjust,
   &fillBuffer
