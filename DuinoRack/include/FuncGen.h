@@ -44,6 +44,8 @@ void adjust(int8_t d) {
 }
 
 void fillBuffer(OutputFrame *buf) {
+  PORTC |= (1 << 2);
+
   if (recalc == 0) {
     // TODO if this works, refactor getCV1In to return Q16n16 instead for a bit of extra speed?
     uint16_t in = IO::getCV1In();
@@ -54,27 +56,22 @@ void fillBuffer(OutputFrame *buf) {
     noteIdx = (note >> 16);
     Q16n16 freq = Q16n16_mtof(note);
     increment = (((((uint32_t(freq) >> 8) * TABLE_SIZE) >> 8) << sinePosScaleBits) ) / 8000;
-    recalc = 10;
+    recalc = 1;
   } else {
     recalc--;
   }
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    PORTC |= (1 << 2);
     sinePos = (sinePos + increment);
     if (sinePos > sinePosMod) {
       sinePos -= sinePosMod;
     }
-    PORTC &= ~(1 << 2);
     buf->cvA = IO::calcCV1Out(sine[sinePos >> sinePosScaleBits]);
-    PORTC |= (1 << 2);
     buf->cvB = buf->cvA;
-    PORTC &= ~(1 << 2);
     buf++;
-    PORTC |= (1 << 2);
-    PORTC &= ~(1 << 2);
   }
 
+  PORTC &= ~(1 << 2);
 }
 
 constexpr Module module = {

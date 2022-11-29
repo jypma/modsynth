@@ -24,6 +24,7 @@ DisplaySSD1306_128x64_I2C display(-1);
 MCP4821 MCP;
 uint16_t count;
 uint32_t lastTime = 0;
+uint8_t oldOverruns = 0;
 
 void fillBuffer() {
   if (OutputBuf::needNextBuffer()) {
@@ -155,8 +156,10 @@ void loop() {
   uint32_t now = micros();
   fillBuffer();
 
-  if (now % 100000 == 0) {
-    Serial.println(OutputBuf::overruns);
+  if (OutputBuf::overruns != oldOverruns) {
+    oldOverruns = OutputBuf::overruns;
+    Serial.print("Xrun! ");
+    Serial.println(oldOverruns);
   }
 
   if (now - lastTime > 100000)
