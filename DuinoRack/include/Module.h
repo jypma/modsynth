@@ -2,6 +2,8 @@
 #include <Arduino.h>
 #include "OutputBuf.h"
 
+constexpr uint16_t SAMPLERATE = 8000;
+
 const char clear[] PROGMEM = "                ";
 
 extern uint8_t currentControlIdx;

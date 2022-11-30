@@ -5,9 +5,12 @@
 #include "OutputBuf.h"
 #include "FuncGen.h"
 #include "Calibrate.h"
+#include "ADSR.h"
 #include "IO.h"
 
 // display: 300 bytes RAM
+
+#define TIMING_DEBUG
 
 Module currentMod = FuncGen::module;
 uint8_t currentModIdx = 0;
@@ -29,7 +32,13 @@ uint8_t oldOverruns = 0;
 void fillBuffer() {
   if (OutputBuf::needNextBuffer()) {
     current = (current == a) ? b : a;
+#ifdef TIMING_DEBUG
+    IO::setGate1Out(true);
+#endif
     currentMod.fillBuffer(current);
+#ifdef TIMING_DEBUG
+    IO::setGate1Out(false);
+#endif
     OutputBuf::setNextBuffer(current);
   } else if (encoder1.ReadEncoder()) {
     Serial.println("E1");
@@ -45,11 +54,12 @@ ISR(TIMER2_COMPA_vect){
 }
 
 void setModuleIdx(uint8_t idx) {
-  constexpr uint8_t MODULE_COUNT = 2;
+  constexpr uint8_t MODULE_COUNT = 3;
   currentModIdx = idx % MODULE_COUNT;
   Serial.println(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
+    case 1: currentMod = ADSR::module; break;
     default: currentMod = Calibrate::module;
   }
   // Startup trigger

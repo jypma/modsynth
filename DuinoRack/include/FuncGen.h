@@ -26,16 +26,17 @@ Wave wave = Sine;
 
 const char title[] PROGMEM = "FuncGen   ";
 const char note[] PROGMEM = "Note: ";
-const char wave_t[] PROGMEM = "  Wave: ";
+const char wave_t[] PROGMEM = "Wave: ";
 const char sine_t[] PROGMEM = "Sine    ";
 const char triangle_t[] PROGMEM = "Triangle";
 
 void draw() {
   drawTextPgm(0, 16, note);
   drawDecimal(40, 16, noteIdx);
-  drawTextPgm(0, 24, wave_t);
+  drawTextPgm(16, 24, wave_t);
   switch(currentControlIdx) {
   case 1: drawText(0, 24, ">"); break;
+  default: drawText(0, 24, " ");
   }
   switch (wave) {
   case Sine: drawTextPgm(52, 24, sine_t); break;
@@ -75,9 +76,19 @@ void adjust(int8_t d) {
   tableReady = true;
 }
 
-void fillBuffer(OutputFrame *buf) {
-  PORTC |= (1 << 2);
+  uint16_t bend(uint16_t phase /* 0..360 */, float factor /* 0..1 */) {
+    uint16_t crossOver = 90 * factor;
 
+    if (phase <= crossOver) {
+      return (phase * 90) / crossOver;
+    } else if (phase <= (360 - crossOver)) {
+      return 90 + (phase - crossOver) * 180 / (360 - 2 * crossOver);
+    } else {
+      return 270 + (phase - (360 - 2 * crossOver)) * 90 / crossOver;
+    }
+  }
+
+void fillBuffer(OutputFrame *buf) {
   if (recalc == 0) {
     // TODO if this works, refactor getCV1In to return Q16n16 instead for a bit of extra speed?
     uint16_t in = IO::getCV1In();
@@ -87,7 +98,7 @@ void fillBuffer(OutputFrame *buf) {
     }
     noteIdx = (note >> 16);
     Q16n16 freq = Q16n16_mtof(note);
-    increment = (((((uint32_t(freq) >> 8) * TABLE_SIZE) >> 8) << sinePosScaleBits) ) / 8000;
+    increment = (((((uint32_t(freq) >> 8) * TABLE_SIZE) >> 8) << sinePosScaleBits) ) / SAMPLERATE;
     recalc = 1;
   } else {
     recalc--;
@@ -102,8 +113,6 @@ void fillBuffer(OutputFrame *buf) {
     buf->cvB = buf->cvA;
     buf++;
   }
-
-  PORTC &= ~(1 << 2);
 }
 
 constexpr Module module = {

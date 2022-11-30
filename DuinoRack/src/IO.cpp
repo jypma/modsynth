@@ -24,6 +24,7 @@ int16_t getCV2In() {
   return (int32_t(cvIn2_0V) - cvIn2) * 4000 / (cvIn2_0V - cvIn2_4V);
 }
 
+  // TODO rewrite into Q16N16 and optimize.
 uint16_t calcCV1Out(int16_t mV) {
   return (int32_t(mV) * (cvOut1_8V - cvOut1_0V) / 1000 / 8) + cvOut1_0V;
 }
@@ -31,6 +32,30 @@ uint16_t calcCV1Out(int16_t mV) {
 uint16_t calcCV2Out(int16_t mV) {
   return (int32_t(mV) * (cvOut2_8V - cvOut2_0V) / 1000 / 8) + cvOut2_0V;
 }
+
+  bool getGate1In() {
+    return (PINB & (1 << 0)) != 0;
+  }
+
+  bool getGate2In() {
+    return (PINB & (1 << 1)) != 0;
+  }
+
+  void setGate1Out(bool on) {
+    if (on) {
+      PORTC |= (1 << 2);
+    } else {
+      PORTC &= ~(1 << 2);
+    }
+  }
+
+  void setGate2Out(uint8_t on) {
+    if (on) {
+      PORTC |= (1 << 3);
+    } else {
+      PORTC &= ~(1 << 3);
+    }
+  }
 
 void setup() {
   // Select Vref=AVcc
@@ -41,6 +66,9 @@ void setup() {
   ADMUX = (ADMUX & 0xF0) | (0 & 0x0F);
   //single conversion mode
   ADCSRA |= (1<<ADSC);
+
+  pinMode(8, INPUT); // PB0, Gate IN 1
+  pinMode(9, INPUT); // PB1, Gate IN 2
 
   pinMode(16, OUTPUT); // PC2, Gate OUT 1
   pinMode(17, OUTPUT); // PC3, Gate OUT 2
