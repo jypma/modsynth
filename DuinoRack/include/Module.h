@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "OutputBuf.h"
 
-constexpr uint16_t SAMPLERATE = 8000;
+constexpr uint16_t SAMPLERATE = 12000;
 
 const char clear[] PROGMEM = "                ";
 
