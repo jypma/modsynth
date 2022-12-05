@@ -102,9 +102,11 @@ void adjust(int8_t d) {
 }
 
 void fillBuffer(OutputFrame *buf) {
+  auto outA = IO::calcCV1Out(0);
+  auto outB = IO::calcCV2Out(0);
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cvA = IO::calcCV1Out(0);
-    buf->cvB = IO::calcCV2Out(0);
+    buf->cvA = outA;
+    buf->cvB = outB;
     buf++;
   }
 }
