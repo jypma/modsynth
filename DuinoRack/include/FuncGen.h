@@ -9,7 +9,10 @@
 namespace FuncGen {
 
   // LOOKUP TABLE SINE
-  constexpr uint16_t TABLE_SIZE = 360;
+  constexpr uint16_t TABLE_SIZE = 256;
+  constexpr uint16_t Q_TABLE_SIZE = 64;
+  constexpr uint16_t Q3_TABLE_SIZE = 192;
+
   constexpr uint8_t sinePosScaleBits = 10;
   constexpr uint32_t sinePosScale = 1024;
   constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
@@ -47,12 +50,12 @@ namespace FuncGen {
   }
 
   inline uint16_t getTriangle(int32_t i) {
-    if (i < 90) {
-      return (i * 4000 / 90);
-    } else if (i < 270) {
-      return (int32_t(90) - (i - 90)) * 4000 / 90;
+    if (i < Q_TABLE_SIZE) {
+      return (i * 4000 / Q_TABLE_SIZE);
+    } else if (i < Q3_TABLE_SIZE) {
+      return (int32_t(Q_TABLE_SIZE) - (i - Q_TABLE_SIZE)) * 4000 / Q_TABLE_SIZE;
     } else {
-      return ((i - 270) - 90) * 4000 / 90;
+      return ((i - Q3_TABLE_SIZE) - Q_TABLE_SIZE) * 4000 / Q_TABLE_SIZE;
     }
   }
 
@@ -69,24 +72,27 @@ namespace FuncGen {
     for (uint16_t i = 0; i < TABLE_SIZE + 1; i++)
     {
       switch(wave) {
-      case Sine: sine[i] = IO::calcCV1Out(round(4000 * sin(i * PI / 180))); break;
+      case Sine: sine[i] = IO::calcCV1Out(round(4000 * sin(i * PI / (TABLE_SIZE / 2.0)))); break;
       case Triangle: sine[i] = IO::calcCV1Out(getTriangle(i)); break;
       }
     }
     tableReady = true;
   }
 
-  uint16_t bend(uint16_t phase /* 0..360 */, float factor /* 0..1 */) {
-    uint16_t crossOver = 90 * factor;
+  /*
+  uint16_t bend(uint16_t phase, Q16n16 factor) {
+    Q16n16 crossOver16 = Q16n16_to_Q16n0(90 * factor);
+    uint16_t crossOver = Q16n16_to_Q16n0(crossOver16);
 
     if (phase <= crossOver) {
-      return (phase * 90) / crossOver;
+      return Q16n16_to_Q16n0((Q16n0_to_Q16n16(phase) * 90) / crossOver);
     } else if (phase <= (360 - crossOver)) {
-      return 90 + (phase - crossOver) * 180 / (360 - 2 * crossOver);
+      return Q16n16_to_Q16n0(90 + (Q16n0_to_Q16n16(phase) - crossOver16) * 180 / (360 - 2 * crossOver16));
     } else {
-      return 270 + (phase - (360 - 2 * crossOver)) * 90 / crossOver;
+      return Q16n16_to_Q16n0(270 + (Q16n0_to_Q16n16(phase) - (360 - 2 * crossOver16)) * 90 / crossOver16);
     }
   }
+  */
 
   void fillBuffer(OutputFrame *buf) {
     if (recalc == 0) {
