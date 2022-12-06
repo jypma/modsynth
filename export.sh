@@ -35,37 +35,38 @@ function handleDir {
 
 # Can't do this in parallel, since there's contention on files in ~/.config/kicad
 
-handleDir QuadAttenuverter/ioboard
-handleDir QuadAttenuverter/mainboard
-handleDir QuadAttenuverter/faceplate
+# handleDir QuadAttenuverter/ioboard
+# handleDir QuadAttenuverter/mainboard
+# handleDir QuadAttenuverter/faceplate
 
-handleDir DualMixer/ioboard
-handleDir DualMixer/mainboard
-handleDir DualMixer/faceplate
+# handleDir DualMixer/ioboard
+# handleDir DualMixer/mainboard
+# handleDir DualMixer/faceplate
 
-handleDir RayWilson-Dual-VCA/mainboard
-handleDir RayWilson-Dual-VCA/ioboard
-handleDir RayWilson-Dual-VCA/faceplate
+# handleDir RayWilson-Dual-VCA/mainboard
+# handleDir RayWilson-Dual-VCA/ioboard
+# handleDir RayWilson-Dual-VCA/faceplate
 
-handleDir SCM-140-ADSR/faceplate_kicad
-handleDir SCM-140-ADSR/ioboard
-handleDir SCM-140-ADSR/mainboard
+# handleDir SCM-140-ADSR/faceplate_kicad
+# handleDir SCM-140-ADSR/ioboard
+# handleDir SCM-140-ADSR/mainboard
 
-handleDir TH-555-VCO/faceplate-kicad
-handleDir TH-555-VCO/ioboard
-handleDir TH-555-VCO/mainboard
+# handleDir TH-555-VCO/faceplate-kicad
+# handleDir TH-555-VCO/ioboard
+# handleDir TH-555-VCO/mainboard
 
-handleDir OrnamentCrime/faceplate
+# handleDir OrnamentCrime/faceplate
 
-handleDir Steiner-VCF/faceplate
-handleDir Steiner-VCF/ioboard
-handleDir Steiner-VCF/mainboard
+# handleDir Steiner-VCF/faceplate
+# handleDir Steiner-VCF/ioboard
+# handleDir Steiner-VCF/mainboard
 
-handleDir TuringMachine/TuringBack
-handleDir TuringMachine/TuringFront
+# handleDir TuringMachine/TuringBack
+# handleDir TuringMachine/TuringFront
 
-handleDir adapter-soic16
-handleDir power-board
+# handleDir adapter-soic16
+# handleDir power-board
 
+handleDir AS3340-VCO/mainboard/
 
 wait

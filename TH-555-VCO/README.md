@@ -36,3 +36,10 @@ The following modifications were made by me:
 ## Face plate
 
 ![faceplate](faceplate-kicad/export/PCB/2D_render/jlcpcb_green_enig/faceplate-kicad-top.jpg)
+
+# TODO
+
+- Mainboard silkscreen is missing values
+- Mainboard is missing mounting holes (ioboard seems fine)
+- Mainboard is missing silkscreen for ICs entirely
+- IO board is missing silkscreen for C1

@@ -42,3 +42,12 @@ Simulate this circuit on [circuitjs](https://falstad.com/circuit/circuitjs.html?
 # Notes for boards v1
 
 The level pots go in the wrong direction. Fix: Mount I/O board the wrong way, and connect the unconnected top left pin of the dual header row to its right sibling(ground).
+
+# TODO
+
+- All values are missing from mainboard and I/O board
+- R19 is too close to the standoff hole
+- R7 and R18 should be 60k instead of 220k (to light up at 4.5V, assuming 5V peak signal)
+- Higher than expected current (all 3 opamps warm, 25mA both rails)
+- Change the layout to be two separate, vertical, mixers. 1..4 pots, 1..4 inputs, output+LED.
+- Thicken the I/O board tracks, Channel A3 was damaged (?) during assembly.

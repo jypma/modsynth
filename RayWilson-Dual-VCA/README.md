@@ -57,3 +57,11 @@ TODO: Look up the right R designations here
     The control voltage should appear on the output but at a much lower amplitude.
     Adjust trimmer R18 (R41 for page 2) to minimize the control voltage feedthrough.
     If you have no oscilloscope you can listen to the output and adjust for least CV feedthrough.
+
+# TODO
+
+- Values are missing on I/O and main board
+- IC value can't be read on main board
+- No mounting holes in main and I/O board
+- Holes for switches on I/O board aren't big enough. Drill is possible, but use lots of solder for channel2, since traces connect at the top (and drilling ruins the through-hole connection).
+- SMD footprints are missing pin 1 circle

@@ -11,3 +11,7 @@ A simple power distribution board with 6 16-pin IDC connectors and a 4-way screw
 ![top](export/PCB/2D_render/jlcpcb_green_enig/power-board-top.jpg)
 
 ![bottom](export/PCB/2D_render/jlcpcb_green_enig/power-board-bottom.jpg)
+
+# TODO
+
+- Mounting holes are missing!

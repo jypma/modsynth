@@ -23,3 +23,5 @@ Back:
 ## To do
 
 - The current button footprints are very specific, and I haven't found alternatives for the (expensive) original buttons from mouser. It might be a good idea to change the footprint to more widely-available 6x6 or 12x12 tactile buttons.
+- Encoder holes are too small, they should be >= 7 mm.
+- Screen window bottom should be 1mm lower

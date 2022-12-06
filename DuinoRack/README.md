@@ -1,19 +1,19 @@
 # Design
 
 - Screen
-- 1 Encoder
-- 4 bipolar CV inputs with Attenuverters (which set a fixed offset when unplugged) (to A5..A8)
-- 2 Gate inputs with trigger button
+- 2 Encoders
+- 2 bipolar CV inputs with Attenuverters and offset
+  - On the MIDI variant, two attenuverters+offset are removed, to make space (only CV in for those).
+CV inputs: attenuators plus offset, offset positive only
+- 2 Gate inputs with trigger button.
 - 2 CV outputs (from MPC4822, SPI)
 - 2 Gate outputs (some I/O port)
-- 6-pin serial connector, but not exposed.
-- MIDI connector, is there space? perhaps two versions?
 
 # UI
 
-- We only have space for 1 encoder.
-- Rotate: select variable for current preset
-- Click: Adjust variable, click again to confirm.
+Encoder 1: Select UI element
+Encoder 2: Change value (immediate)
+
 
 # Hardware
 - Try a dual DIP/SOIC footprint for the ATMega328
@@ -30,46 +30,62 @@
 ## ADSR
 
 - 1 Gate input
-- 4 CV inputs (can be virtual) for A,D,S,R
+- 4 variable inputs (can be virtual) for A,D,S,R (CV assignable)
+   - positive only
+   - not precise
 - 1 CV output
 - optional: 1 CV inverted output
-- optional: 1 extra Gate input, 1-2 extra CV output (second envelope)
+- optional: 1 extra Gate input, 1 extra CV output (second envelope)
+
+No looping (put LFO-like stuff in its own module)
 
 Hints [here](https://github.com/baritonomarchetto/Programmable-Envelope-Generator/blob/main/ProgEnvGen_V2.ino)
 
 ## AR
+(do we need this? Just have sustain at zero above)
 
 - 1 Trigger input
-- 2 CV inputs (can be virtual) for A,D
+- 2 CV inputs for A,D
 - 1 CV output
 - optional: 1 CV inverted output
-- optional: 1 extra Gate input, 1-2 extra CV output (second envelope)
+- optional: 1 extra Gate input, 1 extra CV output (second envelope)
 
 ## LFO
 
+- 1 input for tune (non-CV)
 - 1 CV input (can be virtual) for freq
-- optional: 1 CV input for FM
-- 1 virtual input: Select wave shape
+  - precise (if VCO frequency)
+- optional: 1 Gate input for Freq.Counter / Tap tempo / Sync
+- 1 menu input: Select wave shape
 - 1 CV output
+- optional: 1 CV output for extra wave, or 90 degrees offset wave
 
 Hints [here](https://github.com/robertgallup/arduino-DualLFO). Need to check quality of the waveform using the MCP4822.
 
 ## Pulse
 
+- 1 input for tune (non-CV)
 - 1 CV input (can be virtual) for freq
-- optional: 1 CV input for FM
-- 1 CV input (can be virtual): Duty cycle
+  - precise (if VCO frequency)
+- optional: 1 Gate input for Freq.Counter / Tap Tempo / Sync
+- 1 CV input (can be virtual): Pulse Width %
 - 1 Gate output (or CV)
-- optional: extra outputs with dividers
+- optional: 3 extra outputs with dividers
 
 ## Clock divider
 
 1 Gate input
 N CV input + Gate output pairs, input sets divisor
+Perhaps merge this with Pulse?
 
 ## Quantizer
 
 Need to check if the incoming ADC is precise enough.
+
+- 2 CV input
+  - precise
+- 2 Gate inputs for "hold"
+- 2 CV outputs
 
 ## Sequencer
 
@@ -77,15 +93,32 @@ Need to check if the incoming ADC is precise enough.
 - Gate input advances the sequencer (consider internal clock as well)
 - Add more later without adding UI elements
 
-## MIDI In
+## MIDI
 
+In:
 - 2 CV outputs (note/bend and modulation)
 - 1 Gate output
 - 1 Clock output (selectable division)
-- Selectable MIDI channel (one of the CV inputs)
-- Hints [here](https://note.com/solder_state/n/n17e028497eba) (incorporates pitch bend into the CV)
-- Original [midi2cv](https://github.com/elkayem/midi2cv)
-- Provide an internal connector to chain two modules, having two MIDI channels.
+- Selectable MIDI channel
+
+Thru (electrical).
+
+Out:
+- 1 CV input (note & bend)
+- 1 CV input (volume or mod)
+- 1 Gate input
+- Selectable MIDI channel
+- Configurable to just send midi CV, no notes
+- Configurable to mirror input (with 1-symbol delay), to allow chaining
+
+Hints [here](https://note.com/solder_state/n/n17e028497eba) (incorporates pitch bend into the CV)
+Original [midi2cv](https://github.com/elkayem/midi2cv)
+
+## Random
+
+- Noise with colors
+- Random walk
+- Sample & hold
 
 # Simulation
 
