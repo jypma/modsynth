@@ -80,6 +80,14 @@ void draw() {
   }
 }
 
+  void start() {
+
+  }
+
+  void stop() {
+
+  }
+
 uint16_t addIn(int16_t in, int8_t d) {
   return constrain(in + d, 0, 1023);
 }
@@ -115,6 +123,8 @@ constexpr Module module = {
   title,
   8, // controlCount
   &draw,
+  &start,
+  &stop,
   &adjust,
   &fillBuffer
 };

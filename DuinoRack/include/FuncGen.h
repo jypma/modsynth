@@ -59,14 +59,7 @@ namespace FuncGen {
     }
   }
 
-  void adjust(int8_t d) {
-    switch(currentControlIdx) {
-    case 1:
-      wave = Wave((wave + 1) % 2);
-      tableReady = false;
-      break;
-    }
-
+  void prepareWave() {
     if (tableReady) return;
 
     for (uint16_t i = 0; i < TABLE_SIZE + 1; i++)
@@ -77,6 +70,24 @@ namespace FuncGen {
       }
     }
     tableReady = true;
+  }
+  
+  void adjust(int8_t d) {
+    switch(currentControlIdx) {
+    case 1:
+      wave = Wave((wave + 1) % 2);
+      tableReady = false;
+      break;
+    }
+    prepareWave();
+  }
+
+  void start() {
+    prepareWave();
+  }
+
+  void stop() {
+
   }
 
   /*
@@ -126,6 +137,8 @@ namespace FuncGen {
     title,
     1,
     &draw,
+    &start,
+    &stop,
     &adjust,
     &fillBuffer
   };

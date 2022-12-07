@@ -26,6 +26,14 @@ namespace ADSR {
     drawTextPgm(0, 32, clear);
   }
 
+  void start() {
+
+  }
+
+  void stop() {
+
+  }
+
   void adjust(int8_t d) {
     zero = Q16n0_to_Q15n16(IO::calcCV1Out(0));
     max = Q16n0_to_Q15n16(IO::calcCV1Out(8000));
@@ -97,6 +105,8 @@ namespace ADSR {
     title,
     0,
     &draw,
+    &start,
+    &stop,
     &adjust,
     &fillBuffer
   };

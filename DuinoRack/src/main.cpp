@@ -7,6 +7,7 @@
 #include "Calibrate.h"
 #include "ADSR.h"
 #include "IO.h"
+#include "MIDIMod.h"
 
 // display: 300 bytes RAM
 
@@ -54,15 +55,18 @@ ISR(TIMER2_COMPA_vect){
 }
 
 void setModuleIdx(uint8_t idx) {
-  constexpr uint8_t MODULE_COUNT = 3;
+  currentMod.stop();
+  constexpr uint8_t MODULE_COUNT = 4;
   currentModIdx = idx % MODULE_COUNT;
   Serial.println(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
     case 1: currentMod = ADSR::module; break;
+    case 2: currentMod = MIDIMod::module; break;
     default: currentMod = Calibrate::module;
   }
   // Startup trigger
+  currentMod.start();
   currentMod.adjust(0);
 }
 
@@ -80,6 +84,7 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
 void drawDecimal(uint8_t x, uint8_t y, int16_t value) {
   String s = String(value);
   drawText(x, y, s.c_str());
+  drawText(x + s.length() * 8, y, "      ");
 }
 
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
@@ -119,7 +124,7 @@ void handleEncoder2Rotate(int8_t rotation) {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(31250);
   Serial.println("DuinoRack");
   Serial.flush();
   IO::setup();
@@ -130,7 +135,7 @@ void setup() {
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
 
-  setModuleIdx(0);
+  currentMod.start();
   encoder1.setHandleRotate(handleEncoder1Rotate);
   encoder2.setHandleRotate(handleEncoder2Rotate);
 

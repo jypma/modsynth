@@ -20,6 +20,8 @@ struct Module {
   const char *name;
   uint8_t controlCount;
   Callback draw;
+  Callback start;
+  Callback stop;
   AdjustCallback adjust;
   BufferCallback fillBuffer;
 };
