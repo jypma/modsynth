@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <lcdgfx.h>
 #include <Versatile_RotaryEncoder.h>
+#include "Module.h"
 #include "OutputBuf.h"
 #include "FuncGen.h"
 #include "Calibrate.h"
@@ -156,8 +157,9 @@ void setup() {
   TCCR2A = 0;// set entire TCCR2A register to 0
   TCCR2B = 0;// same for TCCR2B
   TCNT2  = 0;//initialize counter value to 0
-  // set compare match register for ~12kHz increments
-  OCR2A = 187;
+  // set compare match register to sample rate (def. 12000)
+  constexpr uint8_t ovfValue = uint32_t(F_CPU) / 8 / SAMPLERATE;
+  OCR2A = ovfValue;
   // turn on CTC mode
   TCCR2A |= (1 << WGM21);
   // 8 prescaler
