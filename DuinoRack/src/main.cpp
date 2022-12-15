@@ -2,12 +2,19 @@
 #include <Wire.h>
 #include <lcdgfx.h>
 #include <Versatile_RotaryEncoder.h>
+#include "Module.h"
 #include "OutputBuf.h"
 #include "FuncGen.h"
 #include "Calibrate.h"
+#include "ADSR.h"
 #include "IO.h"
+#include "MIDIMod.h"
+#include "canvas/canvas.h"
+#include "pins_arduino.h"
 
 // display: 300 bytes RAM
+
+#define TIMING_DEBUG
 
 Module currentMod = FuncGen::module;
 uint8_t currentModIdx = 0;
@@ -24,27 +31,26 @@ DisplaySSD1306_128x64_I2C display(-1);
 MCP4821 MCP;
 uint16_t count;
 uint32_t lastTime = 0;
-
-// LOOKUP TABLE SINE
-int16_t sine[361];
-uint16_t temp_sinePos = 0;
+uint8_t oldOverruns = 0;
 
 void fillBuffer() {
-  if (encoder1.ReadEncoder()) {
+  if (OutputBuf::needNextBuffer()) {
+    current = (current == a) ? b : a;
+#ifdef TIMING_DEBUG
+    IO::setGate1Out(true);
+#endif
+    currentMod.fillBuffer(current);
+#ifdef TIMING_DEBUG
+    IO::setGate1Out(false);
+#endif
+    OutputBuf::setNextBuffer(current);
+  } else if (encoder1.ReadEncoder()) {
     Serial.println("E1");
   } else if (encoder2.ReadEncoder()) {
     Serial.println("E2");
-  } else if (OutputBuf::needNextBuffer()) {
-    current = (current == a) ? b : a;
-    for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-      temp_sinePos = (temp_sinePos + 1) % 360;
-      current[i].cvA = IO::calcCV1Out(sine[temp_sinePos]);
-      current[i].cvB = temp_sinePos * 4; // more or less sawtooth
-    }
-    OutputBuf::setNextBuffer(current);
+  } else {
+    IO::readIfNeeded();
   }
-
-  IO::readIfNeeded();
 }
 
 ISR(TIMER2_COMPA_vect){
@@ -52,13 +58,19 @@ ISR(TIMER2_COMPA_vect){
 }
 
 void setModuleIdx(uint8_t idx) {
-  constexpr uint8_t MODULE_COUNT = 2;
+  currentMod.stop();
+  constexpr uint8_t MODULE_COUNT = 4;
   currentModIdx = idx % MODULE_COUNT;
   Serial.println(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
+    case 1: currentMod = ADSR::module; break;
+    case 2: currentMod = MIDIMod::module; break;
     default: currentMod = Calibrate::module;
   }
+  // Startup trigger
+  currentMod.start();
+  currentMod.adjust(0);
 }
 
 void drawText(uint8_t x, uint8_t y, const char *s) {
@@ -67,13 +79,16 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
   while (*s) {
     fillBuffer();
     display.printChar(*s);
+    fillBuffer();
     s++;
   }
 }
 
 void drawDecimal(uint8_t x, uint8_t y, int16_t value) {
-  String s = String(value);
-  drawText(x, y, s.c_str());
+  char str[7];
+  itoa(value, str, 10);
+  drawText(x, y, str);
+  drawTextPgm(x + strlen(str) * 6, y, clear);
 }
 
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
@@ -83,6 +98,7 @@ void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
   while (ch) {
     fillBuffer();
     display.printChar(ch);
+    fillBuffer();
     s++;
     ch = pgm_read_byte(s);
   }
@@ -112,7 +128,9 @@ void handleEncoder2Rotate(int8_t rotation) {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(31250);
+  Serial.println("DuinoRack");
+  Serial.flush();
   IO::setup();
 
   // We need input pull-ups for our encoder inputs
@@ -121,33 +139,20 @@ void setup() {
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
 
-  setModuleIdx(0);
+  currentMod.start();
   encoder1.setHandleRotate(handleEncoder1Rotate);
   encoder2.setHandleRotate(handleEncoder2Rotate);
 
   display.begin();
-  Serial.println("Writing");
   display.fill(0x00);
   display.setFixedFont(ssd1306xled_font6x8);
   showModule();
-  Serial.println("Done");
-
-  for (int16_t i = -4000; i < 8000; i += 100) {
-    Serial.print(i);
-    Serial.print("  ->  ");
-    Serial.println(IO::calcCV1Out(i));
-  }
-
-  // fill table with sinus values for fast lookup
-  for (int i = 0; i < 361; i++)
-  {
-    sine[i] = round(4000 * sin(i * PI / 180));
-  }
+  Serial.println("Display ready.");
 
   // fill initial buffer
   fillBuffer();
 
-  MCP.begin(10);  // select pin = 10, PB2
+  MCP.begin(PIN_A3);  // select pin = 17, PC3 / A3 / D17
   MCP.fastWriteA(0);
   MCP.fastWriteB(0);
 
@@ -155,8 +160,9 @@ void setup() {
   TCCR2A = 0;// set entire TCCR2A register to 0
   TCCR2B = 0;// same for TCCR2B
   TCNT2  = 0;//initialize counter value to 0
-  // set compare match register for ~8kHz increments
-  OCR2A = 250;
+  // set compare match register to sample rate (def. 12000)
+  constexpr uint8_t ovfValue = uint32_t(F_CPU) / 8 / SAMPLERATE;
+  OCR2A = ovfValue;
   // turn on CTC mode
   TCCR2A |= (1 << WGM21);
   // 8 prescaler
@@ -168,14 +174,18 @@ void setup() {
 void loop() {
   fillBuffer();
   uint32_t now = micros();
+  fillBuffer();
 
-  if (now % 100000 == 0) {
-    Serial.println(OutputBuf::overruns);
+  if (OutputBuf::overruns != oldOverruns) {
+    oldOverruns = OutputBuf::overruns;
+    Serial.print("Xrun! ");
+    Serial.println(oldOverruns);
   }
 
   if (now - lastTime > 100000)
   {
     showModule();
+    fillBuffer();
     currentMod.draw();
   }
 }
