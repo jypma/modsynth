@@ -14,6 +14,7 @@ const char cal5[] PROGMEM = "oA  0V: ";
 const char cal6[] PROGMEM = "oA +8V: ";
 const char cal7[] PROGMEM = "oB  0V: ";
 const char cal8[] PROGMEM = "oB +8V: ";
+const char cal9[] PROGMEM = "PWM prd:";
 
 const char *getCalLabel() {
   switch (currentControlIdx) {
@@ -25,21 +26,23 @@ const char *getCalLabel() {
     case 6: return cal6;
     case 7: return cal7;
     case 8: return cal8;
+    case 9: return cal9;
     default: return NULL;
   }
 }
 
-int16_t *getCalValue() {
+int16_t getCalValue() {
   switch (currentControlIdx) {
-    case 1: return &IO::cvIn1_0V;
-    case 2: return &IO::cvIn1_4V;
-    case 3: return &IO::cvIn2_0V;
-    case 4: return &IO::cvIn2_4V;
-    case 5: return &IO::cvOut1_0V;
-    case 6: return &IO::cvOut1_8V;
-    case 7: return &IO::cvOut2_0V;
-    case 8: return &IO::cvOut2_8V;
-    default: return NULL;
+    case 1: return IO::cvIn1_0V;
+    case 2: return IO::cvIn1_4V;
+    case 3: return IO::cvIn2_0V;
+    case 4: return IO::cvIn2_4V;
+    case 5: return IO::getcvOut1_0V();
+    case 6: return IO::getcvOut1_8V();
+    case 7: return IO::getcvOut2_0V();
+    case 8: return IO::getcvOut2_8V();
+    case 9: return IO::getPWMPeriod();
+    default: return 0;
   }
 }
 
@@ -61,20 +64,20 @@ String format(int16_t mV) {
 }
 
 void draw() {
-  String txt = format(IO::getCV1In()) + "    ";
+  String txt = format(IO::getCV1In());
   drawText(0, 16, "inA: ");
-  drawText(40, 16, txt.c_str());
+  drawText(25, 16, txt.c_str());
 
-  txt = format(IO::getCV2In()) + "    ";
+  txt = format(IO::getCV2In());
   drawText(0, 24, "inB: ");
-  drawText(40, 24, txt.c_str());
+  drawText(25, 24, txt.c_str());
 
   const char *lbl = getCalLabel();
-  int16_t *val = getCalValue();
-  if (lbl != NULL && val != NULL) {
+  int16_t val = getCalValue();
+  if (lbl != NULL) {
     drawText(0, 32, "> ");
     drawTextPgm(16, 32, lbl);
-    drawDecimal(72, 32, *val);
+    drawDecimal(72, 32, val);
   } else {
     drawTextPgm(0, 32, clear);
   }
@@ -102,26 +105,30 @@ void adjust(int8_t d) {
     case 2: IO::cvIn1_4V = addIn(IO::cvIn1_4V, d); break;
     case 3: IO::cvIn2_0V = addIn(IO::cvIn2_0V, d); break;
     case 4: IO::cvIn2_4V = addIn(IO::cvIn2_4V, d); break;
-    case 5: IO::cvOut1_0V = addOut(IO::cvOut1_0V, d); break;
-    case 6: IO::cvOut1_8V = addOut(IO::cvOut1_8V, d); break;
-    case 7: IO::cvOut2_0V = addOut(IO::cvOut2_0V, d); break;
-    case 8: IO::cvOut2_8V = addOut(IO::cvOut2_8V, d); break;
+    case 5: IO::calibrateCVOut1_0V(d); break;
+    case 6: IO::calibrateCVOut1_8V(d); break;
+    case 7: IO::calibrateCVOut2_0V(d); break;
+    case 8: IO::calibrateCVOut2_8V(d); break;
+    case 9: IO::calibratePWMPeriod(d); break;
   }
 }
 
 void fillBuffer(OutputFrame *buf) {
-  auto outA = IO::calcCV1Out(0);
-  auto outB = IO::calcCV2Out(0);
+  auto out_mV = (currentControlIdx == 6 || currentControlIdx == 8) ? 8000 : 0;
+  auto outA = IO::calcCV1Out(out_mV);
+  auto outB = IO::calcCV2Out(out_mV);
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cvA = outA;
     buf->cvB = outB;
+    buf->cvC = 400;
+    buf->cvD = 400;
     buf++;
   }
 }
 
 constexpr Module module = {
   title,
-  8, // controlCount
+  9, // controlCount
   &draw,
   &start,
   &stop,

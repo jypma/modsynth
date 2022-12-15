@@ -1,12 +1,14 @@
 #pragma once
 
 #include <Arduino.h>
+#include "IO.h"
 #include "MCP_DAC.h"
 
 extern MCP4821 MCP;
 
 struct OutputFrame {
-  uint16_t cvA, cvB;
+  // FIXME rename to cvOut1 etc., to align with methods in IO::.
+  uint16_t cvA, cvB, cvC, cvD;
 };
 
 #define OUTBUFSIZE 16
@@ -25,7 +27,6 @@ namespace OutputBuf {
   // We assume to be already inside an ISR here, so no atomic.
   // One transmission to MCP takes 5us.
   // Whole ISR takes 15us.
-  // ISR is currently called every 125us (8kHz)
   INLINE void advance() {
     if (current == NULL) {
       overruns++;
@@ -36,24 +37,12 @@ namespace OutputBuf {
     //PORTC |= (1 << 2);
 
     // Output the current frame
+    // TODO save a little time by setting CV and D while we're waiting for SPI result.
     MCP.fastWriteAGain(current[currentPos].cvA);
     MCP.fastWriteBGain(current[currentPos].cvB);
-
-    /* TODO direct methods in IO for setting gates, no point buffering them
-    // PC1, pin 15
-    if ((current[currentPos].gates & 1) != 0) {
-      PORTC |= (1 << 1);
-    } else {
-      PORTC &= ~(1 << 1);
-    }
-
-    // PC2, pin 16
-    if ((current[currentPos].gates & 2) != 0) {
-      PORTC |= (1 << 2);
-    } else {
-      PORTC &= ~(1 << 2);
-    }
-    */
+    // TODO inline setting the PWMs
+    IO::setGate1PWM(current[currentPos].cvC);
+    IO::setGate2PWM(current[currentPos].cvD);
 
     // Advance to the next frame or buffer
     if (currentPos < OUTBUFSIZE - 1) {

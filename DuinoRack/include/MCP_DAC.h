@@ -103,11 +103,11 @@ public:
 
 protected:
   INLINE void transferInline(uint16_t data) {
-    PORTB &= ~(1 << 2); // PB2 low
+    PORTC &= ~(1 << 3); // PC3 low
     mySPI->beginTransaction(_spi_settings);
     mySPI->transfer16(data);
     mySPI->endTransaction();
-    PORTB |= (1 << 2);  // PB2 high
+    PORTC |= (1 << 3);  // PBC high
   }
   
   uint8_t  _dataOut;                // Data out Pin (MOSI)

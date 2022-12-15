@@ -9,6 +9,8 @@
 #include "ADSR.h"
 #include "IO.h"
 #include "MIDIMod.h"
+#include "canvas/canvas.h"
+#include "pins_arduino.h"
 
 // display: 300 bytes RAM
 
@@ -83,9 +85,10 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
 }
 
 void drawDecimal(uint8_t x, uint8_t y, int16_t value) {
-  String s = String(value);
-  drawText(x, y, s.c_str());
-  drawText(x + s.length() * 8, y, "      ");
+  char str[7];
+  itoa(value, str, 10);
+  drawText(x, y, str);
+  drawTextPgm(x + strlen(str) * 6, y, clear);
 }
 
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
@@ -149,7 +152,7 @@ void setup() {
   // fill initial buffer
   fillBuffer();
 
-  MCP.begin(10);  // select pin = 10, PB2
+  MCP.begin(PIN_A3);  // select pin = 17, PC3 / A3 / D17
   MCP.fastWriteA(0);
   MCP.fastWriteB(0);
 

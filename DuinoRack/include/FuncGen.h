@@ -65,8 +65,12 @@ namespace FuncGen {
     for (uint16_t i = 0; i < TABLE_SIZE + 1; i++)
     {
       switch(wave) {
-      case Sine: sine[i] = IO::calcCV1Out(round(4000 * sin(i * PI / (TABLE_SIZE / 2.0)))); break;
-      case Triangle: sine[i] = IO::calcCV1Out(getTriangle(i)); break;
+      case Sine:
+        sine[i] = IO::calcCV1Out(round(4000 * sin(i * PI / (TABLE_SIZE / 2.0))));
+        break;
+      case Triangle:
+        sine[i] = IO::calcCV1Out(getTriangle(i));
+        break;
       }
     }
     tableReady = true;
@@ -83,6 +87,8 @@ namespace FuncGen {
   }
 
   void start() {
+    IO::configureGate1PWM();
+    IO::configureGate2PWM();
     prepareWave();
   }
 
@@ -127,8 +133,11 @@ namespace FuncGen {
         sinePos -= sinePosMod;
       }
       buf->cvA = sine[sinePos >> sinePosScaleBits];
-      // TODO reduce sine table to 255 only, and then have two of them (one for chB)
+      // TODO we need to be able to calculate enough values here
+      // Otherwise, reduce table to 8-bit values and 128 entries.
       buf->cvB = buf->cvA;
+      buf->cvC = buf->cvA >> 2; // quick hack for 12 to 10 bits
+      buf->cvD = buf->cvC;
       buf++;
     }
   }
