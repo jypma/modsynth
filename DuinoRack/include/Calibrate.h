@@ -83,13 +83,14 @@ void draw() {
   }
 }
 
-  void start() {
+void start() {
+  IO::configureGate1PWM();
+  IO::configureGate2PWM();
+}
 
-  }
+void stop() {
 
-  void stop() {
-
-  }
+}
 
 uint16_t addIn(int16_t in, int8_t d) {
   return constrain(in + d, 0, 1023);
