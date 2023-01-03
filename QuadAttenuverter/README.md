@@ -41,7 +41,6 @@ Based on the design by `[Grumble]` from [synthforum.nl](https://www.synthforum.n
 - To increase gain from -1..1x to -2..2x: Change R4, R19, R20, R21 from 82k to 40k (39k should do fine).
 - Gain pot pins should be inverted (they're on an inverting amplifier)
 - LEDs are way too bright, series resistors (R31, R32, R33, R34) should be 22k instead of 1k
-- Center 0V offset isn't in the middle, perhaps add a trimpot per channel, or better resistors? Better pots?
 
 
 # Simulation
