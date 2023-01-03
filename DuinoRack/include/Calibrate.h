@@ -72,14 +72,19 @@ void draw() {
   drawText(0, 24, "inB: ");
   drawText(25, 24, txt.c_str());
 
+  drawText(0, 32, "in gates: ");
+  drawText(55, 32, IO::getGate1In() ? "1" : "0");
+  drawText(61, 32, IO::getGate2In() ? "1" : "0");
+  drawText(67, 32, IO::getGate3In() ? "1" : "0");
+
   const char *lbl = getCalLabel();
   int16_t val = getCalValue();
   if (lbl != NULL) {
-    drawText(0, 32, "> ");
-    drawTextPgm(16, 32, lbl);
-    drawDecimal(72, 32, val);
+    drawText(0, 40, "> ");
+    drawTextPgm(16, 40, lbl);
+    drawDecimal(72, 40, val);
   } else {
-    drawTextPgm(0, 32, clear);
+    drawTextPgm(0, 40, clear);
   }
 }
 

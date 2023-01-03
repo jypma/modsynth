@@ -17,6 +17,7 @@
 #define TIMING_DEBUG
 
 Module currentMod = FuncGen::module;
+uint8_t shownModIdx = 0;
 uint8_t currentModIdx = 0;
 uint8_t currentControlIdx = 0;
 
@@ -105,12 +106,16 @@ void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
 }
 
 void showModule() {
+  if (shownModIdx != currentModIdx) {
+    display.fill(0x00);
+  }
   if (currentControlIdx == 0) {
     drawText(0, 8, ">");
   } else {
     drawText(0, 8, " ");
   }
   drawTextPgm(8, 8, currentMod.name);
+  shownModIdx = currentModIdx;
 }
 
 void handleEncoder1Rotate(int8_t rotation) {

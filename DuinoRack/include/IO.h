@@ -26,6 +26,7 @@ uint16_t getPWMPeriod();
 
 bool getGate1In();
 bool getGate2In();
+bool getGate3In();
 
 void setGate1Out(bool on);
 void setGate2Out(bool on);

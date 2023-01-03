@@ -59,8 +59,15 @@ Hints [here](https://github.com/baritonomarchetto/Programmable-Envelope-Generato
 - 1 menu input: Select wave shape
 - 1 CV output
 - optional: 1 CV output for extra wave, or 90 degrees offset wave
+- toggle unipolar / bipolar
 
 Hints [here](https://github.com/robertgallup/arduino-DualLFO). Need to check quality of the waveform using the MCP4822.
+
+## LFO ADSR
+
+Combine the two, applying the envelope to the LFO
+- With reset on gate, or free-running
+- Toggle unipolar / bipolar
 
 ## Pulse
 

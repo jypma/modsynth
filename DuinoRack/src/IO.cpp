@@ -83,6 +83,11 @@ bool getGate2In() {
   return (PINC & (1 << 2)) != 0;
 }
 
+bool getGate3In() {
+  // This is behind the MIDI in optocoupler, hence inverted.
+  return (PIND & (1 << 0)) == 0;
+}
+
 void setGate1Out(bool on) {
   // PB1, D9
   if (on) {
