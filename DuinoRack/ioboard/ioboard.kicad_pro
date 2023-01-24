@@ -119,7 +119,9 @@
         "use_height_for_length_calcs": true
       },
       "track_widths": [
-        0.0
+        0.0,
+        0.25,
+        0.5
       ],
       "via_dimensions": [
         {
@@ -346,7 +348,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "mainboard.kicad_pro",
+    "filename": "ioboard.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -380,12 +382,9 @@
         "name": "Power",
         "nets": [
           "+12V",
-          "-12V",
-          "-5V",
-          "/+7.000V",
-          "GND",
-          "Net-(J3-Pad1)",
-          "Net-(J3-Pad10)"
+          "+5V",
+          "-8V",
+          "GND"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
@@ -451,7 +450,7 @@
   },
   "sheets": [
     [
-      "d92de07d-7751-422c-88b2-0b419fb532fa",
+      "a624e495-3e33-4a69-ab51-1042b942913b",
       ""
     ]
   ],
