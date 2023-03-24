@@ -17,6 +17,7 @@ namespace FuncGen {
   constexpr uint32_t sinePosScale = 1024;
   constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
   constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
+  constexpr Q16n16 MIN_NOTE = 65536; // Note 1
 
   uint16_t sine[TABLE_SIZE+1];
   uint32_t sinePos = 0;
@@ -114,10 +115,15 @@ namespace FuncGen {
   void fillBuffer(OutputFrame *buf) {
     if (recalc == 0) {
       // TODO if this works, refactor getCV1In to return Q16n16 instead for a bit of extra speed?
-      uint16_t in = IO::getCV1In();
+      int16_t in = IO::getCV1In();
+      if (in < 0) {
+        in = 0;
+      }
       Q16n16 note = (((uint32_t(in) / 1000) << 16) | ((uint32_t(in % 1000) << 16) / 1000)) * 12;
       if (note > MAX_NOTE) {
         note = MAX_NOTE;
+      } else if (note < MIN_NOTE) {
+        note = MIN_NOTE;
       }
       noteIdx = (note >> 16);
       Q16n16 freq = Q16n16_mtof(note);

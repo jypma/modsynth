@@ -9,10 +9,10 @@ uint16_t cvIn1 = 0;
 uint16_t cvIn2 = 0;
 bool readingCv1 = true;
 
-int16_t cvIn1_0V = 545;
-int16_t cvIn1_4V = 276;
-int16_t cvIn2_0V = 700;
-int16_t cvIn2_4V = 300;
+int16_t cvIn1_0V = 571;
+int16_t cvIn1_4V = 269;
+int16_t cvIn2_0V = 573;
+int16_t cvIn2_4V = 270;
 
 int16_t cvOut1_0V = 1335;
 int16_t cvOut1_4V = 2659;
