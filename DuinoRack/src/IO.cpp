@@ -14,10 +14,10 @@ int16_t cvIn1_4V = 276;
 int16_t cvIn2_0V = 700;
 int16_t cvIn2_4V = 300;
 
-int16_t cvOut1_0V = 1369;
-int16_t cvOut1_8V = 3868;
-int16_t cvOut2_0V = 1369;
-int16_t cvOut2_8V = 3868;
+int16_t cvOut1_0V = 1335;
+int16_t cvOut1_8V = 3986;
+int16_t cvOut2_0V = 1328;
+int16_t cvOut2_8V = 3980;
 
 Q15n16 cvOut1Factor = 0;
 Q15n16 cvOut2Factor = 0;
@@ -32,17 +32,17 @@ void recalibrate() {
   cvOut2Factor = Q15n0_to_Q15n16(cvOut2_8V - cvOut2_0V) / 1000 / 8;
 }
 
-void calibrateCVOut1_0V(int16_t delta) {
-  cvOut1_0V = constrain(cvOut1_0V + delta, 0, cvOut1_8V);
-  recalibrate();
-}
-
 void calibratePWMPeriod(int16_t delta) {
   ICR1 = constrain(ICR1 + delta, 800, uint32_t(F_CPU) / SAMPLERATE);
 }
 
 uint16_t getPWMPeriod() {
   return ICR1;
+}
+
+void calibrateCVOut1_0V(int16_t delta) {
+  cvOut1_0V = constrain(cvOut1_0V + delta, 0, cvOut1_8V);
+  recalibrate();
 }
 
 void calibrateCVOut1_8V(int16_t delta) {
@@ -52,10 +52,12 @@ void calibrateCVOut1_8V(int16_t delta) {
 
 void calibrateCVOut2_0V(int16_t delta) {
   cvOut2_0V = constrain(cvOut2_0V + delta, 0, cvOut2_8V);
+  recalibrate();
 }
 
 void calibrateCVOut2_8V(int16_t delta) {
   cvOut2_8V = constrain(cvOut2_8V + delta, cvOut2_0V, 4095);
+  recalibrate();
 }
 
 int16_t getCV1In() {
@@ -72,7 +74,7 @@ uint16_t calcCV1Out(int16_t mV) {
 }
 
 uint16_t calcCV2Out(int16_t mV) {
-  return Q15n16_to_Q15n0(cvOut2Factor * mV) + cvOut1_0V;
+  return Q15n16_to_Q15n0(cvOut2Factor * mV) + cvOut2_0V;
 }
 
 bool getGate1In() {
@@ -133,10 +135,11 @@ void setup() {
   recalibrate();
 
   // Select Vref=AVcc
-  ADMUX |= _BV(REFS0);
+  ADMUX = _BV(REFS0);
   //set prescaller to 128 (at 16MHz, is 125kHz)and enable ADC
   ADCSRA |= _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0) | _BV(ADEN);
   // Start with channel 0 (CV in 1)
+  readingCv1 = true;
   ADMUX = (ADMUX & 0xF0) | (0 & 0x0F);
   //single conversion mode
   ADCSRA |= _BV(ADSC);
