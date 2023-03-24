@@ -11,9 +11,9 @@ const char cal2[] PROGMEM = "iA +4V: ";
 const char cal3[] PROGMEM = "iB  0V: ";
 const char cal4[] PROGMEM = "iB +4V: ";
 const char cal5[] PROGMEM = "oA  0V: ";
-const char cal6[] PROGMEM = "oA +8V: ";
+const char cal6[] PROGMEM = "oA +4V: ";
 const char cal7[] PROGMEM = "oB  0V: ";
-const char cal8[] PROGMEM = "oB +8V: ";
+const char cal8[] PROGMEM = "oB +4V: ";
 const char cal9[] PROGMEM = "PWM prd:";
 
 const char *getCalLabel() {
@@ -38,9 +38,9 @@ int16_t getCalValue() {
     case 3: return IO::cvIn2_0V;
     case 4: return IO::cvIn2_4V;
     case 5: return IO::getcvOut1_0V();
-    case 6: return IO::getcvOut1_8V();
+    case 6: return IO::getcvOut1_4V();
     case 7: return IO::getcvOut2_0V();
-    case 8: return IO::getcvOut2_8V();
+    case 8: return IO::getcvOut2_4V();
     case 9: return IO::getPWMPeriod();
     default: return 0;
   }
@@ -111,16 +111,16 @@ void adjust(int8_t d) {
     case 3: IO::cvIn2_0V = addIn(IO::cvIn2_0V, d); break;
     case 4: IO::cvIn2_4V = addIn(IO::cvIn2_4V, d); break;
     case 5: IO::calibrateCVOut1_0V(d); break;
-    case 6: IO::calibrateCVOut1_8V(d); break;
+    case 6: IO::calibrateCVOut1_4V(d); break;
     case 7: IO::calibrateCVOut2_0V(d); break;
-    case 8: IO::calibrateCVOut2_8V(d); break;
+    case 8: IO::calibrateCVOut2_4V(d); break;
     case 9: IO::calibratePWMPeriod(d); break;
   }
 }
 
 void fillBuffer(OutputFrame *buf) {
-  auto out_mVa = (currentControlIdx == 6) ? 8000 : 0;
-  auto out_mVb = (currentControlIdx == 8) ? 8000 : 0;
+  auto out_mVa = (currentControlIdx == 6) ? 4000 : 0;
+  auto out_mVb = (currentControlIdx == 8) ? 4000 : 0;
   auto outA = IO::calcCV1Out(out_mVa);
   auto outB = IO::calcCV2Out(out_mVb);
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {

@@ -12,14 +12,14 @@ extern int16_t cvIn2_0V;
 extern int16_t cvIn2_4V;
 
 int16_t getcvOut1_0V();
-int16_t getcvOut1_8V();
+int16_t getcvOut1_4V();
 int16_t getcvOut2_0V();
-int16_t getcvOut2_8V();
+int16_t getcvOut2_4V();
 
 void calibrateCVOut1_0V(int16_t delta);
-void calibrateCVOut1_8V(int16_t delta);
+void calibrateCVOut1_4V(int16_t delta);
 void calibrateCVOut2_0V(int16_t delta);
-void calibrateCVOut2_8V(int16_t delta);
+void calibrateCVOut2_4V(int16_t delta);
 
 void calibratePWMPeriod(int16_t delta);
 uint16_t getPWMPeriod();

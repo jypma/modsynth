@@ -15,21 +15,21 @@ int16_t cvIn2_0V = 700;
 int16_t cvIn2_4V = 300;
 
 int16_t cvOut1_0V = 1335;
-int16_t cvOut1_8V = 3986;
+int16_t cvOut1_4V = 2659;
 int16_t cvOut2_0V = 1328;
-int16_t cvOut2_8V = 3980;
+int16_t cvOut2_4V = 2653;
 
 Q15n16 cvOut1Factor = 0;
 Q15n16 cvOut2Factor = 0;
 
 int16_t getcvOut1_0V() { return cvOut1_0V; }
-int16_t getcvOut1_8V() { return cvOut1_8V; }
+int16_t getcvOut1_4V() { return cvOut1_4V; }
 int16_t getcvOut2_0V() { return cvOut2_0V; }
-int16_t getcvOut2_8V() { return cvOut2_8V; }
+int16_t getcvOut2_4V() { return cvOut2_4V; }
 
 void recalibrate() {
-  cvOut1Factor = Q15n0_to_Q15n16(cvOut1_8V - cvOut1_0V) / 1000 / 8;
-  cvOut2Factor = Q15n0_to_Q15n16(cvOut2_8V - cvOut2_0V) / 1000 / 8;
+  cvOut1Factor = Q15n0_to_Q15n16(cvOut1_4V - cvOut1_0V) / 1000 / 4;
+  cvOut2Factor = Q15n0_to_Q15n16(cvOut2_4V - cvOut2_0V) / 1000 / 4;
 }
 
 void calibratePWMPeriod(int16_t delta) {
@@ -41,22 +41,22 @@ uint16_t getPWMPeriod() {
 }
 
 void calibrateCVOut1_0V(int16_t delta) {
-  cvOut1_0V = constrain(cvOut1_0V + delta, 0, cvOut1_8V);
+  cvOut1_0V = constrain(cvOut1_0V + delta, 0, cvOut1_4V);
   recalibrate();
 }
 
-void calibrateCVOut1_8V(int16_t delta) {
-  cvOut1_8V = constrain(cvOut1_8V + delta, cvOut1_0V, 4095);
+void calibrateCVOut1_4V(int16_t delta) {
+  cvOut1_4V = constrain(cvOut1_4V + delta, cvOut1_0V, 4095);
   recalibrate();
 }
 
 void calibrateCVOut2_0V(int16_t delta) {
-  cvOut2_0V = constrain(cvOut2_0V + delta, 0, cvOut2_8V);
+  cvOut2_0V = constrain(cvOut2_0V + delta, 0, cvOut2_4V);
   recalibrate();
 }
 
-void calibrateCVOut2_8V(int16_t delta) {
-  cvOut2_8V = constrain(cvOut2_8V + delta, cvOut2_0V, 4095);
+void calibrateCVOut2_4V(int16_t delta) {
+  cvOut2_4V = constrain(cvOut2_4V + delta, cvOut2_0V, 4095);
   recalibrate();
 }
 
