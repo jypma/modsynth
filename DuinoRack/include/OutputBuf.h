@@ -7,8 +7,7 @@
 extern MCP4821 MCP;
 
 struct OutputFrame {
-  // FIXME rename to cvOut1 etc., to align with methods in IO::.
-  uint16_t cvA, cvB, cvC, cvD;
+  uint16_t cv1, cv2, gate1, gate2;
 };
 
 #define OUTBUFSIZE 16
@@ -38,11 +37,10 @@ namespace OutputBuf {
 
     // Output the current frame
     // TODO save a little time by setting CV and D while we're waiting for SPI result.
-    MCP.fastWriteAGain(current[currentPos].cvA);
-    MCP.fastWriteBGain(current[currentPos].cvB);
-    // TODO inline setting the PWMs
-    IO::setGate1PWM(current[currentPos].cvC);
-    IO::setGate2PWM(current[currentPos].cvD);
+    MCP.fastWriteAGain(current[currentPos].cv1);
+    MCP.fastWriteBGain(current[currentPos].cv2);
+    IO::setGate1Out(current[currentPos].gate1);
+    IO::setGate2Out(current[currentPos].gate2);
 
     // Advance to the next frame or buffer
     if (currentPos < OUTBUFSIZE - 1) {

@@ -88,8 +88,6 @@ namespace FuncGen {
   }
 
   void start() {
-    IO::configureGate1PWM();
-    IO::configureGate2PWM();
     prepareWave();
   }
 
@@ -138,12 +136,12 @@ namespace FuncGen {
       if (sinePos > sinePosMod) {
         sinePos -= sinePosMod;
       }
-      buf->cvA = sine[sinePos >> sinePosScaleBits];
+      buf->cv1 = sine[sinePos >> sinePosScaleBits];
       // TODO we need to be able to calculate enough values here
       // Otherwise, reduce table to 8-bit values and 128 entries.
-      buf->cvB = buf->cvA;
-      buf->cvC = buf->cvA >> 2; // quick hack for 12 to 10 bits
-      buf->cvD = buf->cvC;
+      buf->cv2 = buf->cv1;
+      buf->gate1 = buf->cv1 >> 2; // quick hack for 12 to 10 bits
+      buf->gate2 = buf->gate1;
       buf++;
     }
   }

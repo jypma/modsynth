@@ -19,17 +19,31 @@ int16_t cvOut1_4V = 2659;
 int16_t cvOut2_0V = 1328;
 int16_t cvOut2_4V = 2653;
 
+int16_t gate1_0V = 0;
+int16_t gate1_4V = 539;
+int16_t gate2_0V = 0;
+int16_t gate2_4V = 539;
+
 Q15n16 cvOut1Factor = 0;
 Q15n16 cvOut2Factor = 0;
+Q15n16 gate1Factor = 0;
+Q15n16 gate2Factor = 0;
 
 int16_t getcvOut1_0V() { return cvOut1_0V; }
 int16_t getcvOut1_4V() { return cvOut1_4V; }
 int16_t getcvOut2_0V() { return cvOut2_0V; }
 int16_t getcvOut2_4V() { return cvOut2_4V; }
 
+int16_t getGate1_0V() { return gate1_0V; }
+int16_t getGate1_4V() { return gate1_4V; }
+int16_t getGate2_0V() { return gate2_0V; }
+int16_t getGate2_4V() { return gate2_4V; }
+
 void recalibrate() {
   cvOut1Factor = Q15n0_to_Q15n16(cvOut1_4V - cvOut1_0V) / 1000 / 4;
   cvOut2Factor = Q15n0_to_Q15n16(cvOut2_4V - cvOut2_0V) / 1000 / 4;
+  gate1Factor = Q15n0_to_Q15n16(gate1_4V - gate1_0V) / 1000 / 4;
+  gate2Factor = Q15n0_to_Q15n16(gate2_4V - gate2_0V) / 1000 / 4;
 }
 
 void calibratePWMPeriod(int16_t delta) {
@@ -60,6 +74,26 @@ void calibrateCVOut2_4V(int16_t delta) {
   recalibrate();
 }
 
+void calibrateGate1_0V(int16_t delta) {
+  gate1_0V = constrain(gate1_0V + delta, 0, gate1_4V);
+  recalibrate();
+}
+
+void calibrateGate1_4V(int16_t delta) {
+  gate1_4V = constrain(gate1_4V + delta, gate1_0V, 1023);
+  recalibrate();
+}
+
+void calibrateGate2_0V(int16_t delta) {
+  gate2_0V = constrain(gate2_0V + delta, 0, gate2_4V);
+  recalibrate();
+}
+
+void calibrateGate2_4V(int16_t delta) {
+  gate2_4V = constrain(gate2_4V + delta, gate2_0V, 1023);
+  recalibrate();
+}
+
 int16_t getCV1In() {
   return (int32_t(cvIn1_0V) - cvIn1) * 4000 / (cvIn1_0V - cvIn1_4V);
 }
@@ -75,6 +109,14 @@ uint16_t calcCV1Out(int16_t mV) {
 
 uint16_t calcCV2Out(int16_t mV) {
   return Q15n16_to_Q15n0(cvOut2Factor * mV) + cvOut2_0V;
+}
+
+uint16_t calcGate1Out(int16_t mV) {
+  return Q15n16_to_Q15n0(gate1Factor * mV) + gate1_0V;
+}
+
+uint16_t calcGate2Out(int16_t mV) {
+  return Q15n16_to_Q15n0(gate2Factor * mV) + gate2_0V;
 }
 
 bool getGate1In() {
@@ -108,29 +150,6 @@ void setGate2Out(uint8_t on) {
   }
 }
 
-// FIXME no configure, just use PWM for everything if the filter holds up.
-void configureGate1Direct() {
-  TCCR1A &= ~_BV(COM1A1) & ~_BV(COM1A0);
-  setGate1Out(false);
-}
-
-void configureGate2Direct() {
-  TCCR1A &= ~_BV(COM1B1) & ~_BV(COM1B0);
-  setGate2Out(false);
-}
-
-void configureGate1PWM() {
-  // Non-inverting fast PWM mode
-  TCCR1A |= _BV(COM1A1);
-  setGate1PWM(0);
-}
-
-void configureGate2PWM() {
-  // Non-inverting fast PWM mode
-  TCCR1A |= _BV(COM1B1);
-  setGate2PWM(0);
-}
-
 void setup() {
   recalibrate();
 
@@ -161,7 +180,12 @@ void setup() {
   TCCR1A |= _BV(WGM11);
   TCCR1B |= _BV(WGM12) | _BV(WGM13) | _BV(CS10);
 
-  configureGate1Direct();
+  // Non-inverting fast PWM mode
+  TCCR1A |= _BV(COM1A1);
+  setGate1Out(calcGate1Out(0));
+  // Non-inverting fast PWM mode
+  TCCR1A |= _BV(COM1B1);
+  setGate2Out(calcGate2Out(0));
 }
 
 void readIfNeeded() {

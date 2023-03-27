@@ -14,7 +14,10 @@ const char cal5[] PROGMEM = "oA  0V: ";
 const char cal6[] PROGMEM = "oA +4V: ";
 const char cal7[] PROGMEM = "oB  0V: ";
 const char cal8[] PROGMEM = "oB +4V: ";
-const char cal9[] PROGMEM = "PWM prd:";
+const char cal9[] PROGMEM = "g1  0V: ";
+const char cal10[] PROGMEM = "g1 +4V: ";
+const char cal11[] PROGMEM = "g2  0V: ";
+const char cal12[] PROGMEM = "g2 +4V: ";
 
 const char *getCalLabel() {
   switch (currentControlIdx) {
@@ -27,6 +30,9 @@ const char *getCalLabel() {
     case 7: return cal7;
     case 8: return cal8;
     case 9: return cal9;
+    case 10: return cal10;
+    case 11: return cal11;
+    case 12: return cal12;
     default: return NULL;
   }
 }
@@ -41,36 +47,38 @@ int16_t getCalValue() {
     case 6: return IO::getcvOut1_4V();
     case 7: return IO::getcvOut2_0V();
     case 8: return IO::getcvOut2_4V();
-    case 9: return IO::getPWMPeriod();
+    case 9: return IO::getGate1_0V();
+    case 10: return IO::getGate1_4V();
+    case 11: return IO::getGate2_0V();
+    case 12: return IO::getGate2_4V();
     default: return 0;
   }
 }
 
-String format(int16_t mV) {
-  String res = " 0.000 V";
+void format(int16_t mV, char *target) {
+  strcpy(target, " 0.000 V");
   if (mV < 0) {
-    res.setCharAt(0, '-');
+    target[0] = '-';
     mV = -mV;
   }
-  res.setCharAt(1, '0' + mV / 1000);
+  target[1] = '0' + mV / 1000;
   mV %= 1000;
-  res.setCharAt(3, '0' + mV / 100);
+  target[3] = '0' + mV / 100;
   mV %= 100;
-  res.setCharAt(4, '0' + mV / 10);
+  target[4] = '0' + mV / 10;
   mV %= 10;
-  res.setCharAt(5, '0' + mV);
-
-  return res;
+  target[5] = '0' + mV;
 }
 
 void draw() {
-  String txt = format(IO::getCV1In());
+  char txt[12];
+  format(IO::getCV1In(), txt);
   drawText(0, 16, "inA: ");
-  drawText(25, 16, txt.c_str());
+  drawText(25, 16, txt);
 
-  txt = format(IO::getCV2In());
+  format(IO::getCV2In(), txt);
   drawText(0, 24, "inB: ");
-  drawText(25, 24, txt.c_str());
+  drawText(25, 24, txt);
 
   drawText(0, 32, "in gates: ");
   drawText(55, 32, IO::getGate1In() ? "1" : "0");
@@ -89,8 +97,6 @@ void draw() {
 }
 
 void start() {
-  IO::configureGate1PWM();
-  IO::configureGate2PWM();
 }
 
 void stop() {
@@ -99,9 +105,6 @@ void stop() {
 
 uint16_t addIn(int16_t in, int8_t d) {
   return constrain(in + d, 0, 1023);
-}
-uint16_t addOut(int16_t in, int8_t d) {
-  return constrain(in + d, 0, 4095);
 }
 
 void adjust(int8_t d) {
@@ -114,7 +117,11 @@ void adjust(int8_t d) {
     case 6: IO::calibrateCVOut1_4V(d); break;
     case 7: IO::calibrateCVOut2_0V(d); break;
     case 8: IO::calibrateCVOut2_4V(d); break;
-    case 9: IO::calibratePWMPeriod(d); break;
+    case 9: IO::calibrateGate1_0V(d); break;
+    case 10: IO::calibrateGate1_4V(d); break;
+    case 11: IO::calibrateGate2_0V(d); break;
+    case 12: IO::calibrateGate2_4V(d); break;
+    default: break;
   }
 }
 
@@ -124,18 +131,20 @@ void fillBuffer(OutputFrame *buf) {
   auto out_mVb = (calibInCV4V || (currentControlIdx == 8)) ? 4000 : 0;
   auto outA = IO::calcCV1Out(out_mVa);
   auto outB = IO::calcCV2Out(out_mVb);
+  auto gate1 = IO::calcGate1Out((currentControlIdx == 10) ? 4000 : 0);
+  auto gate2 = IO::calcGate2Out((currentControlIdx == 12) ? 4000 : 0);
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cvA = outA;
-    buf->cvB = outB;
-    buf->cvC = 400;
-    buf->cvD = 400;
+    buf->cv1 = outA;
+    buf->cv2 = outB;
+    buf->gate1 = gate1;
+    buf->gate2 = gate2;
     buf++;
   }
 }
 
 constexpr Module module = {
   title,
-  9, // controlCount
+  12, // controlCount
   &draw,
   &start,
   &stop,

@@ -18,8 +18,9 @@ const char noteLbl[] PROGMEM = "Note: ";
 
 uint8_t noteCount = 0;
 uint8_t currentNote = 0;
-uint16_t outA = 0;
-uint16_t outB = 0;
+uint16_t out1 = 0;
+uint16_t out2 = 0;
+uint16_t gate1 = 0;
 
 void draw() {
   drawTextPgm(0, 16, noteLbl);
@@ -42,9 +43,9 @@ void fillBuffer(OutputFrame *buf) {
         noteCount++;
         currentNote = MIDI.getData1() - 21;
         Serial.println(currentNote);
-        IO::setGate1Out(true);
-        outA = IO::calcCV1Out(getCV(currentNote));
-        Serial.println(outA);
+        gate1 = IO::calcGate1Out(8000);
+        out1 = IO::calcCV1Out(getCV(currentNote));
+        Serial.println(out1);
         break;
 
       case midi::NoteOff:
@@ -52,7 +53,7 @@ void fillBuffer(OutputFrame *buf) {
           noteCount--;
         }
         if (noteCount == 0) {
-          IO::setGate1Out(false);
+          gate1 = IO::calcGate1Out(0);
         }
         break;
 
@@ -65,8 +66,9 @@ void fillBuffer(OutputFrame *buf) {
   // TODO: Decide if we have time to handle multiple MIDI messages in 1 fillBuffer()
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cvA = outA;
-    buf->cvB = outB;
+    buf->cv1 = out1;
+    buf->cv2 = out2;
+    buf->gate1 = gate1;
     buf++;
   }
 }
@@ -75,8 +77,8 @@ void start() {
   MIDI.begin(1); // Listen on channel 1
   MIDI.turnThruOff(); // for now.
   noteCount = 0;
-  outA = IO::calcCV1Out(0);
-  outB = IO::calcCV2Out(0);
+  out1 = IO::calcCV1Out(0);
+  out2 = IO::calcCV2Out(0);
 }
 
 void stop() {

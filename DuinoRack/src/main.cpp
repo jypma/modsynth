@@ -14,8 +14,6 @@
 
 // display: 300 bytes RAM
 
-#define TIMING_DEBUG
-
 Module currentMod = FuncGen::module;
 uint8_t shownModIdx = 0;
 uint8_t currentModIdx = 0;
@@ -37,13 +35,7 @@ uint8_t oldOverruns = 0;
 void fillBuffer() {
   if (OutputBuf::needNextBuffer()) {
     current = (current == a) ? b : a;
-#ifdef TIMING_DEBUG
-    IO::setGate1Out(true);
-#endif
     currentMod.fillBuffer(current);
-#ifdef TIMING_DEBUG
-    IO::setGate1Out(false);
-#endif
     OutputBuf::setNextBuffer(current);
   } else if (encoder1.ReadEncoder()) {
     Serial.println("E1");

@@ -94,9 +94,9 @@ namespace ADSR {
 
   void fillBuffer(OutputFrame *buf) {
     for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-      buf->cvA = nextLevel();
+      buf->cv1 = nextLevel();
       // TODO separate ADSR for cvB
-      buf->cvB = buf->cvA;
+      buf->cv2 = buf->cv1;
       buf++;
     }
   }

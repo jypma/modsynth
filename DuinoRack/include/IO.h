@@ -15,11 +15,19 @@ int16_t getcvOut1_0V();
 int16_t getcvOut1_4V();
 int16_t getcvOut2_0V();
 int16_t getcvOut2_4V();
+int16_t getGate1_0V();
+int16_t getGate1_4V();
+int16_t getGate2_0V();
+int16_t getGate2_4V();
 
 void calibrateCVOut1_0V(int16_t delta);
 void calibrateCVOut1_4V(int16_t delta);
 void calibrateCVOut2_0V(int16_t delta);
 void calibrateCVOut2_4V(int16_t delta);
+void calibrateGate1_0V(int16_t delta);
+void calibrateGate1_4V(int16_t delta);
+void calibrateGate2_0V(int16_t delta);
+void calibrateGate2_4V(int16_t delta);
 
 void calibratePWMPeriod(int16_t delta);
 uint16_t getPWMPeriod();
@@ -28,23 +36,19 @@ bool getGate1In();
 bool getGate2In();
 bool getGate3In();
 
-void setGate1Out(bool on);
-void setGate2Out(bool on);
-INLINE void setGate1PWM(uint16_t value) {
+INLINE void setGate1Out(uint16_t value) {
   OCR1A = value;
 }
-INLINE void setGate2PWM(uint16_t value) {
+INLINE void setGate2Out(uint16_t value) {
   OCR1B = value;
 }
-void configureGate1Direct();
-void configureGate2Direct();
-void configureGate1PWM();
-void configureGate2PWM();
 
 int16_t getCV1In();
 int16_t getCV2In();
 uint16_t calcCV1Out(int16_t mV);
 uint16_t calcCV2Out(int16_t mV);
+uint16_t calcGate1Out(int16_t mV);
+uint16_t calcGate2Out(int16_t mV);
 void setup();
 void readIfNeeded();
 
