@@ -20,7 +20,7 @@ constexpr uint16_t TABLE_SIZE = 256;
 constexpr uint16_t Q_TABLE_SIZE = 64;
 constexpr uint16_t Q3_TABLE_SIZE = 192;
 
-constexpr uint8_t sinePosScaleBits = 16;
+constexpr uint8_t sinePosScaleBits = 14;
 
 constexpr uint32_t sinePosScale = (uint32_t(1) << sinePosScaleBits);
 constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;
@@ -31,7 +31,6 @@ constexpr Q16n16 MIN_NOTE = 65536; // Note 1
 
 uint32_t sinePos = 0;
 const uint16_t *table = SIN_DATA;
-uint16_t scanCV = 0;
 uint32_t increment;
 uint16_t bpm = 120;
 enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3 };
@@ -45,8 +44,12 @@ const char triangle_t[] PROGMEM = "Triangle";
 const char saw_up_t[] PROGMEM = "Saw Up   ";
 const char saw_down_t[] PROGMEM = "Saw Down ";
 
+bool lastGate = false;
+uint32_t lastGateTime = -1;
+
 void recalc() {
-  increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 / SAMPLERATE;
+  // Multiply by OUTBUFSIZE, since we increment only once per buffer
+  increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
 }
 
 void draw() {
@@ -81,8 +84,33 @@ void adjust(int8_t d) {
   }
 }
 
+void checkGate() {
+  bool gate = IO::getGate1In();
+  if (gate != lastGate) {
+    lastGate = gate;
+    if (gate) {
+      auto time = micros();
+      Serial.println(time);
+      if (lastGateTime != -1) {
+        // Reset the phase on incoming pulse
+        sinePos = 0;
+
+        auto delayUs = time - lastGateTime;
+        uint16_t newbpm = uint32_t(1000000 * 60) / delayUs;
+        if (newbpm != bpm && newbpm > 30) {
+          bpm = newbpm;
+          recalc();
+        }
+      }
+      lastGateTime = time;
+    }
+  }
+}
+
 void start() {
   recalc();
+  lastGate = IO::getGate1In();
+  lastGateTime = -1;
 }
 
 void stop() {}
@@ -102,19 +130,16 @@ uint16_t getTableValue(uint32_t pos) {
 }
 
 void fillBuffer(OutputFrame *buf) {
-  if (scanCV == 0) {
-    recalc();
-    scanCV = 1;
-  } else {
-    scanCV--;
+  checkGate();
+
+  // only use one value for the entire buffer. 750Hz is perfectly acceptable for an LFO.
+  sinePos = (sinePos + increment);
+  if (sinePos > sinePosMod) {
+    sinePos -= sinePosMod;
   }
+  const uint16_t value = getTableValue(sinePos);
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    sinePos = (sinePos + increment);
-    if (sinePos > sinePosMod) {
-      sinePos -= sinePosMod;
-    }
-    const uint16_t value = getTableValue(sinePos);
     buf->cv1 = value;
     buf->cv2 = value;
     buf->gate1 = value >> 2;
