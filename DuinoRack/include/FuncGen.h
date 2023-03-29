@@ -2,9 +2,15 @@
 
 #include <mozzi_midi.h>
 #include <mozzi_fixmath.h>
+#include <tables/cos256_int8.h>
+#include "tables/sin256.h"
+#include "tables/triangle256.h"
+#include "tables/saw_up256.h"
+
 #include "Module.h"
 #include "IO.h"
 #include "OutputBuf.h"
+#include "mozzi_pgmspace.h"
 
 namespace FuncGen {
 
@@ -19,13 +25,14 @@ namespace FuncGen {
   constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
   constexpr Q16n16 MIN_NOTE = 65536; // Note 1
 
-  uint16_t sine[TABLE_SIZE+1];
+//uint16_t sine[TABLE_SIZE+1];
   uint32_t sinePos = 0;
-  bool tableReady = false;
+  const uint16_t *table = SIN_DATA;
+//  bool tableReady = false;
   uint16_t recalc = 0;
   uint32_t increment;
   uint8_t noteIdx = 0;
-  enum Wave: uint8_t { Sine = 0, Triangle = 1 };
+enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
   Wave wave = Sine;
 
   const char title[] PROGMEM = "FuncGen   ";
@@ -33,6 +40,7 @@ namespace FuncGen {
   const char wave_t[] PROGMEM = "Wave: ";
   const char sine_t[] PROGMEM = "Sine    ";
   const char triangle_t[] PROGMEM = "Triangle";
+  const char saw_t[] PROGMEM = "Saw     ";
 
   void draw() {
     drawTextPgm(0, 16, note);
@@ -45,50 +53,26 @@ namespace FuncGen {
     switch (wave) {
     case Sine: drawTextPgm(52, 24, sine_t); break;
     case Triangle: drawTextPgm(52, 24, triangle_t); break;
+    case Saw: drawTextPgm(52, 24, saw_t); break;
     }
 
     drawTextPgm(0, 32, clear);
   }
 
-  inline uint16_t getTriangle(int32_t i) {
-    if (i < Q_TABLE_SIZE) {
-      return (i * 4000 / Q_TABLE_SIZE);
-    } else if (i < Q3_TABLE_SIZE) {
-      return (int32_t(Q_TABLE_SIZE) - (i - Q_TABLE_SIZE)) * 4000 / Q_TABLE_SIZE;
-    } else {
-      return ((i - Q3_TABLE_SIZE) - Q_TABLE_SIZE) * 4000 / Q_TABLE_SIZE;
-    }
-  }
-
-  void prepareWave() {
-    if (tableReady) return;
-
-    for (uint16_t i = 0; i < TABLE_SIZE + 1; i++)
-    {
-      switch(wave) {
-      case Sine:
-        sine[i] = IO::calcCV1Out(round(4000 * sin(i * PI / (TABLE_SIZE / 2.0))));
-        break;
-      case Triangle:
-        sine[i] = IO::calcCV1Out(getTriangle(i));
-        break;
-      }
-    }
-    tableReady = true;
-  }
-  
   void adjust(int8_t d) {
     switch(currentControlIdx) {
     case 1:
-      wave = Wave((wave + 1) % 2);
-      tableReady = false;
+      wave = Wave((wave + 1) % 3);
+      switch (wave) {
+        case Sine: table = SIN_DATA; break;
+        case Triangle: table = TRIANGLE_DATA; break;
+        case Saw: table = SAW_UP_DATA; break;
+      }
       break;
     }
-    prepareWave();
   }
 
   void start() {
-    prepareWave();
   }
 
   void stop() {
@@ -136,11 +120,10 @@ namespace FuncGen {
       if (sinePos > sinePosMod) {
         sinePos -= sinePosMod;
       }
-      buf->cv1 = sine[sinePos >> sinePosScaleBits];
-      // TODO we need to be able to calculate enough values here
-      // Otherwise, reduce table to 8-bit values and 128 entries.
-      buf->cv2 = buf->cv1;
-      buf->gate1 = buf->cv1 >> 2; // quick hack for 12 to 10 bits
+      const uint16_t rawValue = FLASH_OR_RAM_READ(table + (sinePos >> sinePosScaleBits));
+      buf->cv1 = rawValue;
+      buf->cv2 = rawValue;
+      buf->gate1 = rawValue >> 2;
       buf->gate2 = buf->gate1;
       buf++;
     }

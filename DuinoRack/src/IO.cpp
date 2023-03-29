@@ -3,6 +3,7 @@
 #include <mozzi_fixmath.h>
 #include "IO.h"
 #include "Module.h"
+#include "mozzi_pgmspace.h"
 
 namespace IO {
 uint16_t cvIn1 = 0;

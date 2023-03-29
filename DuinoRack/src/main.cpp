@@ -8,6 +8,7 @@
 #include "Calibrate.h"
 #include "ADSR.h"
 #include "IO.h"
+#include "LFO.h"
 #include "MIDIMod.h"
 #include "canvas/canvas.h"
 #include "pins_arduino.h"
@@ -50,15 +51,16 @@ ISR(TIMER2_COMPA_vect){
   OutputBuf::advance();
 }
 
-void setModuleIdx(uint8_t idx) {
+void setModuleIdx(int8_t idx) {
   currentMod.stop();
-  constexpr uint8_t MODULE_COUNT = 4;
+  constexpr uint8_t MODULE_COUNT = 5;
   currentModIdx = idx % MODULE_COUNT;
   Serial.println(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
     case 1: currentMod = ADSR::module; break;
     case 2: currentMod = MIDIMod::module; break;
+    case 3: currentMod = LFO::module; break;
     default: currentMod = Calibrate::module;
   }
   // Startup trigger
