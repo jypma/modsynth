@@ -112,7 +112,8 @@ void showModule() {
   shownModIdx = currentModIdx;
 }
 
-void handleEncoder1Rotate(int8_t rotation) {
+// Encoder 2 is "Adjust"
+void handleEncoder2Rotate(int8_t rotation) {
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   if (currentControlIdx == 0) {
     setModuleIdx(currentModIdx + rotation);
@@ -121,7 +122,8 @@ void handleEncoder1Rotate(int8_t rotation) {
   }
 }
 
-void handleEncoder2Rotate(int8_t rotation) {
+// Encoder 1 is "Select"
+void handleEncoder1Rotate(int8_t rotation) {
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   currentControlIdx = (currentControlIdx + (currentMod.controlCount + 1) + rotation) % (currentMod.controlCount + 1);
 }
