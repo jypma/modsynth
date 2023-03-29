@@ -27,22 +27,42 @@ constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;
 constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
 
 constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
-constexpr Q16n16 MIN_NOTE = 65536; // Note 1
+constexpr Q16n16 MIN_NOTE = 65536;   // Note 1
 
-uint32_t sinePos = 0;
-const uint16_t *table = SIN_DATA;
-uint32_t increment;
-uint16_t bpm = 120;
 enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3 };
-Wave wave = Sine;
 
-const char title[] PROGMEM = "LFO   ";
-const char bpm_t[] PROGMEM = "BPM:  ";
-const char wave_t[] PROGMEM = "Wave: ";
 const char sine_t[] PROGMEM = "Sine    ";
 const char triangle_t[] PROGMEM = "Triangle";
 const char saw_up_t[] PROGMEM = "Saw Up   ";
 const char saw_down_t[] PROGMEM = "Saw Down ";
+const char * waveTitles[] = { sine_t, triangle_t, saw_up_t, saw_down_t };
+
+const uint8_t factorNom[] = { 4, 3, 2, 1, 1, 1, 1 };
+const uint8_t factorDen[] = {1, 1, 1, 1, 2, 3, 4};
+constexpr uint8_t FACTOR_ONE = 3; // The factor of 1/1, i.e. normal BPM
+constexpr uint8_t MAX_FACTOR = 6;
+
+uint32_t mainPos;
+uint32_t increment;
+
+uint32_t tablePos1 = 0;
+uint32_t increment1;
+uint8_t factor1 = FACTOR_ONE;
+const uint16_t *table1 = SIN_DATA;
+Wave wave1 = Sine;
+
+uint32_t tablePos2 = 0;
+uint32_t increment2;
+uint8_t factor2 = FACTOR_ONE;
+const uint16_t *table2 = SIN_DATA;
+Wave wave2 = Sine;
+
+uint16_t bpm = 120;
+
+const char title[] PROGMEM = "LFO   ";
+const char bpm_t[] PROGMEM = "BPM:  ";
+const char wave1_t[] PROGMEM = "A:";
+const char wave2_t[] PROGMEM = "B:";
 
 bool lastGate = false;
 uint32_t lastGateTime = -1;
@@ -50,19 +70,41 @@ uint32_t lastGateTime = -1;
 void recalc() {
   // Multiply by OUTBUFSIZE, since we increment only once per buffer
   increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
+  increment1 = increment / factorNom[factor1] * factorDen[factor1];
+  increment2 = increment / factorNom[factor2] * factorDen[factor2];
 }
 
 void draw() {
-  drawTextPgm(8, 16, bpm_t);
+  drawTextPgm(7, 16, bpm_t);
   drawDecimal(40, 16, bpm);
-  drawTextPgm(8, 24, wave_t);
+  drawTextPgm(0, 24, wave1_t);
+  drawTextPgm(0, 32, wave2_t);
   drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
-  drawText(0, 24, (currentControlIdx == 2) ? ">" : " ");
-  switch (wave) {
-    case Sine: drawTextPgm(52, 24, sine_t); break;
-    case Triangle: drawTextPgm(52, 24, triangle_t); break;
-    case SawUp: drawTextPgm(52, 24, saw_up_t); break;
-    case SawDown: drawTextPgm(52, 24, saw_down_t); break;
+  drawText(16, 24, (currentControlIdx == 2) ? ">" : " ");
+  drawText(80, 24, (currentControlIdx == 3) ? ">" : " ");
+  drawText(16, 32, (currentControlIdx == 4) ? ">" : " ");
+  drawText(80, 32, (currentControlIdx == 5) ? ">" : " ");
+
+  drawTextPgm(24, 24, waveTitles[wave1]);
+  drawTextPgm(24, 32, waveTitles[wave2]);
+  char str[4];
+  str[1] = '/';
+  str[3] = 0;
+  str[0] = '0' + factorNom[factor1];
+  str[2] = '0' + factorDen[factor1];
+  drawText(88, 24, str);
+  str[0] = '0' + factorNom[factor2];
+  str[2] = '0' + factorDen[factor2];
+  drawText(88, 32, str);
+}
+
+void adjustWave(Wave *wave, const uint16_t **table, int8_t d) {
+  *wave = Wave((*wave + d) % 4);
+  switch (*wave) {
+    case Sine: *table = SIN_DATA; break;
+    case Triangle: *table = TRIANGLE_DATA; break;
+    case SawUp: *table = SAW_UP_DATA; break;
+    case SawDown: *table = SAW_DOWN_DATA; break;
   }
 }
 
@@ -73,14 +115,35 @@ void adjust(int8_t d) {
       recalc();
       break;
     case 2:
-      wave = Wave((wave + d) % 4);
-      switch (wave) {
-        case Sine: table = SIN_DATA; break;
-        case Triangle: table = TRIANGLE_DATA; break;
-        case SawUp: table = SAW_UP_DATA; break;
-        case SawDown: table = SAW_DOWN_DATA; break;
-      }
+      adjustWave(&wave1, &table1, d);
       break;
+    case 3:
+      factor1 = constrain(factor1 + d, 0, MAX_FACTOR);
+      recalc();
+      break;
+    case 4:
+      adjustWave(&wave2, &table2, d);
+      break;
+    case 5:
+      factor2 = constrain(factor2 + d, 0, MAX_FACTOR);
+      recalc();
+      break;
+  }
+}
+
+void resetPhase() {
+  constexpr auto OK_TO_RESET_MIN = uint32_t(10) << sinePosScaleBits;
+  constexpr auto OK_TO_RESET_MAX = uint32_t(240) << sinePosScaleBits;
+
+  if (factor1 >= FACTOR_ONE) {
+    tablePos1 = 0;
+  } else if (tablePos1 < OK_TO_RESET_MIN || tablePos1 > OK_TO_RESET_MAX) {
+    tablePos1 = 0;
+  }
+  if (factor2 >= FACTOR_ONE) {
+    tablePos2 = 0;
+  } else if (tablePos2 < OK_TO_RESET_MIN || tablePos2 > OK_TO_RESET_MAX) {
+    tablePos2 = 0;
   }
 }
 
@@ -90,10 +153,10 @@ void checkGate() {
     lastGate = gate;
     if (gate) {
       auto time = micros();
-      Serial.println(time);
       if (lastGateTime != -1) {
         // Reset the phase on incoming pulse
-        sinePos = 0;
+        mainPos = 0;
+        resetPhase();
 
         auto delayUs = time - lastGateTime;
         uint16_t newbpm = uint32_t(1000000 * 60) / delayUs;
@@ -115,7 +178,7 @@ void start() {
 
 void stop() {}
 
-uint16_t getTableValue(uint32_t pos) {
+uint16_t getTableValue(const uint16_t *table, uint32_t pos) {
   uint8_t idx1 = pos >> sinePosScaleBits;
   // Let idx wrap around since table is 256 entries
   uint8_t idx2 = idx1 + 1;
@@ -133,24 +196,29 @@ void fillBuffer(OutputFrame *buf) {
   checkGate();
 
   // only use one value for the entire buffer. 750Hz is perfectly acceptable for an LFO.
-  sinePos = (sinePos + increment);
-  if (sinePos > sinePosMod) {
-    sinePos -= sinePosMod;
+  mainPos += increment;
+  if (mainPos > sinePosMod) {
+    mainPos -= sinePosMod;
+    resetPhase();
+  } else {
+    tablePos1 += increment1;
+    tablePos2 += increment2;
   }
-  const uint16_t value = getTableValue(sinePos);
+  const uint16_t value1 = getTableValue(table1, tablePos1);
+  const uint16_t value2 = getTableValue(table2, tablePos2);
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cv1 = value;
-    buf->cv2 = value;
-    buf->gate1 = value >> 2;
-    buf->gate2 = buf->gate1;
+    buf->cv1 = value1;
+    buf->cv2 = value2;
+    buf->gate1 = 0;
+    buf->gate2 = 0;
     buf++;
   }
 }
 
 constexpr Module module = {
   title,
-  2,
+  5,
   &draw,
   &start,
   &stop,
