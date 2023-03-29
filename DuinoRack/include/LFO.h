@@ -38,7 +38,7 @@ const char saw_down_t[] PROGMEM = "Saw Down ";
 const char * waveTitles[] = { sine_t, triangle_t, saw_up_t, saw_down_t };
 
 const uint8_t factorNom[] = { 4, 3, 2, 1, 1, 1, 1 };
-const uint8_t factorDen[] = {1, 1, 1, 1, 2, 3, 4};
+const uint8_t factorDen[] = { 1, 1, 1, 1, 2, 3, 4 };
 constexpr uint8_t FACTOR_ONE = 3; // The factor of 1/1, i.e. normal BPM
 constexpr uint8_t MAX_FACTOR = 6;
 
@@ -65,13 +65,27 @@ const char wave1_t[] PROGMEM = "A:";
 const char wave2_t[] PROGMEM = "B:";
 
 bool lastGate = false;
-uint32_t lastGateTime = -1;
+constexpr uint32_t NO_TIME = 0xFFFFFFFF;
+uint32_t lastGateTime = NO_TIME;
 
 void recalc() {
   // Multiply by OUTBUFSIZE, since we increment only once per buffer
   increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
   increment1 = increment / factorNom[factor1] * factorDen[factor1];
   increment2 = increment / factorNom[factor2] * factorDen[factor2];
+}
+
+void formatFactor(char *str, uint8_t factor) {
+  str[3] = 0;
+  if (factorDen[factor] == 1) {
+    str[0] = '0' + factorNom[factor];
+    str[1] = 'x';
+    str[2] = ' ';
+  } else {
+    str[0] = '0' + factorNom[factor];
+    str[1] = '/';
+    str[2] = '0' + factorDen[factor];
+  }
 }
 
 void draw() {
@@ -88,13 +102,9 @@ void draw() {
   drawTextPgm(24, 24, waveTitles[wave1]);
   drawTextPgm(24, 32, waveTitles[wave2]);
   char str[4];
-  str[1] = '/';
-  str[3] = 0;
-  str[0] = '0' + factorNom[factor1];
-  str[2] = '0' + factorDen[factor1];
+  formatFactor(str, factor1);
   drawText(88, 24, str);
-  str[0] = '0' + factorNom[factor2];
-  str[2] = '0' + factorDen[factor2];
+  formatFactor(str, factor2);
   drawText(88, 32, str);
 }
 
@@ -153,7 +163,7 @@ void checkGate() {
     lastGate = gate;
     if (gate) {
       auto time = micros();
-      if (lastGateTime != -1) {
+      if (lastGateTime != NO_TIME) {
         // Reset the phase on incoming pulse
         mainPos = 0;
         resetPhase();
@@ -173,7 +183,7 @@ void checkGate() {
 void start() {
   recalc();
   lastGate = IO::getGate1In();
-  lastGateTime = -1;
+  lastGateTime = NO_TIME;
 }
 
 void stop() {}
