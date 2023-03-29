@@ -63,6 +63,12 @@ uint8_t factor3 = FACTOR_ONE;
 const uint16_t *table3 = SIN_DATA;
 Wave wave3 = Sine;
 
+uint32_t tablePos4 = 0;
+uint32_t increment4;
+uint8_t factor4 = FACTOR_ONE;
+const uint16_t *table4 = SIN_DATA;
+Wave wave4 = Sine;
+
 uint16_t bpm = 120;
 
 const char title[] PROGMEM = "LFO   ";
@@ -70,6 +76,7 @@ const char bpm_t[] PROGMEM = "BPM:  ";
 const char wave1_t[] PROGMEM = "A:";
 const char wave2_t[] PROGMEM = "B:";
 const char wave3_t[] PROGMEM = "1:";
+const char wave4_t[] PROGMEM = "2:";
 
 bool lastGate = false;
 constexpr uint32_t NO_TIME = 0xFFFFFFFF;
@@ -81,6 +88,7 @@ void recalc() {
   increment1 = increment / factorNom[factor1] * factorDen[factor1];
   increment2 = increment / factorNom[factor2] * factorDen[factor2];
   increment3 = increment / factorNom[factor3] * factorDen[factor3];
+  increment4 = increment / factorNom[factor4] * factorDen[factor4];
 }
 
 void formatFactor(char *str, uint8_t factor) {
@@ -102,6 +110,7 @@ void draw() {
   drawTextPgm(0, 24, wave1_t);
   drawTextPgm(0, 32, wave2_t);
   drawTextPgm(0, 40, wave3_t);
+  drawTextPgm(0, 48, wave4_t);
   drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
   drawText(16, 24, (currentControlIdx == 2) ? ">" : " ");
   drawText(80, 24, (currentControlIdx == 3) ? ">" : " ");
@@ -109,10 +118,13 @@ void draw() {
   drawText(80, 32, (currentControlIdx == 5) ? ">" : " ");
   drawText(16, 40, (currentControlIdx == 6) ? ">" : " ");
   drawText(80, 40, (currentControlIdx == 7) ? ">" : " ");
+  drawText(16, 48, (currentControlIdx == 8) ? ">" : " ");
+  drawText(80, 48, (currentControlIdx == 9) ? ">" : " ");
 
   drawTextPgm(24, 24, waveTitles[wave1]);
   drawTextPgm(24, 32, waveTitles[wave2]);
   drawTextPgm(24, 40, waveTitles[wave3]);
+  drawTextPgm(24, 48, waveTitles[wave4]);
   char str[4];
   formatFactor(str, factor1);
   drawText(88, 24, str);
@@ -120,10 +132,12 @@ void draw() {
   drawText(88, 32, str);
   formatFactor(str, factor3);
   drawText(88, 40, str);
+  formatFactor(str, factor4);
+  drawText(88, 48, str);
 }
 
 void adjustWave(Wave *wave, const uint16_t **table, int8_t d) {
-  *wave = Wave((*wave + d) % 4);
+  *wave = Wave((*wave + 4 + d) % 4);
   switch (*wave) {
     case Sine: *table = SIN_DATA; break;
     case Triangle: *table = TRIANGLE_DATA; break;
@@ -159,6 +173,13 @@ void adjust(int8_t d) {
       factor3 = constrain(factor3 + d, 0, MAX_FACTOR);
       recalc();
       break;
+    case 8:
+      adjustWave(&wave4, &table4, d);
+      break;
+    case 9:
+      factor4 = constrain(factor4 + d, 0, MAX_FACTOR);
+      recalc();
+      break;
   }
 }
 
@@ -180,6 +201,11 @@ void resetPhase() {
     tablePos3 = 0;
   } else if (tablePos3 < OK_TO_RESET_MIN || tablePos3 > OK_TO_RESET_MAX) {
     tablePos3 = 0;
+  }
+  if (factor4 >= FACTOR_ONE) {
+    tablePos4 = 0;
+  } else if (tablePos4 < OK_TO_RESET_MIN || tablePos4 > OK_TO_RESET_MAX) {
+    tablePos4 = 0;
   }
 }
 
@@ -240,23 +266,25 @@ void fillBuffer(OutputFrame *buf) {
     tablePos1 += increment1;
     tablePos2 += increment2;
     tablePos3 += increment3;
+    tablePos4 += increment4;
   }
   const uint16_t value1 = getTableValue(table1, tablePos1);
   const uint16_t value2 = getTableValue(table2, tablePos2);
   const uint16_t value3 = getTableValue(table3, tablePos3);
+  const uint16_t value4 = getTableValue(table4, tablePos4);
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = value1;
     buf->cv2 = value2;
     buf->gate1 = value3 >> 2; // Gate outputs are 10-bit, not 12 bit like CV outputs
-    buf->gate2 = 0;
+    buf->gate2 = value4 >> 2;
     buf++;
   }
 }
 
 constexpr Module module = {
   title,
-  7,
+  9,
   &draw,
   &start,
   &stop,
