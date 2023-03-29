@@ -57,12 +57,19 @@ uint8_t factor2 = FACTOR_ONE;
 const uint16_t *table2 = SIN_DATA;
 Wave wave2 = Sine;
 
+uint32_t tablePos3 = 0;
+uint32_t increment3;
+uint8_t factor3 = FACTOR_ONE;
+const uint16_t *table3 = SIN_DATA;
+Wave wave3 = Sine;
+
 uint16_t bpm = 120;
 
 const char title[] PROGMEM = "LFO   ";
 const char bpm_t[] PROGMEM = "BPM:  ";
 const char wave1_t[] PROGMEM = "A:";
 const char wave2_t[] PROGMEM = "B:";
+const char wave3_t[] PROGMEM = "1:";
 
 bool lastGate = false;
 constexpr uint32_t NO_TIME = 0xFFFFFFFF;
@@ -73,6 +80,7 @@ void recalc() {
   increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
   increment1 = increment / factorNom[factor1] * factorDen[factor1];
   increment2 = increment / factorNom[factor2] * factorDen[factor2];
+  increment3 = increment / factorNom[factor3] * factorDen[factor3];
 }
 
 void formatFactor(char *str, uint8_t factor) {
@@ -93,19 +101,25 @@ void draw() {
   drawDecimal(40, 16, bpm);
   drawTextPgm(0, 24, wave1_t);
   drawTextPgm(0, 32, wave2_t);
+  drawTextPgm(0, 40, wave3_t);
   drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
   drawText(16, 24, (currentControlIdx == 2) ? ">" : " ");
   drawText(80, 24, (currentControlIdx == 3) ? ">" : " ");
   drawText(16, 32, (currentControlIdx == 4) ? ">" : " ");
   drawText(80, 32, (currentControlIdx == 5) ? ">" : " ");
+  drawText(16, 40, (currentControlIdx == 6) ? ">" : " ");
+  drawText(80, 40, (currentControlIdx == 7) ? ">" : " ");
 
   drawTextPgm(24, 24, waveTitles[wave1]);
   drawTextPgm(24, 32, waveTitles[wave2]);
+  drawTextPgm(24, 40, waveTitles[wave3]);
   char str[4];
   formatFactor(str, factor1);
   drawText(88, 24, str);
   formatFactor(str, factor2);
   drawText(88, 32, str);
+  formatFactor(str, factor3);
+  drawText(88, 40, str);
 }
 
 void adjustWave(Wave *wave, const uint16_t **table, int8_t d) {
@@ -138,6 +152,13 @@ void adjust(int8_t d) {
       factor2 = constrain(factor2 + d, 0, MAX_FACTOR);
       recalc();
       break;
+    case 6:
+      adjustWave(&wave3, &table3, d);
+      break;
+    case 7:
+      factor3 = constrain(factor3 + d, 0, MAX_FACTOR);
+      recalc();
+      break;
   }
 }
 
@@ -154,6 +175,11 @@ void resetPhase() {
     tablePos2 = 0;
   } else if (tablePos2 < OK_TO_RESET_MIN || tablePos2 > OK_TO_RESET_MAX) {
     tablePos2 = 0;
+  }
+  if (factor3 >= FACTOR_ONE) {
+    tablePos3 = 0;
+  } else if (tablePos3 < OK_TO_RESET_MIN || tablePos3 > OK_TO_RESET_MAX) {
+    tablePos3 = 0;
   }
 }
 
@@ -213,14 +239,16 @@ void fillBuffer(OutputFrame *buf) {
   } else {
     tablePos1 += increment1;
     tablePos2 += increment2;
+    tablePos3 += increment3;
   }
   const uint16_t value1 = getTableValue(table1, tablePos1);
   const uint16_t value2 = getTableValue(table2, tablePos2);
+  const uint16_t value3 = getTableValue(table3, tablePos3);
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = value1;
     buf->cv2 = value2;
-    buf->gate1 = 0;
+    buf->gate1 = value3 >> 2; // Gate outputs are 10-bit, not 12 bit like CV outputs
     buf->gate2 = 0;
     buf++;
   }
@@ -228,7 +256,7 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  5,
+  7,
   &draw,
   &start,
   &stop,
