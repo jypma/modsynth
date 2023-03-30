@@ -114,16 +114,40 @@ void showModule() {
 
 // Encoder 2 is "Adjust"
 void handleEncoder2Rotate(int8_t rotation) {
+  static uint32_t prevTime = 0;
+  static uint8_t accel = 1;
+  auto time = millis();
+  if ((time - prevTime < 100) && (accel < 8)) {
+    accel <<= 1;
+  } else {
+    accel = 1;
+  }
+  prevTime = time;
+
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   if (currentControlIdx == 0) {
     setModuleIdx(currentModIdx + rotation);
   } else {
+    // TODO control acceleration differently for different controls
+    rotation *= accel;
     currentMod.adjust(rotation);
   }
 }
 
 // Encoder 1 is "Select"
 void handleEncoder1Rotate(int8_t rotation) {
+  static uint32_t prevTime = 0;
+  static uint8_t accel = 1;
+  auto time = millis();
+  if ((time - prevTime < 100) && (accel < 8)) {
+    accel <<= 1;
+  } else {
+    accel = 1;
+  }
+  prevTime = time;
+  // TODO control acceleration differently for different controls
+  rotation *= accel;
+
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   currentControlIdx = (currentControlIdx + (currentMod.controlCount + 1) + rotation) % (currentMod.controlCount + 1);
 }

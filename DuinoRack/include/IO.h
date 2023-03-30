@@ -4,6 +4,23 @@
 
 #define INLINE inline __attribute__((always_inline))
 
+template <typename T>
+inline T applyDelta(T value, int8_t delta, T min, T max) {
+  if (delta > 0) {
+    if (value < max - delta) {
+      return value + delta;
+    } else {
+      return max;
+    }
+  } else {
+    if (value > min - delta) {
+      return value + delta;
+    } else {
+      return min;
+    }
+  }
+}
+
 namespace IO {
 
 extern int16_t cvIn1_0V;

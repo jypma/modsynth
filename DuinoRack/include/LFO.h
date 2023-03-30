@@ -149,35 +149,35 @@ void adjustWave(Wave *wave, const uint16_t **table, int8_t d) {
 void adjust(int8_t d) {
   switch(currentControlIdx) {
     case 1:
-      bpm = constrain(bpm + d, 1, 1000);
+      bpm = applyDelta<uint16_t>(bpm, d, 1, 1000);
       recalc();
       break;
     case 2:
       adjustWave(&wave1, &table1, d);
       break;
     case 3:
-      factor1 = constrain(factor1 + d, 0, MAX_FACTOR);
+      factor1 = applyDelta<uint32_t>(factor1, d, 0, MAX_FACTOR);
       recalc();
       break;
     case 4:
       adjustWave(&wave2, &table2, d);
       break;
     case 5:
-      factor2 = constrain(factor2 + d, 0, MAX_FACTOR);
+      factor2 = applyDelta<uint32_t>(factor2, d, 0, MAX_FACTOR);
       recalc();
       break;
     case 6:
       adjustWave(&wave3, &table3, d);
       break;
     case 7:
-      factor3 = constrain(factor3 + d, 0, MAX_FACTOR);
+      factor3 = applyDelta<uint32_t>(factor3, d, 0, MAX_FACTOR);
       recalc();
       break;
     case 8:
       adjustWave(&wave4, &table4, d);
       break;
     case 9:
-      factor4 = constrain(factor4 + d, 0, MAX_FACTOR);
+      factor4 = applyDelta<uint32_t>(factor4, d, 0, MAX_FACTOR);
       recalc();
       break;
   }
@@ -214,14 +214,14 @@ void checkGate() {
   if (gate != lastGate) {
     lastGate = gate;
     if (gate) {
-      auto time = micros();
+      auto time = millis(); // millis is significantly faster than micros(), which has a long division.
       if (lastGateTime != NO_TIME) {
         // Reset the phase on incoming pulse
         mainPos = 0;
         resetPhase();
 
         auto delayUs = time - lastGateTime;
-        uint16_t newbpm = uint32_t(1000000 * 60) / delayUs;
+        uint16_t newbpm = uint32_t(1000) * 60 / delayUs;
         if (newbpm != bpm && newbpm > 30) {
           bpm = newbpm;
           recalc();

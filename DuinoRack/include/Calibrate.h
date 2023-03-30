@@ -104,7 +104,7 @@ void stop() {
 }
 
 uint16_t addIn(int16_t in, int8_t d) {
-  return constrain(in + d, 0, 1023);
+  return applyDelta<uint16_t>(in, d, 0, 1023);
 }
 
 void adjust(int8_t d) {
