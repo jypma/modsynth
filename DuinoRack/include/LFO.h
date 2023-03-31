@@ -2,7 +2,6 @@
 
 #include <mozzi_midi.h>
 #include <mozzi_fixmath.h>
-#include <tables/cos256_int8.h>
 #include "Arduino.h"
 #include "tables/sin256.h"
 #include "tables/triangle256.h"
