@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
-constexpr uint8_t NUM_SCALES = 14;
+constexpr uint8_t NUM_SCALES = 24;
 
 const char scaleNames[] PROGMEM =
   "Acoustic \0"
@@ -19,7 +19,17 @@ const char scaleNames[] PROGMEM =
   "Hunga.Maj\0"
   "Hunga.Min\0"
   "Major,Ion\0"
+  "Maj.Pent.\0"
   "Iwato    \0"
+  "Locrian  \0"
+  "Lydian   \0"
+  "Min.Pent.\0"
+  "Mixolyd. \0"
+  "NeapolMaj\0"
+  "NeapolMin\0"
+  "Phrygian \0"
+  "UkrDorian\0"
+  "WholeTone\0"
   ;
 
 const uint16_t scales[] PROGMEM = {
@@ -37,7 +47,17 @@ const uint16_t scales[] PROGMEM = {
   0b100110110110,
   0b101100111001,
   0b101011010101,
+  0b101010010100,
   0b110001100010,
+  0b110101101010,
+  0b101010110101,
+  0b100101010010,
+  0b101011010110,
+  0b110101010101,
+  0b110101011001,
+  0b110101101010,
+  0b101100110110,
+  0b101010101010,
 };
 
 int16_t noteToVoltage(uint8_t note) {
