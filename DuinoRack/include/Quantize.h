@@ -13,13 +13,14 @@
 namespace Quantize {
 
 const char title[] PROGMEM = "Quantizer";
-const char notenames[] PROGMEM = "C-C#D-D#E-F-F#G-G#A-A#B-";
-const char scale_t[] PROGMEM = "Scale: ";
+const char notenames[] PROGMEM = " CC# DD# E FF# GG# AA# B";
+const char scale_t[] PROGMEM = "Scale:";
 const char titleA[] PROGMEM = "Note 1: ";
 const char titleB[] PROGMEM = "Note 2: ";
 
 uint8_t scaleIdx = 0;
-auto scale = Scale(scaleIdx);
+uint8_t rootNote = 0;
+auto scale = Scale(rootNote, scaleIdx);
 
 uint8_t noteA;
 uint8_t noteB;
@@ -35,11 +36,15 @@ void formatNote(uint8_t note, char *txt)
 }
 
 void draw() {
-  drawTextPgm(7, 16, scale_t);
-  drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
-  drawTextPgm(56, 16, scale.getLabel());
-
   char txt[5];
+  drawTextPgm(0, 16, scale_t);
+  drawText(40, 16, (currentControlIdx == 1) ? ">" : " ");
+  formatNote(rootNote, txt);
+  txt[2] = '\0';
+  drawText(48, 16, txt);
+  drawText(64, 16, (currentControlIdx == 2) ? ">" : " ");
+  drawTextPgm(72, 16, scale.getLabel());
+
   formatNote(noteA, txt);
   drawTextPgm(8, 32, titleA);
   drawText(56, 32, txt);
@@ -52,8 +57,12 @@ void draw() {
 void adjust(int8_t d) {
   switch(currentControlIdx) {
     case 1:
+      rootNote = applyDelta<uint8_t>(rootNote, d, 0, 11);
+      scale = Scale(rootNote, scaleIdx);
+      break;
+    case 2:
       scaleIdx = applyDelta<uint8_t>(scaleIdx, d, 0, NUM_SCALES - 1);
-      scale = Scale(scaleIdx);
+      scale = Scale(rootNote, scaleIdx);
       break;
     default:
       break;
@@ -95,7 +104,7 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  1,
+  2,
   &draw,
   &start,
   &stop,

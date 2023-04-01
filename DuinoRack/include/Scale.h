@@ -3,14 +3,41 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
-const char scale0[] PROGMEM = "Chromatic";
-const char scale1[] PROGMEM = "Major    ";
+constexpr uint8_t NUM_SCALES = 14;
 
-constexpr uint8_t NUM_SCALES = 2;
+const char scaleNames[] PROGMEM =
+  "Acoustic \0"
+  "Aeolian  \0"
+  "Altered  \0"
+  "Augmented\0"
+  "Blues    \0"
+  "Chromatic\0"
+  "Dorian   \0"
+  "Half Dim.\0"
+  "Harmo.Maj\0"
+  "Harmo.Min\0"
+  "Hunga.Maj\0"
+  "Hunga.Min\0"
+  "Major,Ion\0"
+  "Iwato    \0"
+  ;
 
 const uint16_t scales[] PROGMEM = {
+  //C D EF G A B
+  0b101010110110,
+  0b101100111001,
+  0b110100101010,
+  0b100110011001,
+  0b100101110010,
   0b111111111111,
-  0b101011010101
+  0b101101010110,
+  0b101101101010,
+  0b101011011001,
+  0b101101011001,
+  0b100110110110,
+  0b101100111001,
+  0b101011010101,
+  0b110001100010,
 };
 
 int16_t noteToVoltage(uint8_t note) {
@@ -31,9 +58,13 @@ class Scale {
     }
     return pgm_read_word(scales + idx);
   }
+
+  uint16_t transposeUp(uint16_t notes, uint8_t n) {
+    return ((notes >> n) | (notes << (12 - n))) & 0b111111111111;
+  }
  public:
-  Scale(uint8_t _scaleIdx): scaleIdx(_scaleIdx) {
-    uint16_t enabledNotes = getNotesFor(scaleIdx);
+  Scale(uint8_t rootNote, uint8_t _scaleIdx): scaleIdx(_scaleIdx) {
+    uint16_t enabledNotes = transposeUp(getNotesFor(scaleIdx), rootNote);
     notes = 0;
     for (uint8_t note = 0; note < 12; note++) {
       // We write the bits left to right, but the largest bit is actually note 0 (C)
@@ -82,11 +113,7 @@ class Scale {
   }
 
   const char *getLabel() {
-    switch (scaleIdx) {
-      case 0: return scale0;
-      case 1: return scale1;
-      default: return scale0;
-    }
+    return scaleNames + (scaleIdx * 10);
   }
 
   void print() {
