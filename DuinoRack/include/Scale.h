@@ -18,11 +18,11 @@ const char scaleNames[] PROGMEM =
   "Harmo.Min\0"
   "Hunga.Maj\0"
   "Hunga.Min\0"
-  "Major,Ion\0"
-  "Maj.Pent.\0"
   "Iwato    \0"
   "Locrian  \0"
   "Lydian   \0"
+  "Major,Ion\0"
+  "Maj.Pent.\0"
   "Min.Pent.\0"
   "Mixolyd. \0"
   "NeapolMaj\0"
@@ -46,11 +46,11 @@ const uint16_t scales[] PROGMEM = {
   0b101101011001,
   0b100110110110,
   0b101100111001,
-  0b101011010101,
-  0b101010010100,
   0b110001100010,
   0b110101101010,
   0b101010110101,
+  0b101011010101,
+  0b101010010100,
   0b100101010010,
   0b101011010110,
   0b110101010101,
