@@ -47,25 +47,25 @@ uint32_t increment;
 uint32_t tablePos1 = 0;
 uint32_t increment1;
 uint8_t factor1 = FACTOR_ONE;
-const uint16_t *table1 = SIN_DATA;
+const int16_t *table1 = SIN_DATA;
 Wave wave1 = Sine;
 
 uint32_t tablePos2 = 0;
 uint32_t increment2;
 uint8_t factor2 = FACTOR_ONE;
-const uint16_t *table2 = SIN_DATA;
+const int16_t *table2 = SIN_DATA;
 Wave wave2 = Sine;
 
 uint32_t tablePos3 = 0;
 uint32_t increment3;
 uint8_t factor3 = FACTOR_ONE;
-const uint16_t *table3 = SIN_DATA;
+const int16_t *table3 = SIN_DATA;
 Wave wave3 = Sine;
 
 uint32_t tablePos4 = 0;
 uint32_t increment4;
 uint8_t factor4 = FACTOR_ONE;
-const uint16_t *table4 = SIN_DATA;
+const int16_t *table4 = SIN_DATA;
 Wave wave4 = Sine;
 
 uint16_t bpm = 120;
@@ -135,7 +135,7 @@ void draw() {
   drawText(88, 48, str);
 }
 
-void adjustWave(Wave *wave, const uint16_t **table, int8_t d) {
+void adjustWave(Wave *wave, const int16_t **table, int8_t d) {
   *wave = Wave((*wave + 4 + d) % 4);
   switch (*wave) {
     case Sine: *table = SIN_DATA; break;
@@ -239,14 +239,14 @@ void start() {
 
 void stop() {}
 
-uint16_t getTableValue(const uint16_t *table, uint32_t pos) {
+int16_t getTableValue(const int16_t *table, uint32_t pos) {
   uint8_t idx1 = pos >> sinePosScaleBits;
   // Let idx wrap around since table is 256 entries
   uint8_t idx2 = idx1 + 1;
 
   // TODO cache v1, v2, delta for more performance, while idx doesn't change.
-  uint16_t v1 = FLASH_OR_RAM_READ(table + idx1);
-  uint16_t v2 = FLASH_OR_RAM_READ(table + idx2);
+  int16_t v1 = FLASH_OR_RAM_READ(table + idx1);
+  int16_t v2 = FLASH_OR_RAM_READ(table + idx2);
   int16_t delta = (v2 > v1) ? v2 - v1 : -(v1 - v2);
   int16_t fraction = (int32_t(delta) * (pos & sinePosFractionMask)) >> sinePosScaleBits;
 
@@ -267,16 +267,18 @@ void fillBuffer(OutputFrame *buf) {
     tablePos3 += increment3;
     tablePos4 += increment4;
   }
-  const uint16_t value1 = getTableValue(table1, tablePos1);
-  const uint16_t value2 = getTableValue(table2, tablePos2);
-  const uint16_t value3 = getTableValue(table3, tablePos3);
-  const uint16_t value4 = getTableValue(table4, tablePos4);
+  const uint16_t value1 = IO::calcCV1Out(getTableValue(table1, tablePos1));
+  const uint16_t value2 = IO::calcCV2Out(getTableValue(table2, tablePos2));
+  const uint16_t value3 = IO::calcGate1Out(getTableValue(table3, tablePos3));
+  const uint16_t value4 = IO::calcGate2Out(getTableValue(table4, tablePos4));
+
+
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = value1;
     buf->cv2 = value2;
-    buf->gate1 = value3 >> 2; // Gate outputs are 10-bit, not 12 bit like CV outputs
-    buf->gate2 = value4 >> 2;
+    buf->gate1 = value3;
+    buf->gate2 = value4;
     buf++;
   }
 }

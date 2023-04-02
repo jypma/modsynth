@@ -20,10 +20,10 @@ int16_t cvOut1_4V = 2659;
 int16_t cvOut2_0V = 1328;
 int16_t cvOut2_4V = 2653;
 
-int16_t gate1_0V = 333;
-int16_t gate1_4V = 697;
-int16_t gate2_0V = 335;
-int16_t gate2_4V = 700;
+int16_t gate1_0V = 377;
+int16_t gate1_4V = 720;
+int16_t gate2_0V = 379;
+int16_t gate2_4V = 721;
 
 Q15n16 cvOut1Factor = 0;
 Q15n16 cvOut2Factor = 0;

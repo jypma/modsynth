@@ -27,7 +27,7 @@ namespace FuncGen {
 
 //uint16_t sine[TABLE_SIZE+1];
   uint32_t sinePos = 0;
-  const uint16_t *table = SIN_DATA;
+  const int16_t *table = SIN_DATA;
 //  bool tableReady = false;
   uint16_t recalc = 0;
   uint32_t increment;
@@ -120,7 +120,9 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
       if (sinePos > sinePosMod) {
         sinePos -= sinePosMod;
       }
-      const uint16_t rawValue = FLASH_OR_RAM_READ(table + (sinePos >> sinePosScaleBits));
+      // We don't use calibration for channels 2, 3 and 4. We might remove them from the VCO anyway
+      // (better to have a single more fun voice).
+      const int16_t rawValue = IO::calcCV1Out(FLASH_OR_RAM_READ(table + (sinePos >> sinePosScaleBits)));
       buf->cv1 = rawValue;
       buf->cv2 = rawValue;
       buf->gate1 = rawValue >> 2;
