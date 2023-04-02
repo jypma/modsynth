@@ -219,8 +219,8 @@ void checkGate() {
         mainPos = 0;
         resetPhase();
 
-        auto delayUs = time - lastGateTime;
-        uint16_t newbpm = uint32_t(1000) * 60 / delayUs;
+        auto delayMs = time - lastGateTime;
+        uint16_t newbpm = uint32_t(1000) * 60 / delayMs;
         if (newbpm != bpm && newbpm > 30) {
           bpm = newbpm;
           recalc();
