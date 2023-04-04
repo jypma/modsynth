@@ -16,23 +16,24 @@ namespace LFO {
 constexpr uint16_t TABLE_SIZE = 256;
 constexpr uint16_t Q_TABLE_SIZE = 64;
 constexpr uint16_t Q3_TABLE_SIZE = 192;
-
 constexpr uint8_t sinePosScaleBits = 14;
 
 constexpr uint32_t sinePosScale = (uint32_t(1) << sinePosScaleBits);
 constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;
 constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
 
-constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
+constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800H
 constexpr Q16n16 MIN_NOTE = 65536;   // Note 1
 
-enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3 };
+enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3, Square = 4 };
 
 const char sine_t[] PROGMEM = "Sin";
 const char triangle_t[] PROGMEM = "Tri";
 const char saw_up_t[] PROGMEM = "Saw";
 const char saw_down_t[] PROGMEM = "iSw";
-const char * waveTitles[] = { sine_t, triangle_t, saw_up_t, saw_down_t };
+const char square_t[] PROGMEM = "Sqr";
+const char *waveTitles[] = {sine_t, triangle_t, saw_up_t, saw_down_t, square_t};
+constexpr uint8_t N_WAVES = 5;
 
 const uint8_t factorNom[] = { 4, 3, 2, 1, 1, 1, 1 };
 const uint8_t factorDen[] = { 1, 1, 1, 1, 2, 3, 4 };
@@ -42,26 +43,49 @@ constexpr uint8_t MAX_FACTOR = 6;
 uint32_t mainPos;
 uint32_t increment;
 
-uint32_t tablePos1 = 0;
-uint32_t increment1;
-uint8_t factor1 = FACTOR_ONE;
-Wave wave1 = Sine;
-uint8_t bend1 = 0;
+struct Shape {
+  uint32_t tablePos = 0;
+  uint32_t increment;
+  uint8_t factor = FACTOR_ONE;
+  Wave wave = Sine;
 
-uint32_t tablePos2 = 0;
-uint32_t increment2;
-uint8_t factor2 = FACTOR_ONE;
-Wave wave2 = Sine;
+  void recalc(uint32_t mainIncrement) {
+    increment = mainIncrement / factorNom[factor] * factorDen[factor];
+  }
 
-uint32_t tablePos3 = 0;
-uint32_t increment3;
-uint8_t factor3 = FACTOR_ONE;
-Wave wave3 = Sine;
+  void resetPhase() {
+    constexpr auto OK_TO_RESET_MIN = uint32_t(10) << sinePosScaleBits;
+    constexpr auto OK_TO_RESET_MAX = uint32_t(240) << sinePosScaleBits;
 
-uint32_t tablePos4 = 0;
-uint32_t increment4;
-uint8_t factor4 = FACTOR_ONE;
-Wave wave4 = Sine;
+    if (factor >= FACTOR_ONE) {
+      tablePos = 0;
+    } else if (tablePos < OK_TO_RESET_MIN || tablePos > OK_TO_RESET_MAX) {
+      tablePos = 0;
+    }
+  }
+
+  void performStep() {
+    tablePos += increment;
+    if (tablePos > sinePosMod) {
+      tablePos -= sinePosMod;
+    }
+  }
+
+  int16_t getTableValue(){
+    switch (wave) {
+      case Sine: return Waves::Sine::get(tablePos);
+      case Triangle: return Waves::Triangle::get(tablePos);
+      case SawUp: return Waves::SawUp::get(tablePos);
+      case SawDown: return Waves::SawDown::get(tablePos);
+      case Square: return Waves::Square::get(tablePos);
+    }
+    return 0;
+  }
+};
+
+constexpr uint8_t N_SHAPES = 4;
+constexpr uint8_t CONTROLS_PER_SHAPE = 4;
+Shape shapes[N_SHAPES];
 
 uint16_t bpm = 120;
 
@@ -79,10 +103,9 @@ uint32_t lastGateTime = NO_TIME;
 void recalc() {
   // Multiply by OUTBUFSIZE, since we increment only once per buffer
   increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
-  increment1 = increment / factorNom[factor1] * factorDen[factor1];
-  increment2 = increment / factorNom[factor2] * factorDen[factor2];
-  increment3 = increment / factorNom[factor3] * factorDen[factor3];
-  increment4 = increment / factorNom[factor4] * factorDen[factor4];
+  for (uint8_t i = 0; i < N_SHAPES; i++) {
+    shapes[i].recalc(increment);
+  }
 }
 
 void formatFactor(char *str, uint8_t factor) {
@@ -99,6 +122,7 @@ void formatFactor(char *str, uint8_t factor) {
 }
 
 void draw() {
+  drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
   drawTextPgm(7, 16, bpm_t);
   drawDecimal(40, 16, bpm);
 
@@ -106,37 +130,19 @@ void draw() {
   drawTextPgm(0, 32, wave2_t);
   drawTextPgm(0, 40, wave3_t);
   drawTextPgm(0, 48, wave4_t);
-  drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
-  drawText(12, 24, (currentControlIdx == 2) ? ">" : " ");
-  drawText(36, 24, (currentControlIdx == 3) ? ">" : " ");
-  drawText(72, 24, (currentControlIdx == 4) ? ">" : " ");
-  drawDecimal(78, 24, bend1);
-  drawText(96, 24, (currentControlIdx == 5) ? ">" : " ");
+  for (uint8_t s = 0; s < N_SHAPES; s++) {
+    uint8_t controlIdx = s * 4 + 2;
+    uint8_t y = s * 8 + 24;
 
-  drawText(12, 32, (currentControlIdx == 6) ? ">" : " ");
-  drawText(36, 32, (currentControlIdx == 7) ? ">" : " ");
-  drawText(12, 40, (currentControlIdx == 8) ? ">" : " ");
-  drawText(36, 40, (currentControlIdx == 9) ? ">" : " ");
-  drawText(12, 48, (currentControlIdx == 10) ? ">" : " ");
-  drawText(36, 48, (currentControlIdx == 11) ? ">" : " ");
-
-  drawTextPgm(18, 24, waveTitles[wave1]);
-  drawTextPgm(18, 32, waveTitles[wave2]);
-  drawTextPgm(18, 40, waveTitles[wave3]);
-  drawTextPgm(18, 48, waveTitles[wave4]);
-  char str[4];
-  formatFactor(str, factor1);
-  drawText(42, 24, str);
-  formatFactor(str, factor2);
-  drawText(42, 32, str);
-  formatFactor(str, factor3);
-  drawText(42, 40, str);
-  formatFactor(str, factor4);
-  drawText(42, 48, str);
-}
-
-void adjustWave(Wave *wave, int8_t d) {
-  *wave = Wave((*wave + 4 + d) % 4);
+    drawText(12, y, (currentControlIdx == (controlIdx)) ? ">" : " ");
+    drawTextPgm(18, y, waveTitles[shapes[s].wave]);
+    drawText(36, y, (currentControlIdx == (controlIdx + 1)) ? ">" : " ");
+    char str[4];
+    formatFactor(str, shapes[s].factor);
+    drawText(42, y, str);
+    drawText(72, y, (currentControlIdx == (controlIdx + 2)) ? ">" : " ");
+    drawText(96, y, (currentControlIdx == (controlIdx + 3)) ? ">" : " ");
+  }
 }
 
 void adjust(int8_t d) {
@@ -145,65 +151,25 @@ void adjust(int8_t d) {
       bpm = applyDelta<uint16_t>(bpm, d, 1, 1000);
       recalc();
       break;
-    case 2:
-      adjustWave(&wave1, d);
-      break;
-    case 3:
-      factor1 = applyDelta<uint32_t>(factor1, d, 0, MAX_FACTOR);
-      recalc();
-      break;
-    case 4:
-      bend1 = applyDelta<uint8_t>(bend1, d, 0, 255);
-      break;
-    case 5:
-      break;
-    case 6:
-      adjustWave(&wave2, d);
-      break;
-    case 7:
-      factor2 = applyDelta<uint32_t>(factor2, d, 0, MAX_FACTOR);
-      recalc();
-      break;
-    case 8:
-      adjustWave(&wave3, d);
-      break;
-    case 9:
-      factor3 = applyDelta<uint32_t>(factor3, d, 0, MAX_FACTOR);
-      recalc();
-      break;
-    case 10:
-      adjustWave(&wave4, d);
-      break;
-    case 11:
-      factor4 = applyDelta<uint32_t>(factor4, d, 0, MAX_FACTOR);
-      recalc();
-      break;
+    default:
+      uint8_t shapeIdx = (currentControlIdx - 2) / CONTROLS_PER_SHAPE;
+      uint8_t controlIdx = (currentControlIdx - 2) % CONTROLS_PER_SHAPE;
+
+      switch(controlIdx) {
+        case 0:
+          shapes[shapeIdx].wave = Wave(applyDelta<uint8_t>(shapes[shapeIdx].wave, d, 0, N_WAVES - 1));
+          break;
+        case 1:
+          shapes[shapeIdx].factor = applyDelta<uint32_t>(shapes[shapeIdx].factor, d, 0, MAX_FACTOR);
+          recalc();
+          break;
+      }
   }
 }
 
 void resetPhase() {
-  constexpr auto OK_TO_RESET_MIN = uint32_t(10) << sinePosScaleBits;
-  constexpr auto OK_TO_RESET_MAX = uint32_t(240) << sinePosScaleBits;
-
-  if (factor1 >= FACTOR_ONE) {
-    tablePos1 = 0;
-  } else if (tablePos1 < OK_TO_RESET_MIN || tablePos1 > OK_TO_RESET_MAX) {
-    tablePos1 = 0;
-  }
-  if (factor2 >= FACTOR_ONE) {
-    tablePos2 = 0;
-  } else if (tablePos2 < OK_TO_RESET_MIN || tablePos2 > OK_TO_RESET_MAX) {
-    tablePos2 = 0;
-  }
-  if (factor3 >= FACTOR_ONE) {
-    tablePos3 = 0;
-  } else if (tablePos3 < OK_TO_RESET_MIN || tablePos3 > OK_TO_RESET_MAX) {
-    tablePos3 = 0;
-  }
-  if (factor4 >= FACTOR_ONE) {
-    tablePos4 = 0;
-  } else if (tablePos4 < OK_TO_RESET_MIN || tablePos4 > OK_TO_RESET_MAX) {
-    tablePos4 = 0;
+  for (uint8_t i = 0; i < N_SHAPES; i++) {
+    shapes[i].resetPhase();
   }
 }
 
@@ -238,15 +204,6 @@ void start() {
 
 void stop() {}
 
-int16_t getTableValue(Wave wave, uint32_t pos){
-  switch (wave) {
-    case Sine: return Waves::Sine::get(pos);
-    case Triangle: return Waves::Triangle::get(pos);
-    case SawUp: return Waves::SawUp::get(pos);
-    default: return Waves::SawDown::get(pos);
-  }
-}
-
 void fillBuffer(OutputFrame *buf) {
   checkGate();
 
@@ -256,15 +213,14 @@ void fillBuffer(OutputFrame *buf) {
     mainPos -= sinePosMod;
     resetPhase();
   } else {
-    tablePos1 += increment1;
-    tablePos2 += increment2;
-    tablePos3 += increment3;
-    tablePos4 += increment4;
+    for (uint8_t i = 0; i < N_SHAPES; i++) {
+      shapes[i].performStep();
+    }
   }
-  const uint16_t value1 = IO::calcCV1Out(getTableValue(wave1, tablePos1));
-  const uint16_t value2 = IO::calcCV2Out(getTableValue(wave2, tablePos2));
-  const uint16_t value3 = IO::calcGate1Out(getTableValue(wave3, tablePos3));
-  const uint16_t value4 = IO::calcGate2Out(getTableValue(wave4, tablePos4));
+  const uint16_t value1 = IO::calcCV1Out(shapes[0].getTableValue());
+  const uint16_t value2 = IO::calcCV2Out(shapes[1].getTableValue());
+  const uint16_t value3 = IO::calcGate1Out(shapes[2].getTableValue());
+  const uint16_t value4 = IO::calcGate2Out(shapes[3].getTableValue());
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = value1;
@@ -277,7 +233,7 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  9,
+  1 + N_SHAPES * CONTROLS_PER_SHAPE,
   &draw,
   &start,
   &stop,

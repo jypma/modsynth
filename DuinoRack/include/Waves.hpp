@@ -10,6 +10,10 @@ namespace Waves {
   constexpr uint32_t posFractionMask = (uint32_t(1) << posScaleBits) - 1;
   constexpr uint32_t maxFractionPos = (uint32_t(255) << posScaleBits) + posFractionMask;
 
+  constexpr uint32_t q2pos = (uint32_t(128) << posScaleBits);
+  constexpr uint32_t q3pos = (uint32_t(192) << posScaleBits);
+  constexpr uint32_t q4pos = (uint32_t(256) << posScaleBits);
+
   template<const int16_t *table, uint8_t tablePosUnusedBits = 0>
   class Wave {
   public:
@@ -34,6 +38,16 @@ namespace Waves {
       return v1 + fraction;
     }
   };
+
+  namespace Square {
+    inline int16_t get(uint8_t pos) {
+      return (pos < 128) ? 4000 : -4000;
+    }
+
+    inline int16_t get(uint32_t pos) {
+      return (pos < q2pos) ? 4000 : -4000;
+    }
+  }
 
   namespace SawUp {
     inline int16_t get(uint8_t pos) {
@@ -73,9 +87,6 @@ namespace Waves {
       }
     }
 
-    constexpr uint32_t q2pos = (uint32_t(128) << posScaleBits);
-    constexpr uint32_t q3pos = (uint32_t(192) << posScaleBits);
-    constexpr uint32_t q4pos = (uint32_t(256) << posScaleBits);
     inline int16_t get(uint32_t pos) {
       uint8_t p = pos >> posScaleBits;
       if (p < 64) {

@@ -26,7 +26,7 @@ namespace FuncGen {
   uint16_t recalc = 0;
   uint32_t increment;
   uint8_t noteIdx = 0;
-enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
+enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2, Square = 3 };
   Wave wave = Sine;
 
   const char title[] PROGMEM = "FuncGen   ";
@@ -34,6 +34,7 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
   const char wave_t[] PROGMEM = "Wave: ";
   const char sine_t[] PROGMEM = "Sine    ";
   const char triangle_t[] PROGMEM = "Triangle";
+  const char square_t[] PROGMEM = "Square  ";
   const char saw_t[] PROGMEM = "Saw     ";
 
   void draw() {
@@ -48,6 +49,7 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
     case Sine: drawTextPgm(52, 24, sine_t); break;
     case Triangle: drawTextPgm(52, 24, triangle_t); break;
     case Saw: drawTextPgm(52, 24, saw_t); break;
+    case Square: drawTextPgm(52, 24, square_t); break;
     }
 
     drawTextPgm(0, 32, clear);
@@ -56,7 +58,7 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
   void adjust(int8_t d) {
     switch(currentControlIdx) {
     case 1:
-      wave = Wave((wave + 1) % 3);
+      wave = Wave((wave + d + 4) % 4);
       break;
     }
   }
@@ -68,27 +70,13 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
 
   }
 
-  /*
-  uint16_t bend(uint16_t phase, Q16n16 factor) {
-    Q16n16 crossOver16 = Q16n16_to_Q16n0(90 * factor);
-    uint16_t crossOver = Q16n16_to_Q16n0(crossOver16);
-
-    if (phase <= crossOver) {
-      return Q16n16_to_Q16n0((Q16n0_to_Q16n16(phase) * 90) / crossOver);
-    } else if (phase <= (360 - crossOver)) {
-      return Q16n16_to_Q16n0(90 + (Q16n0_to_Q16n16(phase) - crossOver16) * 180 / (360 - 2 * crossOver16));
-    } else {
-      return Q16n16_to_Q16n0(270 + (Q16n0_to_Q16n16(phase) - (360 - 2 * crossOver16)) * 90 / crossOver16);
-    }
-  }
-  */
-
 int16_t getWaveValue() {
   const uint8_t p = sinePos >> sinePosScaleBits;
   switch (wave) {
     case Sine: return Waves::Sine::get(p);
     case Triangle: return Waves::Triangle::get(p);
-    case Saw: return Waves::SawUp::get(p);
+    case Saw: return Waves::SawDown::get(p);
+    case Square: return Waves::Square::get(p);
   }
   return 0;
 }
