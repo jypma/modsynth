@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-
-#define INLINE inline __attribute__((always_inline))
+#include "Inline.h"
 
 template <typename T>
 inline T applyDelta(T value, int8_t delta, T min, T max) {

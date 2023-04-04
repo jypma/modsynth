@@ -4,9 +4,7 @@
 #include <mozzi_fixmath.h>
 #include "Arduino.h"
 #include "tables/sin256.h"
-#include "tables/triangle256.h"
-#include "tables/saw_up256.h"
-#include "tables/saw_down256.h"
+#include "Waves.hpp"
 
 #include "Module.h"
 #include "IO.h"
@@ -30,10 +28,10 @@ constexpr Q16n16 MIN_NOTE = 65536;   // Note 1
 
 enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3 };
 
-const char sine_t[] PROGMEM = "Sine    ";
-const char triangle_t[] PROGMEM = "Triangle";
-const char saw_up_t[] PROGMEM = "Saw Up   ";
-const char saw_down_t[] PROGMEM = "Saw Down ";
+const char sine_t[] PROGMEM = "Sin";
+const char triangle_t[] PROGMEM = "Tri";
+const char saw_up_t[] PROGMEM = "Saw";
+const char saw_down_t[] PROGMEM = "iSw";
 const char * waveTitles[] = { sine_t, triangle_t, saw_up_t, saw_down_t };
 
 const uint8_t factorNom[] = { 4, 3, 2, 1, 1, 1, 1 };
@@ -47,25 +45,22 @@ uint32_t increment;
 uint32_t tablePos1 = 0;
 uint32_t increment1;
 uint8_t factor1 = FACTOR_ONE;
-const int16_t *table1 = SIN_DATA;
 Wave wave1 = Sine;
+uint8_t bend1 = 0;
 
 uint32_t tablePos2 = 0;
 uint32_t increment2;
 uint8_t factor2 = FACTOR_ONE;
-const int16_t *table2 = SIN_DATA;
 Wave wave2 = Sine;
 
 uint32_t tablePos3 = 0;
 uint32_t increment3;
 uint8_t factor3 = FACTOR_ONE;
-const int16_t *table3 = SIN_DATA;
 Wave wave3 = Sine;
 
 uint32_t tablePos4 = 0;
 uint32_t increment4;
 uint8_t factor4 = FACTOR_ONE;
-const int16_t *table4 = SIN_DATA;
 Wave wave4 = Sine;
 
 uint16_t bpm = 120;
@@ -106,43 +101,42 @@ void formatFactor(char *str, uint8_t factor) {
 void draw() {
   drawTextPgm(7, 16, bpm_t);
   drawDecimal(40, 16, bpm);
+
   drawTextPgm(0, 24, wave1_t);
   drawTextPgm(0, 32, wave2_t);
   drawTextPgm(0, 40, wave3_t);
   drawTextPgm(0, 48, wave4_t);
   drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
-  drawText(16, 24, (currentControlIdx == 2) ? ">" : " ");
-  drawText(80, 24, (currentControlIdx == 3) ? ">" : " ");
-  drawText(16, 32, (currentControlIdx == 4) ? ">" : " ");
-  drawText(80, 32, (currentControlIdx == 5) ? ">" : " ");
-  drawText(16, 40, (currentControlIdx == 6) ? ">" : " ");
-  drawText(80, 40, (currentControlIdx == 7) ? ">" : " ");
-  drawText(16, 48, (currentControlIdx == 8) ? ">" : " ");
-  drawText(80, 48, (currentControlIdx == 9) ? ">" : " ");
+  drawText(12, 24, (currentControlIdx == 2) ? ">" : " ");
+  drawText(36, 24, (currentControlIdx == 3) ? ">" : " ");
+  drawText(72, 24, (currentControlIdx == 4) ? ">" : " ");
+  drawDecimal(78, 24, bend1);
+  drawText(96, 24, (currentControlIdx == 5) ? ">" : " ");
 
-  drawTextPgm(24, 24, waveTitles[wave1]);
-  drawTextPgm(24, 32, waveTitles[wave2]);
-  drawTextPgm(24, 40, waveTitles[wave3]);
-  drawTextPgm(24, 48, waveTitles[wave4]);
+  drawText(12, 32, (currentControlIdx == 6) ? ">" : " ");
+  drawText(36, 32, (currentControlIdx == 7) ? ">" : " ");
+  drawText(12, 40, (currentControlIdx == 8) ? ">" : " ");
+  drawText(36, 40, (currentControlIdx == 9) ? ">" : " ");
+  drawText(12, 48, (currentControlIdx == 10) ? ">" : " ");
+  drawText(36, 48, (currentControlIdx == 11) ? ">" : " ");
+
+  drawTextPgm(18, 24, waveTitles[wave1]);
+  drawTextPgm(18, 32, waveTitles[wave2]);
+  drawTextPgm(18, 40, waveTitles[wave3]);
+  drawTextPgm(18, 48, waveTitles[wave4]);
   char str[4];
   formatFactor(str, factor1);
-  drawText(88, 24, str);
+  drawText(42, 24, str);
   formatFactor(str, factor2);
-  drawText(88, 32, str);
+  drawText(42, 32, str);
   formatFactor(str, factor3);
-  drawText(88, 40, str);
+  drawText(42, 40, str);
   formatFactor(str, factor4);
-  drawText(88, 48, str);
+  drawText(42, 48, str);
 }
 
-void adjustWave(Wave *wave, const int16_t **table, int8_t d) {
+void adjustWave(Wave *wave, int8_t d) {
   *wave = Wave((*wave + 4 + d) % 4);
-  switch (*wave) {
-    case Sine: *table = SIN_DATA; break;
-    case Triangle: *table = TRIANGLE_DATA; break;
-    case SawUp: *table = SAW_UP_DATA; break;
-    case SawDown: *table = SAW_DOWN_DATA; break;
-  }
 }
 
 void adjust(int8_t d) {
@@ -152,30 +146,35 @@ void adjust(int8_t d) {
       recalc();
       break;
     case 2:
-      adjustWave(&wave1, &table1, d);
+      adjustWave(&wave1, d);
       break;
     case 3:
       factor1 = applyDelta<uint32_t>(factor1, d, 0, MAX_FACTOR);
       recalc();
       break;
     case 4:
-      adjustWave(&wave2, &table2, d);
+      bend1 = applyDelta<uint8_t>(bend1, d, 0, 255);
       break;
     case 5:
+      break;
+    case 6:
+      adjustWave(&wave2, d);
+      break;
+    case 7:
       factor2 = applyDelta<uint32_t>(factor2, d, 0, MAX_FACTOR);
       recalc();
       break;
-    case 6:
-      adjustWave(&wave3, &table3, d);
+    case 8:
+      adjustWave(&wave3, d);
       break;
-    case 7:
+    case 9:
       factor3 = applyDelta<uint32_t>(factor3, d, 0, MAX_FACTOR);
       recalc();
       break;
-    case 8:
-      adjustWave(&wave4, &table4, d);
+    case 10:
+      adjustWave(&wave4, d);
       break;
-    case 9:
+    case 11:
       factor4 = applyDelta<uint32_t>(factor4, d, 0, MAX_FACTOR);
       recalc();
       break;
@@ -239,18 +238,13 @@ void start() {
 
 void stop() {}
 
-int16_t getTableValue(const int16_t *table, uint32_t pos) {
-  uint8_t idx1 = pos >> sinePosScaleBits;
-  // Let idx wrap around since table is 256 entries
-  uint8_t idx2 = idx1 + 1;
-
-  // TODO cache v1, v2, delta for more performance, while idx doesn't change.
-  int16_t v1 = FLASH_OR_RAM_READ(table + idx1);
-  int16_t v2 = FLASH_OR_RAM_READ(table + idx2);
-  int16_t delta = (v2 > v1) ? v2 - v1 : -(v1 - v2);
-  int16_t fraction = (int32_t(delta) * (pos & sinePosFractionMask)) >> sinePosScaleBits;
-
-  return v1 + fraction;
+int16_t getTableValue(Wave wave, uint32_t pos){
+  switch (wave) {
+    case Sine: return Waves::Sine::get(pos);
+    case Triangle: return Waves::Triangle::get(pos);
+    case SawUp: return Waves::SawUp::get(pos);
+    default: return Waves::SawDown::get(pos);
+  }
 }
 
 void fillBuffer(OutputFrame *buf) {
@@ -267,12 +261,10 @@ void fillBuffer(OutputFrame *buf) {
     tablePos3 += increment3;
     tablePos4 += increment4;
   }
-  const uint16_t value1 = IO::calcCV1Out(getTableValue(table1, tablePos1));
-  const uint16_t value2 = IO::calcCV2Out(getTableValue(table2, tablePos2));
-  const uint16_t value3 = IO::calcGate1Out(getTableValue(table3, tablePos3));
-  const uint16_t value4 = IO::calcGate2Out(getTableValue(table4, tablePos4));
-
-
+  const uint16_t value1 = IO::calcCV1Out(getTableValue(wave1, tablePos1));
+  const uint16_t value2 = IO::calcCV2Out(getTableValue(wave2, tablePos2));
+  const uint16_t value3 = IO::calcGate1Out(getTableValue(wave3, tablePos3));
+  const uint16_t value4 = IO::calcGate2Out(getTableValue(wave4, tablePos4));
 
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = value1;

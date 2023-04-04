@@ -52,9 +52,10 @@ ISR(TIMER2_COMPA_vect){
   OutputBuf::advance();
 }
 
+constexpr uint8_t MODULE_COUNT = 6;
+
 void setModuleIdx(int8_t idx) {
   currentMod.stop();
-  constexpr uint8_t MODULE_COUNT = 6;
   currentModIdx = idx % MODULE_COUNT;
   Serial.println(currentModIdx);
   switch(currentModIdx) {
@@ -128,7 +129,7 @@ void handleEncoder2Rotate(int8_t rotation) {
 
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!
   if (currentControlIdx == 0) {
-    setModuleIdx(currentModIdx + rotation);
+    setModuleIdx(applyDelta<uint8_t>(currentModIdx, rotation, 0, MODULE_COUNT - 1));
   } else {
     // TODO control acceleration differently for different controls
     rotation *= accel;

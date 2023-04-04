@@ -2,10 +2,7 @@
 
 #include <mozzi_midi.h>
 #include <mozzi_fixmath.h>
-#include <tables/cos256_int8.h>
-#include "tables/sin256.h"
-#include "tables/triangle256.h"
-#include "tables/saw_up256.h"
+#include "Waves.hpp"
 
 #include "Module.h"
 #include "IO.h"
@@ -25,10 +22,7 @@ namespace FuncGen {
   constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800Hz
   constexpr Q16n16 MIN_NOTE = 65536; // Note 1
 
-//uint16_t sine[TABLE_SIZE+1];
   uint32_t sinePos = 0;
-  const int16_t *table = SIN_DATA;
-//  bool tableReady = false;
   uint16_t recalc = 0;
   uint32_t increment;
   uint8_t noteIdx = 0;
@@ -63,11 +57,6 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
     switch(currentControlIdx) {
     case 1:
       wave = Wave((wave + 1) % 3);
-      switch (wave) {
-        case Sine: table = SIN_DATA; break;
-        case Triangle: table = TRIANGLE_DATA; break;
-        case Saw: table = SAW_UP_DATA; break;
-      }
       break;
     }
   }
@@ -93,6 +82,16 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
     }
   }
   */
+
+int16_t getWaveValue() {
+  const uint8_t p = sinePos >> sinePosScaleBits;
+  switch (wave) {
+    case Sine: return Waves::Sine::get(p);
+    case Triangle: return Waves::Triangle::get(p);
+    case Saw: return Waves::SawUp::get(p);
+  }
+  return 0;
+}
 
   void fillBuffer(OutputFrame *buf) {
     if (recalc == 0) {
@@ -122,7 +121,7 @@ enum Wave: uint8_t { Sine = 0, Triangle = 1, Saw = 2 };
       }
       // We don't use calibration for channels 2, 3 and 4. We might remove them from the VCO anyway
       // (better to have a single more fun voice).
-      const int16_t rawValue = IO::calcCV1Out(FLASH_OR_RAM_READ(table + (sinePos >> sinePosScaleBits)));
+      const int16_t rawValue = IO::calcCV1Out(getWaveValue());
       buf->cv1 = rawValue;
       buf->cv2 = rawValue;
       buf->gate1 = rawValue >> 2;
