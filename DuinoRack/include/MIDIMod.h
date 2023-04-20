@@ -91,7 +91,8 @@ constexpr Module module = {
   &start,
   &stop,
   &adjust,
-  &fillBuffer
+  &fillBuffer,
+  NULL
 };
 
 }

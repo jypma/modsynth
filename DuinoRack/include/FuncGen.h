@@ -125,7 +125,8 @@ int16_t getWaveValue() {
     &start,
     &stop,
     &adjust,
-    &fillBuffer
+    &fillBuffer,
+    NULL
   };
 
 } // FuncGen

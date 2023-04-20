@@ -5,37 +5,38 @@
 #include "IO.h"
 
 namespace Calibrate {
-const char title[] PROGMEM = "Calibrate ";
-const char cal1[] PROGMEM = "iA  0V: ";
-const char cal2[] PROGMEM = "iA +4V: ";
-const char cal3[] PROGMEM = "iB  0V: ";
-const char cal4[] PROGMEM = "iB +4V: ";
-const char cal5[] PROGMEM = "oA  0V: ";
-const char cal6[] PROGMEM = "oA +4V: ";
-const char cal7[] PROGMEM = "oB  0V: ";
-const char cal8[] PROGMEM = "oB +4V: ";
-const char cal9[] PROGMEM = "g1  0V: ";
-const char cal10[] PROGMEM = "g1 +4V: ";
-const char cal11[] PROGMEM = "g2  0V: ";
-const char cal12[] PROGMEM = "g2 +4V: ";
+  const char title[] PROGMEM = "Calibrate ";
+  const char cal1[] PROGMEM = "iA  0V: ";
+  const char cal2[] PROGMEM = "iA +4V: ";
+  const char cal3[] PROGMEM = "iB  0V: ";
+  const char cal4[] PROGMEM = "iB +4V: ";
+  const char cal5[] PROGMEM = "oA  0V: ";
+  const char cal6[] PROGMEM = "oA +4V: ";
+  const char cal7[] PROGMEM = "oB  0V: ";
+  const char cal8[] PROGMEM = "oB +4V: ";
+  const char cal9[] PROGMEM = "g1  0V: ";
+  const char cal10[] PROGMEM = "g1 +4V: ";
+  const char cal11[] PROGMEM = "g2  0V: ";
+  const char cal12[] PROGMEM = "g2 +4V: ";
+  const char calSave[] PROGMEM = "Save? (press Adj)";
 
-const char *getCalLabel() {
-  switch (currentControlIdx) {
-    case 1: return cal1;
-    case 2: return cal2;
-    case 3: return cal3;
-    case 4: return cal4;
-    case 5: return cal5;
-    case 6: return cal6;
-    case 7: return cal7;
-    case 8: return cal8;
-    case 9: return cal9;
-    case 10: return cal10;
-    case 11: return cal11;
-    case 12: return cal12;
-    default: return NULL;
+  const char *getCalLabel() {
+    switch (currentControlIdx) {
+      case 1: return cal1;
+      case 2: return cal2;
+      case 3: return cal3;
+      case 4: return cal4;
+      case 5: return cal5;
+      case 6: return cal6;
+      case 7: return cal7;
+      case 8: return cal8;
+      case 9: return cal9;
+      case 10: return cal10;
+      case 11: return cal11;
+      case 12: return cal12;
+      default: return NULL;
+    }
   }
-}
 
 int16_t getCalValue() {
   switch (currentControlIdx) {
@@ -85,14 +86,19 @@ void draw() {
   drawText(61, 32, IO::getGate2In() ? "1" : "0");
   drawText(67, 32, IO::getGate3In() ? "1" : "0");
 
-  const char *lbl = getCalLabel();
-  int16_t val = getCalValue();
-  if (lbl != NULL) {
+  if (currentControlIdx == 13) {
     drawText(0, 40, "> ");
-    drawTextPgm(16, 40, lbl);
-    drawDecimal(72, 40, val);
+    drawTextPgm(16, 40, calSave);
   } else {
-    drawTextPgm(0, 40, clear);
+    const char *lbl = getCalLabel();
+    int16_t val = getCalValue();
+    if (lbl != NULL) {
+      drawText(0, 40, "> ");
+      drawTextPgm(16, 40, lbl);
+      drawDecimal(72, 40, val);
+    } else {
+      drawTextPgm(0, 40, clear);
+    }
   }
 }
 
@@ -125,6 +131,15 @@ void adjust(int8_t d) {
   }
 }
 
+  void adjustPressed() {
+    if (currentControlIdx == 13) {
+      IO::saveCalibration();
+      currentControlIdx = 0;
+      drawTextPgm(0, 40, clear);
+      draw();
+    }
+  }
+
 void fillBuffer(OutputFrame *buf) {
   bool calibInCV4V = (currentControlIdx == 2 || currentControlIdx == 4);
   auto out_mVa = (calibInCV4V || (currentControlIdx == 6)) ? 4000 : 0;
@@ -144,11 +159,12 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  12, // controlCount
+  13, // controlCount
   &draw,
   &start,
   &stop,
   &adjust,
-  &fillBuffer
+  &fillBuffer,
+  &adjustPressed,
 };
 }

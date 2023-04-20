@@ -24,4 +24,5 @@ struct Module {
   Callback stop;
   AdjustCallback adjust;
   BufferCallback fillBuffer;
+  Callback adjustPressed;
 };

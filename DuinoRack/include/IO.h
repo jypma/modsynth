@@ -22,6 +22,9 @@ inline T applyDelta(T value, int8_t delta, T min, T max) {
 
 namespace IO {
 
+  void loadCalibration();
+  void saveCalibration();
+
 extern int16_t cvIn1_0V;
 extern int16_t cvIn1_4V;
 extern int16_t cvIn2_0V;

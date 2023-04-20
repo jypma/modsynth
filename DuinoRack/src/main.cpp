@@ -13,6 +13,7 @@
 #include "MIDIMod.h"
 #include "canvas/canvas.h"
 #include "pins_arduino.h"
+#include "Storage.hpp"
 
 // display: 300 bytes RAM
 
@@ -137,6 +138,12 @@ void handleEncoder2Rotate(int8_t rotation) {
   }
 }
 
+void handleEncoder2PressRelease() {
+  if (currentMod.adjustPressed != NULL) {
+    currentMod.adjustPressed();
+  }
+}
+
 // Encoder 1 is "Select"
 void handleEncoder1Rotate(int8_t rotation) {
   static uint32_t prevTime = 0;
@@ -160,6 +167,7 @@ void setup() {
   Serial.println("DuinoRack");
   Serial.flush();
   IO::setup();
+  Storage::load();
 
   // We need input pull-ups for our encoder inputs
   pinMode(2, INPUT_PULLUP);
@@ -170,6 +178,7 @@ void setup() {
   currentMod.start();
   encoder1.setHandleRotate(handleEncoder1Rotate);
   encoder2.setHandleRotate(handleEncoder2Rotate);
+  encoder2.setHandlePressRelease(handleEncoder2PressRelease);
 
   display.begin();
   display.fill(0x00);

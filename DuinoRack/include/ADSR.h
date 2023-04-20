@@ -108,6 +108,7 @@ namespace ADSR {
     &start,
     &stop,
     &adjust,
-    &fillBuffer
+    &fillBuffer,
+    NULL
   };
 }
