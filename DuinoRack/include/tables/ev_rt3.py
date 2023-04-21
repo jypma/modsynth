@@ -33,4 +33,4 @@ def generate(outfile, tablename, tablelength, samplerate):
         fout.close()
         print "wrote " + outfile
 
-generate("ev_rt3_128.h", "EV_rt3_128", 128, "128")
+generate("ev_rt3_128.h", "EV_RT3_128", 128, "128")

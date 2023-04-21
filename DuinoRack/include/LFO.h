@@ -13,10 +13,11 @@
 
 namespace LFO {
 
-constexpr uint16_t TABLE_SIZE = 256;
-constexpr uint16_t Q_TABLE_SIZE = 64;
-constexpr uint16_t Q3_TABLE_SIZE = 192;
-constexpr uint8_t sinePosScaleBits = 14;
+  constexpr uint16_t TABLE_SIZE = Waves::TABLE_SIZE;
+  constexpr uint16_t Q_TABLE_SIZE = TABLE_SIZE / 4;
+  constexpr uint16_t Q3_TABLE_SIZE = Q_TABLE_SIZE * 3;
+
+  constexpr uint8_t sinePosScaleBits = Waves::posScaleBits;
 
 constexpr uint32_t sinePosScale = (uint32_t(1) << sinePosScaleBits);
 constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;

@@ -6,7 +6,7 @@
 #include "OutputBuf.h"
 #include "FuncGen.h"
 #include "Calibrate.h"
-#include "ADSR.h"
+#include "ADSR.hpp"
 #include "IO.h"
 #include "LFO.h"
 #include "Quantize.h"

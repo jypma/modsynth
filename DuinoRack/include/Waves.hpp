@@ -4,38 +4,62 @@
 #include "Inline.h"
 #include "mozzi_pgmspace.h"
 #include "tables/sin256.h"
+#include "tables/ev_pw2_128.h"
+#include "tables/ev_pw3_128.h"
+#include "tables/ev_rt3_128.h"
+#include "tables/ev_sin128.h"
 
 namespace Waves {
+  constexpr uint16_t TABLE_SIZE = 256;
+
   constexpr uint8_t posScaleBits = 14;
   constexpr uint32_t posFractionMask = (uint32_t(1) << posScaleBits) - 1;
   constexpr uint32_t maxFractionPos = (uint32_t(255) << posScaleBits) + posFractionMask;
 
+  constexpr uint32_t q1pos = (uint32_t(64) << posScaleBits);
   constexpr uint32_t q2pos = (uint32_t(128) << posScaleBits);
   constexpr uint32_t q3pos = (uint32_t(192) << posScaleBits);
   constexpr uint32_t q4pos = (uint32_t(256) << posScaleBits);
+  constexpr uint32_t maxPos = q4pos;
 
-  template<const int16_t *table, uint8_t tablePosUnusedBits = 0>
-  class Wave {
-  public:
-    /** Gets an exact table value */
-    static INLINE int16_t get(uint8_t pos) {
+  constexpr uint32_t toPos(uint8_t tablePos) {
+    return uint32_t(tablePos) << posScaleBits;
+  }
+
+  namespace Internal {
+    template<typename T, uint8_t tablePosUnusedBits>
+    static INLINE T waveGet(const T *table, uint8_t pos) {
       return FLASH_OR_RAM_READ(table + (pos >> tablePosUnusedBits));
     }
 
-    /** Gets and interpolates a value between two table values. */
-    static int16_t get(uint32_t pos) {
+  template<typename T, uint8_t tablePosUnusedBits>
+    static T waveGet(const T *table, uint32_t pos) {
       uint8_t idx1 = pos >> posScaleBits;
       // Let idx wrap around since table is 256 entries
       uint8_t idx2 = idx1 + 1;
 
       // TODO cache v1, v2, delta for more performance, while idx doesn't change.
-      int16_t v1 = FLASH_OR_RAM_READ(table + idx1);
-      int16_t v2 = FLASH_OR_RAM_READ(table + idx2);
-      int16_t delta = (v2 > v1) ? v2 - v1 : -(v1 - v2);
+      T v1 = waveGet<T,tablePosUnusedBits>(table, idx1);
+      T v2 = waveGet<T,tablePosUnusedBits>(table, idx2);
+      T delta = (v2 > v1) ? v2 - v1 : -(v1 - v2);
       // TODO only use right-most part of [pos] for the logical and, since posScaleBits is less than 16.
-      int16_t fraction = (int32_t(delta) * (pos & posFractionMask)) >> posScaleBits;
+      T fraction = (int32_t(delta) * (pos & posFractionMask)) >> posScaleBits;
 
       return v1 + fraction;
+    }
+  }
+
+  template<typename T, const T *table, uint8_t tablePosUnusedBits = 0>
+  class Wave {
+  public:
+    /** Gets an exact table value */
+    static INLINE T get(uint8_t pos) {
+      return Internal::waveGet<T, tablePosUnusedBits>(table, pos);
+    }
+
+    /** Gets and interpolates a value between two table values. */
+    static T get(uint32_t pos) {
+      return Internal::waveGet<T, tablePosUnusedBits>(table, pos);
     }
   };
 
@@ -105,5 +129,9 @@ namespace Waves {
     }
   }
 
-  typedef Wave<SIN_DATA> Sine;
+  typedef Wave<int16_t, SIN_DATA> Sine;
+  typedef Wave<uint16_t, EV_PW3_128_DATA, 1> EnvelopePower3;
+  typedef Wave<uint16_t, EV_PW2_128_DATA, 1> EnvelopePower2;
+  typedef Wave<uint16_t, EV_RT3_128_DATA, 1> EnvelopeRoot3;
+  typedef Wave<uint16_t, EV_SIN128_DATA, 1> EnvelopeSin;
 }
