@@ -1,6 +1,7 @@
 #include "Storage.hpp"
 #include "IO.h"
 #include <EEPROM.h>
+#include "Debug.hpp"
 
 namespace Storage {
   constexpr uint16_t MAGIC = 0x47A7;
@@ -12,14 +13,14 @@ namespace Storage {
     EEPROM.get(2, version);
 
     if (magic != MAGIC || version != 1) {
-      Serial.println("Loading defaults");
+      debugSerial("Loading defaults");
       // Write defaults
       IO::saveCalibration();
       EEPROM.put(0, MAGIC);
       version = 1;
       EEPROM.put(2, version);
     } else {
-      Serial.println("Loading EEPROM");
+      debugSerial("Loading EEPROM");
       IO::loadCalibration();
     }
   }

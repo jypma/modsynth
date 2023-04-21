@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <avr/pgmspace.h>
+#include "Debug.hpp"
 
 constexpr uint8_t NUM_SCALES = 24;
 
@@ -137,21 +138,23 @@ class Scale {
   }
 
   void print() {
-    Serial.println("notes: ");
+#ifdef DEBUG_SERIAL
+    debugSerial("notes: ");
     for (uint8_t n = 0; n < notes; n++) {
       const uint8_t note = targetNotes[n];
       const uint8_t prev = targetNotes[(n + notes - 1) % notes];
       const int16_t note_mV = noteToVoltage(note);
       int16_t prev_mV = noteToVoltage(prev);
-      Serial.println(note);
-      Serial.print("mV: ");
-      Serial.print(note_mV);
-      Serial.print(", prev mV:");
-      Serial.println(prev_mV);
+      debugSerial(note);
+      debugSerial("mV: ");
+      debugSerial(note_mV);
+      debugSerial(", prev mV:");
+      debugSerial(prev_mV);
     }
-    Serial.println("thresholds:");
+    debugSerial("thresholds:");
     for (uint8_t n = 0; n < notes; n++) {
-      Serial.println(thresholds[n]);
+      debugSerial(thresholds[n]);
     }
+#endif
   }
 };

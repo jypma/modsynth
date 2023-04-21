@@ -14,6 +14,7 @@
 #include "canvas/canvas.h"
 #include "pins_arduino.h"
 #include "Storage.hpp"
+#include "Debug.hpp"
 
 // display: 300 bytes RAM
 
@@ -41,9 +42,9 @@ void fillBuffer() {
     currentMod.fillBuffer(current);
     OutputBuf::setNextBuffer(current);
   } else if (encoder1.ReadEncoder()) {
-    Serial.println("E1");
+    debugSerial("E1");
   } else if (encoder2.ReadEncoder()) {
-    Serial.println("E2");
+    debugSerial("E2");
   } else {
     IO::readIfNeeded();
   }
@@ -58,7 +59,7 @@ constexpr uint8_t MODULE_COUNT = 6;
 void setModuleIdx(int8_t idx) {
   currentMod.stop();
   currentModIdx = idx % MODULE_COUNT;
-  Serial.println(currentModIdx);
+  debugSerial(currentModIdx);
   switch(currentModIdx) {
     case 0: currentMod = FuncGen::module; break;
     case 1: currentMod = ADSR::module; break;
@@ -164,7 +165,7 @@ void handleEncoder1Rotate(int8_t rotation) {
 
 void setup() {
   Serial.begin(31250);
-  Serial.println("DuinoRack");
+  debugSerial("DuinoRack");
   Serial.flush();
   IO::setup();
   Storage::load();
@@ -184,7 +185,7 @@ void setup() {
   display.fill(0x00);
   display.setFixedFont(ssd1306xled_font6x8);
   showModule();
-  Serial.println("Display ready.");
+  debugSerial("Display ready.");
 
   // fill initial buffer
   fillBuffer();
@@ -215,8 +216,9 @@ void loop() {
 
   if (OutputBuf::overruns != oldOverruns) {
     oldOverruns = OutputBuf::overruns;
-    Serial.print("Xrun! ");
-    Serial.println(oldOverruns);
+    // TODO show XRun on screen
+    debugSerial("Xrun! ");
+    debugSerial(oldOverruns);
   }
 
   if (now - lastTime > 100000)

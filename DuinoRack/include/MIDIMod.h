@@ -8,6 +8,7 @@
 #include "IO.h"
 #include "OutputBuf.h"
 #include "midi_Defs.h"
+#include "Debug.hpp"
 
 namespace MIDIMod {
 
@@ -42,10 +43,10 @@ void fillBuffer(OutputFrame *buf) {
       case midi::NoteOn:
         noteCount++;
         currentNote = MIDI.getData1() - 21;
-        Serial.println(currentNote);
+        debugSerial(currentNote);
         gate1 = IO::calcGate1Out(8000);
         out1 = IO::calcCV1Out(getCV(currentNote));
-        Serial.println(out1);
+        debugSerial(out1);
         break;
 
       case midi::NoteOff:
