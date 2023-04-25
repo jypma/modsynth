@@ -2,7 +2,7 @@
 
 #include <mozzi_midi.h>
 #include <mozzi_fixmath.h>
-#include <MIDI.h>
+//#include <MIDI.h>
 
 #include "Module.h"
 #include "IO.h"
@@ -12,7 +12,7 @@
 
 namespace MIDIMod {
 
-MIDI_CREATE_DEFAULT_INSTANCE();
+  //MIDI_CREATE_DEFAULT_INSTANCE();
 
 const char title[] PROGMEM = "MIDI      ";
 const char noteLbl[] PROGMEM = "Note: ";
@@ -38,6 +38,8 @@ constexpr int16_t getCV(uint8_t note) {
 }
 
 void fillBuffer(OutputFrame *buf) {
+  /*
+    TODO rewrite this in plain serial, the MIDI library is just too big.
   if (MIDI.read()) {
     switch (MIDI.getType()) {
       case midi::NoteOn:
@@ -72,17 +74,24 @@ void fillBuffer(OutputFrame *buf) {
     buf->gate1 = gate1;
     buf++;
   }
+  */
 }
 
 void start() {
-  MIDI.begin(1); // Listen on channel 1
-  MIDI.turnThruOff(); // for now.
+  //MIDI.begin(1); // Listen on channel 1
+  //MIDI.turnThruOff(); // for now.
   noteCount = 0;
   out1 = IO::calcCV1Out(0);
   out2 = IO::calcCV2Out(0);
+#ifndef DEBUG_SERIAL
+  Serial.begin(31250);
+#endif
 }
 
 void stop() {
+#ifndef DEBUG_SERIAL
+  Serial.end();
+#endif
 }
 
 constexpr Module module = {

@@ -1,5 +1,4 @@
 #include "MCP_DAC.h"
-#include <Wire.h>
 #include <lcdgfx.h>
 #include <Versatile_RotaryEncoder.h>
 #include "Module.h"
@@ -73,6 +72,7 @@ void setModuleIdx(int8_t idx) {
   currentMod.adjust(0);
 }
 
+
 void drawText(uint8_t x, uint8_t y, const char *s) {
   if (!*s) return;
   display.setTextCursor(x, y);
@@ -84,11 +84,28 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
   }
 }
 
+void clearChars(uint8_t x, uint8_t y, uint8_t count) {
+  display.setTextCursor(x, y);
+  while (count > 0) {
+    fillBuffer();
+    display.printChar(' ');
+    count--;
+  }
+}
+
 void drawDecimal(uint8_t x, uint8_t y, int16_t value) {
   char str[7];
   itoa(value, str, 10);
   drawText(x, y, str);
   drawTextPgm(x + strlen(str) * 6, y, clear);
+}
+
+void drawDecimal(uint8_t x, uint8_t y, int16_t value, uint8_t expectedChars) {
+  char str[7];
+  itoa(value, str, 10);
+  drawText(x, y, str);
+  uint8_t len = strlen(str);
+  clearChars(x + len * 6, y, (expectedChars > len) ? expectedChars - len : 0);
 }
 
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
@@ -164,9 +181,11 @@ void handleEncoder1Rotate(int8_t rotation) {
 }
 
 void setup() {
+#ifdef DEBUG_SERIAL
   Serial.begin(31250);
   debugSerial("DuinoRack");
   Serial.flush();
+#endif
   IO::setup();
   Storage::load();
 

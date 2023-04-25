@@ -6,10 +6,28 @@
 #include "IO.h"
 #include "OutputBuf.h"
 #include "Waves.hpp"
+#include "Parameter.hpp"
+
+/*
+  123456789012345678901
+  1000Ln    40%
+       1000Ln    1000Ln
+ */
 
 namespace ADSR {
 
 const char title[] PROGMEM = "ADSR      ";
+
+const char attack_t[] PROGMEM = "A:";
+const char decay_t[] PROGMEM = "D:";
+const char sustain_t[] PROGMEM = "S:";
+const char release_t[] PROGMEM = "R:";
+
+const char envRoot3_t[] PROGMEM = "R3";
+const char envSin_t[] PROGMEM = "Sn";
+const char envLin_t[] PROGMEM = "Ln";
+const char envPower2_t[] PROGMEM = "P2";
+const char envPower3_t[] PROGMEM = "P3";
 
 enum Phase: uint8_t { Idle, Attack, Decay, Sustain, Release };
 enum Envelope: uint8_t { Root3, Sin, Lin, Power2, Power3 };
@@ -22,6 +40,16 @@ uint16_t getEnvelope(Envelope env, uint32_t pos) {
     case Power3: return Waves::EnvelopePower3::get(pos);
     case Lin: return pos >> (Waves::posScaleBits - 8);
     default: return 0;
+  }
+}
+
+const char *getEnvelopeTitle(Envelope env) {
+  switch(env) {
+    case Root3: return envRoot3_t;
+    case Sin: return envSin_t;
+    case Lin: return envLin_t;
+    case Power2: return envPower2_t;
+    default: return envPower2_t;
   }
 }
 
@@ -39,20 +67,69 @@ class Instance {
   uint16_t level = 0; // Current level
   uint16_t phaseLevel = 0; // Level at start of current phase
 
-  // We increment once per buffer, so that's SAMPLE_RATE / BUF_SIZE = 750 Hz or 1.333ms
-  uint32_t attackPosMs = 1000;
-  uint32_t decayPosMs = 1000;
-  uint32_t releasePosMs = 1000;
-  uint32_t attackPosInc = 1630;
-  uint32_t decayPosInc = 1630;
-  uint32_t releasePosInc = 1630;
+  // Full envelope is selected at T = 1000 milliseconds
+  // One increment is selected at T / 256 = 3.9 milliseconds
+  // We increment once per buffer, so that's SAMPLE_RATE / BUF_SIZE = 750 Hz or once every 1.333ms
+  // So every buffer we should increment by 1.3 / 3.9 = 0.3 increments
+  //                                    (1 / 750) / (T / 256) = 256 / 750 / T (in seconds)
+  uint16_t attack;
+  uint16_t decay;
+  uint16_t release;
+  uint32_t attackPosInc;
+  uint32_t decayPosInc;
+  uint32_t releasePosInc;
+  static constexpr uint32_t posPerSecond = ((uint32_t(256) * 1000) << Waves::posScaleBits) / (SAMPLERATE / OUTBUFSIZE);
 public:
+  Instance() {
+    setAttack(100);
+    setDecay(100);
+    setRelease(100);
+  }
+
+  uint16_t getAttack() { return attack; }
+  void setAttack(uint16_t ms) {
+    attack = ms;
+    attackPosInc = posPerSecond / ms;
+  }
+
+  uint16_t getDecay() { return decay; }
+  void setDecay(uint16_t ms) {
+    decay = ms;
+    decayPosInc = posPerSecond / ms;
+  }
+
+  uint16_t getRelease() { return release; }
+  void setRelease(uint16_t ms) {
+    release = ms;
+    releasePosInc = posPerSecond / ms;
+  }
+
+  uint8_t getSustain() { return sustainLevel; }
+  void setSustain(uint8_t s) {
+    sustainLevel = s;
+    sustain = (top - zero) * sustainLevel / 100;
+  }
+
+  void draw(uint8_t y) {
+    drawDecimal(6, y, attack, 4);
+    drawTextPgm(30, y, getEnvelopeTitle(attackEnv));
+
+    drawDecimal(32, y+8, decay, 4);
+    drawTextPgm(32+24, y+8, getEnvelopeTitle(decayEnv));
+
+    drawDecimal(64, y, sustainLevel, 3);
+    drawText(64+18, y, "%");
+
+    drawDecimal(90, y+8, release, 4);
+    drawTextPgm(90+24, y+8, getEnvelopeTitle(releaseEnv));
+  }
+
   void reset(uint16_t z, uint16_t t) {
     phase = Idle;
     phasePos = 0;
     zero = z;
     top = t;
-    sustain = (top - zero) * sustainLevel / 100;
+    setSustain(sustainLevel);
     level = zero;
     phaseLevel = zero;
   }
@@ -137,9 +214,9 @@ public:
 Instance adsr1, adsr2, adsr3;
 
 void draw() {
-  drawTextPgm(0, 16, clear);
-  drawTextPgm(0, 24, clear);
-  drawTextPgm(0, 32, clear);
+  adsr1.draw(16);
+  adsr2.draw(32);
+  adsr3.draw(48);
 }
 
 void start() {
