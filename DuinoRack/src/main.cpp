@@ -85,7 +85,7 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
 }
 
 void drawSelected(uint8_t x, uint8_t y, uint8_t control) {
-  drawChar(0, 16, (currentControlIdx == control) ? '>' : ' ');
+  drawChar(x, y, (currentControlIdx == control) ? '>' : ' ');
 }
 
 void drawChar(uint8_t x, uint8_t y, char ch) {
@@ -178,7 +178,7 @@ void handleEncoder1Rotate(int8_t rotation) {
   static uint32_t prevTime = 0;
   static uint8_t accel = 1;
   auto time = millis();
-  if ((time - prevTime < 100) && (accel < 8)) {
+  if ((time - prevTime < 100) && (accel < 16)) {
     accel <<= 1;
   } else {
     accel = 1;
