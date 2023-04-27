@@ -6,13 +6,7 @@
 #include "IO.h"
 #include "OutputBuf.h"
 #include "Waves.hpp"
-#include "Parameter.hpp"
-
-/*
-  123456789012345678901
-  1000Ln    40%
-       1000Ln    1000Ln
- */
+#include "Debug.hpp"
 
 namespace ADSR {
 
@@ -30,7 +24,8 @@ const char envPower2_t[] PROGMEM = "P2";
 const char envPower3_t[] PROGMEM = "P3";
 
 enum Phase: uint8_t { Idle, Attack, Decay, Sustain, Release };
-enum Envelope: uint8_t { Root3, Sin, Lin, Power2, Power3 };
+enum Envelope : uint8_t { Root3, Sin, Lin, Power2, Power3 };
+constexpr uint8_t N_ENVELOPES = 5;
 
 uint16_t getEnvelope(Envelope env, uint32_t pos) {
   switch(env) {
@@ -49,11 +44,16 @@ const char *getEnvelopeTitle(Envelope env) {
     case Sin: return envSin_t;
     case Lin: return envLin_t;
     case Power2: return envPower2_t;
-    default: return envPower2_t;
+    default: return envPower3_t;
   }
 }
 
+static constexpr uint8_t CONTROLS_PER_INSTANCE = 7;
+
 class Instance {
+  uint8_t index;
+  uint8_t ys;
+
   Phase phase = Idle;
   uint32_t phasePos = 0;
   Envelope attackEnv = Root3;
@@ -107,24 +107,54 @@ public:
   uint8_t getSustain() { return sustainLevel; }
   void setSustain(uint8_t s) {
     sustainLevel = s;
-    sustain = (top - zero) * sustainLevel / 100;
+    sustain = zero + uint32_t(top - zero) * sustainLevel / 100;
   }
 
-  void draw(uint8_t y) {
-    drawDecimal(6, y, attack, 4);
-    drawTextPgm(30, y, getEnvelopeTitle(attackEnv));
-
-    drawDecimal(32, y+8, decay, 4);
-    drawTextPgm(32+24, y+8, getEnvelopeTitle(decayEnv));
-
-    drawDecimal(64, y, sustainLevel, 3);
-    drawText(64+18, y, "%");
-
-    drawDecimal(90, y+8, release, 4);
-    drawTextPgm(90+24, y+8, getEnvelopeTitle(releaseEnv));
+  void drawSelected(uint8_t x, uint8_t y, uint8_t control) {
+    uint8_t current = (currentControlIdx - 1) % CONTROLS_PER_INSTANCE;
+    uint8_t currentIdx = (currentControlIdx - 1) / CONTROLS_PER_INSTANCE;
+    bool selected = (currentIdx == index) && (control == current);
+    drawChar(x, y, selected ? '>' : ' ');
   }
 
-  void reset(uint16_t z, uint16_t t) {
+  void draw() {
+    drawSelected(0, ys, 0);
+    drawDecimal(6, ys, attack, 4);
+    drawSelected(30, ys, 1);
+    drawTextPgm(36, ys, getEnvelopeTitle(attackEnv));
+
+    drawSelected(32, ys + 8, 2);
+    drawDecimal(32 + 6, ys + 8, decay, 4);
+    drawSelected(32 + 30, ys + 8, 3);
+    drawTextPgm(32 + 36, ys + 8, getEnvelopeTitle(decayEnv));
+
+    drawSelected(64, ys, 4);
+    drawDecimal(64 + 6, ys, sustainLevel, 3);
+    drawText(64 + 18, ys, "%");
+
+    drawSelected(90, ys + 8, 5);
+    drawDecimal(90 + 6, ys + 8, release, 4);
+    drawSelected(90 + 30, ys + 8, 6);
+    drawTextPgm(90 + 36, ys + 8, getEnvelopeTitle(releaseEnv));
+  }
+
+  void adjust(int8_t d) {
+    uint8_t control = (currentControlIdx - 1) % CONTROLS_PER_INSTANCE;
+    switch(control) {
+      case 0: setAttack(applyDelta<uint16_t>(attack, d, 1, 60000)); break;
+      case 1: attackEnv = Envelope(applyDelta<uint8_t>(attackEnv, d, 0, N_ENVELOPES - 1)); break;
+      case 2: setDecay(applyDelta<uint16_t>(decay, d, 1, 60000)); break;
+      case 3: decayEnv = Envelope(applyDelta<uint8_t>(decayEnv, d, 0, N_ENVELOPES - 1)); break;
+      case 4: setSustain(applyDelta<uint8_t>(sustainLevel, d, 0, 100)); break;
+      case 5: setRelease(applyDelta<uint16_t>(release, d, 1, 60000)); break;
+      case 6: releaseEnv = Envelope(applyDelta<uint8_t>(releaseEnv, d, 0, N_ENVELOPES - 1)); break;
+      default: {}
+    }
+  }
+
+  void reset(uint8_t _idx, uint16_t z, uint16_t t) {
+    index = _idx;
+    ys = 16 + 16 * index;
     phase = Idle;
     phasePos = 0;
     zero = z;
@@ -214,15 +244,15 @@ public:
 Instance adsr1, adsr2, adsr3;
 
 void draw() {
-  adsr1.draw(16);
-  adsr2.draw(32);
-  adsr3.draw(48);
+  adsr1.draw();
+  adsr2.draw();
+  adsr3.draw();
 }
 
 void start() {
-  adsr1.reset(IO::calcCV1Out(0), IO::calcCV1Out(8000));
-  adsr2.reset(IO::calcCV2Out(0), IO::calcCV2Out(8000));
-  adsr3.reset(IO::calcGate1Out(0), IO::calcGate1Out(8000));
+  adsr1.reset(0, IO::calcCV1Out(0), IO::calcCV1Out(8000));
+  adsr2.reset(1, IO::calcCV2Out(0), IO::calcCV2Out(8000));
+  adsr3.reset(2, IO::calcGate1Out(0), IO::calcGate1Out(8000));
 }
 
 void stop() {
@@ -230,6 +260,13 @@ void stop() {
 }
 
 void adjust(int8_t d) {
+  uint8_t index = (currentControlIdx - 1) / CONTROLS_PER_INSTANCE;
+  switch(index) {
+    case 0: adsr1.adjust(d); break;
+    case 1: adsr2.adjust(d); break;
+    case 2: adsr3.adjust(d); break;
+    default: {}
+  }
 }
 
 int16_t nextLevel() {
@@ -258,7 +295,7 @@ void fillBuffer(OutputFrame *buf) {
 
 constexpr Module module = {
   title,
-  0,
+  3 * CONTROLS_PER_INSTANCE,
   &draw,
   &start,
   &stop,

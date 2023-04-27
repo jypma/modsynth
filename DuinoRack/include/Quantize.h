@@ -38,11 +38,11 @@ void formatNote(uint8_t note, char *txt)
 void draw() {
   char txt[5];
   drawTextPgm(0, 16, scale_t);
-  drawText(40, 16, (currentControlIdx == 1) ? ">" : " ");
+  drawSelected(40, 16, 1);
   formatNote(rootNote, txt);
   txt[2] = '\0';
   drawText(48, 16, txt);
-  drawText(64, 16, (currentControlIdx == 2) ? ">" : " ");
+  drawSelected(64, 16, 2);
   drawTextPgm(72, 16, scale.getLabel());
 
   formatNote(noteA, txt);

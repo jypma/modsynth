@@ -123,7 +123,7 @@ void formatFactor(char *str, uint8_t factor) {
 }
 
 void draw() {
-  drawText(0, 16, (currentControlIdx == 1) ? ">" : " ");
+  drawSelected(0, 16, 1);
   drawTextPgm(7, 16, bpm_t);
   drawDecimal(40, 16, bpm);
 
@@ -135,14 +135,14 @@ void draw() {
     uint8_t controlIdx = s * 4 + 2;
     uint8_t y = s * 8 + 24;
 
-    drawText(12, y, (currentControlIdx == (controlIdx)) ? ">" : " ");
+    drawSelected(12, y, controlIdx);
     drawTextPgm(18, y, waveTitles[shapes[s].wave]);
-    drawText(36, y, (currentControlIdx == (controlIdx + 1)) ? ">" : " ");
+    drawSelected(36, y, controlIdx + 1);
     char str[4];
     formatFactor(str, shapes[s].factor);
     drawText(42, y, str);
-    drawText(72, y, (currentControlIdx == (controlIdx + 2)) ? ">" : " ");
-    drawText(96, y, (currentControlIdx == (controlIdx + 3)) ? ">" : " ");
+    drawSelected(72, y, controlIdx + 2);
+    drawSelected(96, y, controlIdx + 3);
   }
 }
 

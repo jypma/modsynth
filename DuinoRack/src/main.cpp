@@ -84,6 +84,17 @@ void drawText(uint8_t x, uint8_t y, const char *s) {
   }
 }
 
+void drawSelected(uint8_t x, uint8_t y, uint8_t control) {
+  drawChar(0, 16, (currentControlIdx == control) ? '>' : ' ');
+}
+
+void drawChar(uint8_t x, uint8_t y, char ch) {
+  if (!ch) return;
+  display.setTextCursor(x, y);
+  fillBuffer();
+  display.printChar(ch);
+}
+
 void clearChars(uint8_t x, uint8_t y, uint8_t count) {
   display.setTextCursor(x, y);
   while (count > 0) {
