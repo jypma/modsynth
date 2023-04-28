@@ -1,5 +1,6 @@
 #include "ADSR.hpp"
 #include "Debug.hpp"
+#include "Storage.hpp"
 
 namespace ADSR {
 
@@ -8,7 +9,7 @@ Instance adsr1, adsr2, adsr3;
 void Segment::reset(uint8_t idx) {
   controlIdx = idx;
   debugSerial(idx);
-  setLength(100);
+  setLength(length);
 }
 
 static constexpr uint32_t posPerSecond = ((uint32_t(256) * 1000) << Waves::posScaleBits) / (SAMPLERATE / OUTBUFSIZE);
@@ -61,6 +62,22 @@ void Segment::draw(uint8_t xs, uint8_t ys) {
   drawTextPgm(xs + 36, ys, getEnvelopeTitle(env));
 }
 
+uint16_t Segment::save(uint16_t addr) {
+  Storage::write(addr, length);
+  addr += 2;
+  Storage::write(addr, env);
+  addr++;
+  return addr;
+}
+
+uint16_t Segment::load(uint16_t addr) {
+  Storage::read(addr, length);
+  setLength(length);
+  addr += 2;
+  Storage::read(addr, env);
+  addr++;
+  return addr;
+}
 
 uint16_t Instance::nextLevel() {
   {
@@ -167,6 +184,25 @@ void Instance::handleGate(bool gate) {
   }
 }
 
+uint16_t Instance::save(uint16_t addr) {
+  Storage::write(addr, sustainLevel);
+  addr++;
+  addr = attack.save(addr);
+  addr = decay.save(addr);
+  addr = release.save(addr);
+  return addr;
+}
+
+uint16_t Instance::load(uint16_t addr) {
+  Storage::read(addr, sustainLevel);
+  setSustain(sustainLevel);
+  addr++;
+  addr = attack.load(addr);
+  addr = decay.load(addr);
+  addr = release.load(addr);
+  return addr;
+}
+
 uint16_t getEnvelope(Envelope env, uint32_t pos) {
   switch(env) {
     case Root3: return Waves::EnvelopeRoot3::get(pos);
@@ -230,6 +266,27 @@ void fillBuffer(OutputFrame *buf) {
     buf->gate2 = gate2;
     buf++;
   }
+}
+
+void save(uint16_t addr) {
+  uint8_t version = 1;
+  Storage::write(addr, version);
+  addr++;
+
+  addr = adsr1.save(addr);
+  addr = adsr2.save(addr);
+  addr = adsr3.save(addr);
+}
+
+void load(uint16_t addr) {
+  uint8_t version;
+  Storage::read(addr, version);
+  addr++;
+  if (version != 1) return;
+
+  addr = adsr1.load(addr);
+  addr = adsr2.load(addr);
+  addr = adsr3.load(addr);
 }
 
 }

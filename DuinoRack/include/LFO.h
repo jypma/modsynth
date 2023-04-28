@@ -5,6 +5,7 @@
 #include "Arduino.h"
 #include "tables/sin256.h"
 #include "Waves.hpp"
+#include "Storage.hpp"
 
 #include "Module.h"
 #include "IO.h"
@@ -13,11 +14,11 @@
 
 namespace LFO {
 
-  constexpr uint16_t TABLE_SIZE = Waves::TABLE_SIZE;
-  constexpr uint16_t Q_TABLE_SIZE = TABLE_SIZE / 4;
-  constexpr uint16_t Q3_TABLE_SIZE = Q_TABLE_SIZE * 3;
+constexpr uint16_t TABLE_SIZE = Waves::TABLE_SIZE;
+constexpr uint16_t Q_TABLE_SIZE = TABLE_SIZE / 4;
+constexpr uint16_t Q3_TABLE_SIZE = Q_TABLE_SIZE * 3;
 
-  constexpr uint8_t sinePosScaleBits = Waves::posScaleBits;
+constexpr uint8_t sinePosScaleBits = Waves::posScaleBits;
 
 constexpr uint32_t sinePosScale = (uint32_t(1) << sinePosScaleBits);
 constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;
@@ -49,6 +50,39 @@ struct Shape {
   uint32_t increment;
   uint8_t factor = FACTOR_ONE;
   Wave wave = Sine;
+
+  uint16_t save(uint16_t addr) {
+    Storage::write(addr, wave);
+    addr++;
+
+    Storage::write(addr, factorNom[factor]);
+    addr++;
+    Storage::write(addr, factorDen[factor]);
+    addr++;
+
+    return addr;
+  }
+
+  uint16_t load(uint16_t addr) {
+    Storage::read(addr, wave);
+    addr++;
+
+    uint8_t nom, den;
+    Storage::read(addr, nom);
+    addr++;
+    Storage::read(addr, den);
+    addr++;
+
+    for (uint8_t i = 0; i <= MAX_FACTOR; i++) {
+      if (nom == factorNom[i] && den == factorDen[i]) {
+        factor = i;
+        break;
+      }
+    }
+
+    return addr;
+  }
+
 
   void recalc(uint32_t mainIncrement) {
     increment = mainIncrement / factorNom[factor] * factorDen[factor];
@@ -232,6 +266,32 @@ void fillBuffer(OutputFrame *buf) {
   }
 }
 
+void save(uint16_t addr) {
+  uint8_t version = 1;
+  Storage::write(addr, version);
+  addr++;
+  Storage::write(addr, bpm);
+  addr += 2;
+
+  for (uint8_t i = 0; i < N_SHAPES; i++) {
+    addr = shapes[i].save(addr);
+  }
+}
+
+void load(uint16_t addr) {
+  uint8_t version;
+  Storage::read(addr, version);
+  addr++;
+  if (version != 1) return;
+
+  Storage::read(addr, bpm);
+  addr += 2;
+
+  for (uint8_t i = 0; i < N_SHAPES; i++) {
+    addr = shapes[i].load(addr);
+  }
+}
+
 constexpr Module module = {
   title,
   1 + N_SHAPES * CONTROLS_PER_SHAPE,
@@ -240,7 +300,9 @@ constexpr Module module = {
   &stop,
   &adjust,
   &fillBuffer,
-  NULL
+  NULL,
+  &save,
+  &load
 };
 
 } // FuncGen

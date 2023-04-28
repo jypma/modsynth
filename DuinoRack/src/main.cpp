@@ -22,7 +22,9 @@ uint8_t shownModIdx = 0;
 uint8_t currentModIdx = 0;
 uint8_t currentControlIdx = 0;
 
+// Encoder 1 is "Select"
 auto encoder1 = Versatile_RotaryEncoder(2,3,4); // PD2, PD3, PD4
+// Encoder 2 is "Adjust"
 auto encoder2 = Versatile_RotaryEncoder(5,6,7); // PD5, PD6, PD7
 
 OutputBuf::Buffer a, b;
@@ -53,10 +55,9 @@ ISR(TIMER2_COMPA_vect){
   OutputBuf::advance();
 }
 
-constexpr uint8_t MODULE_COUNT = 6;
-
 void setModuleIdx(int8_t idx) {
   currentMod.stop();
+  currentControlIdx = 0;
   currentModIdx = idx % MODULE_COUNT;
   debugSerial(currentModIdx);
   switch(currentModIdx) {
@@ -132,6 +133,7 @@ void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
   }
 }
 
+bool showLongPress = false;
 void showModule() {
   if (shownModIdx != currentModIdx) {
     display.fill(0x00);
@@ -141,6 +143,7 @@ void showModule() {
   } else {
     drawText(0, 8, " ");
   }
+  drawText(120, 8, showLongPress ? "S" : " ");
   drawTextPgm(8, 8, currentMod.name);
   shownModIdx = currentModIdx;
 }
@@ -168,6 +171,7 @@ void handleEncoder2Rotate(int8_t rotation) {
 }
 
 void handleEncoder2PressRelease() {
+  showLongPress = false;
   if (currentMod.adjustPressed != NULL) {
     currentMod.adjustPressed();
   }
@@ -191,6 +195,17 @@ void handleEncoder1Rotate(int8_t rotation) {
   currentControlIdx = (currentControlIdx + (currentMod.controlCount + 1) + rotation) % (currentMod.controlCount + 1);
 }
 
+
+void handleEncoder1LongPress() {
+  showLongPress = true;
+}
+
+void handleEncoder1LongPressRelease() {
+  // TODO: Show a menu here to load/save preset slots. For now, we just save in preset 0.
+  Storage::savePreset(0);
+  showLongPress = false;
+}
+
 void setup() {
 #ifdef DEBUG_SERIAL
   Serial.begin(31250);
@@ -208,6 +223,8 @@ void setup() {
 
   currentMod.start();
   encoder1.setHandleRotate(handleEncoder1Rotate);
+  encoder1.setHandleLongPress(handleEncoder1LongPress);
+  encoder1.setHandleLongPressRelease(handleEncoder1LongPressRelease);
   encoder2.setHandleRotate(handleEncoder2Rotate);
   encoder2.setHandlePressRelease(handleEncoder2PressRelease);
 

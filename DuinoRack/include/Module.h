@@ -3,10 +3,12 @@
 #include "OutputBuf.h"
 
 constexpr uint16_t SAMPLERATE = 12000;
+constexpr uint8_t MODULE_COUNT = 6;
 
 // TODO replace with clearChars
 const char clear[] PROGMEM = "                ";
 
+void setModuleIdx(int8_t idx);
 extern uint8_t currentControlIdx;
 void clearChars(uint8_t x, uint8_t y, uint8_t count);
 void drawSelected(uint8_t x, uint8_t y, uint8_t control);
@@ -20,6 +22,7 @@ struct Module {
   Module() = delete;
   using Callback = void (*)();
   using AdjustCallback = void (*)(int8_t);
+  using PresetCallback = void (*)(uint16_t);
   using BufferCallback = void (*)(OutputFrame *);
 
   const char *name;
@@ -30,4 +33,9 @@ struct Module {
   AdjustCallback adjust;
   BufferCallback fillBuffer;
   Callback adjustPressed;
+  PresetCallback save;
+  PresetCallback load;
 };
+
+extern Module currentMod;
+extern uint8_t currentModIdx;

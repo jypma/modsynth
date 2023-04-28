@@ -9,6 +9,7 @@
 #include "IO.h"
 #include "OutputBuf.h"
 #include "Scale.h"
+#include "Storage.hpp"
 
 namespace Quantize {
 
@@ -54,15 +55,19 @@ void draw() {
   drawText(56, 40, txt);
 }
 
+void createScale() {
+  scale = Scale(rootNote, scaleIdx);
+}
+
 void adjust(int8_t d) {
   switch(currentControlIdx) {
     case 1:
       rootNote = applyDelta<uint8_t>(rootNote, d, 0, 11);
-      scale = Scale(rootNote, scaleIdx);
+      createScale();
       break;
     case 2:
       scaleIdx = applyDelta<uint8_t>(scaleIdx, d, 0, NUM_SCALES - 1);
-      scale = Scale(rootNote, scaleIdx);
+      createScale();
       break;
     default:
       break;
@@ -102,6 +107,30 @@ void fillBuffer(OutputFrame *buf) {
   }
 }
 
+void save(uint16_t addr) {
+  uint8_t version = 1;
+  Storage::write(addr, version);
+  addr++;
+
+  Storage::write(addr, scaleIdx);
+  addr++;
+  Storage::write(addr, rootNote);
+  addr++;
+}
+
+void load(uint16_t addr) {
+  uint8_t version;
+  Storage::read(addr, version);
+  addr++;
+  if (version != 1) return;
+
+  Storage::read(addr, scaleIdx);
+  addr++;
+  Storage::read(addr, rootNote);
+  addr++;
+  createScale();
+}
+
 constexpr Module module = {
   title,
   2,
@@ -109,7 +138,10 @@ constexpr Module module = {
   &start,
   &stop,
   &adjust,
-  &fillBuffer
+  &fillBuffer,
+  NULL,
+  &save,
+  &load
 };
 
 } // FuncGen

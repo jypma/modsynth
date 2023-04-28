@@ -36,7 +36,7 @@ static constexpr uint8_t CONTROLS_PER_INSTANCE = 7;
 class Segment {
   uint32_t pos;
   uint32_t posInc;
-  uint16_t length;
+  uint16_t length = 100;
   uint16_t start;
   uint16_t end;
   uint8_t controlIdx;
@@ -51,6 +51,8 @@ public:
   uint16_t advance();
   bool isEnded();
   void draw(uint8_t xs, uint8_t ys);
+  uint16_t save(uint16_t addr);
+  uint16_t load(uint16_t addr);
 };
 
 class Instance {
@@ -73,6 +75,8 @@ public:
   void reset(uint8_t _idx, uint16_t z, uint16_t t);
   void handleGate(bool gate);
   uint16_t nextLevel();
+  uint16_t save(uint16_t addr);
+  uint16_t load(uint16_t addr);
 };
 
 extern Instance adsr1, adsr2, adsr3;
@@ -82,6 +86,8 @@ extern void start();
 extern void stop();
 extern void adjust(int8_t d);
 extern void fillBuffer(OutputFrame *buf) ;
+extern void load(uint16_t d);
+extern void save(uint16_t d);
 
 constexpr Module module = {
   title,
@@ -91,6 +97,8 @@ constexpr Module module = {
   &stop,
   &adjust,
   &fillBuffer,
-  NULL
+  NULL,
+  &save,
+  &load
 };
 }

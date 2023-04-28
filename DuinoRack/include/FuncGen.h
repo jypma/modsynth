@@ -9,6 +9,8 @@
 #include "OutputBuf.h"
 #include "mozzi_pgmspace.h"
 
+#include <EEPROM.h>
+
 namespace FuncGen {
 
   // LOOKUP TABLE SINE
@@ -118,6 +120,21 @@ int16_t getWaveValue() {
     }
   }
 
+void save(uint16_t addr) {
+  uint8_t version = 1;
+  EEPROM.put(addr, version);
+  addr++;
+  EEPROM.put(addr, wave);
+}
+
+void load(uint16_t addr) {
+  uint8_t version;
+  EEPROM.get(addr, version);
+  if (version != 1) return;
+  addr++;
+  EEPROM.get(addr, wave);
+}
+
   constexpr Module module = {
     title,
     1,
@@ -126,7 +143,9 @@ int16_t getWaveValue() {
     &stop,
     &adjust,
     &fillBuffer,
-    NULL
+    NULL,
+    &save,
+    &load
   };
 
 } // FuncGen

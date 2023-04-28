@@ -1,10 +1,9 @@
 #include <Arduino.h>
 #include <avr/sfr_defs.h>
 #include <mozzi_fixmath.h>
-#include <EEPROM.h>
 #include "IO.h"
 #include "Module.h"
-#include "mozzi_pgmspace.h"
+#include "Storage.hpp"
 
 namespace IO {
 uint16_t cvIn1 = 0;
@@ -208,36 +207,36 @@ void readIfNeeded() {
 
 constexpr uint16_t addr = 4; // Calibration is stored immediately after magic bytes
 void saveCalibration() {
-  EEPROM.put(addr, cvIn1_0V);
-  EEPROM.put(addr + 2, cvIn1_4V);
-  EEPROM.put(addr + 4, cvIn2_0V);
-  EEPROM.put(addr + 6, cvIn2_4V);
+  Storage::write(addr, cvIn1_0V);
+  Storage::write(addr + 2, cvIn1_4V);
+  Storage::write(addr + 4, cvIn2_0V);
+  Storage::write(addr + 6, cvIn2_4V);
 
-  EEPROM.put(addr + 8, cvOut1_0V);
-  EEPROM.put(addr + 10, cvOut1_4V);
-  EEPROM.put(addr + 12, cvOut2_0V);
-  EEPROM.put(addr + 14, cvOut2_4V);
+  Storage::write(addr + 8, cvOut1_0V);
+  Storage::write(addr + 10, cvOut1_4V);
+  Storage::write(addr + 12, cvOut2_0V);
+  Storage::write(addr + 14, cvOut2_4V);
 
-  EEPROM.put(addr + 16, gate1_0V);
-  EEPROM.put(addr + 18, gate1_4V);
-  EEPROM.put(addr + 20, gate2_0V);
-  EEPROM.put(addr + 22, gate2_4V);
+  Storage::write(addr + 16, gate1_0V);
+  Storage::write(addr + 18, gate1_4V);
+  Storage::write(addr + 20, gate2_0V);
+  Storage::write(addr + 22, gate2_4V);
 }
 
 void loadCalibration() {
-  EEPROM.get(addr, cvIn1_0V);
-  EEPROM.get(addr + 2, cvIn1_4V);
-  EEPROM.get(addr + 4, cvIn2_0V);
-  EEPROM.get(addr + 6, cvIn2_4V);
+  Storage::read(addr, cvIn1_0V);
+  Storage::read(addr + 2, cvIn1_4V);
+  Storage::read(addr + 4, cvIn2_0V);
+  Storage::read(addr + 6, cvIn2_4V);
 
-  EEPROM.get(addr + 8, cvOut1_0V);
-  EEPROM.get(addr + 10, cvOut1_4V);
-  EEPROM.get(addr + 12, cvOut2_0V);
-  EEPROM.get(addr + 14, cvOut2_4V);
+  Storage::read(addr + 8, cvOut1_0V);
+  Storage::read(addr + 10, cvOut1_4V);
+  Storage::read(addr + 12, cvOut2_0V);
+  Storage::read(addr + 14, cvOut2_4V);
 
-  EEPROM.get(addr + 16, gate1_0V);
-  EEPROM.get(addr + 18, gate1_4V);
-  EEPROM.get(addr + 20, gate2_0V);
-  EEPROM.get(addr + 22, gate2_4V);
+  Storage::read(addr + 16, gate1_0V);
+  Storage::read(addr + 18, gate1_4V);
+  Storage::read(addr + 20, gate2_0V);
+  Storage::read(addr + 22, gate2_4V);
 }
 }
