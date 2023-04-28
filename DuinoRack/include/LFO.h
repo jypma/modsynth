@@ -42,6 +42,14 @@ const uint8_t factorDen[] = { 1, 1, 1, 1, 2, 3, 4 };
 constexpr uint8_t FACTOR_ONE = 3; // The factor of 1/1, i.e. normal BPM
 constexpr uint8_t MAX_FACTOR = 6;
 
+enum Range: uint8_t { Negative4, Bipolar4, Positive4, Positive8 };
+constexpr uint8_t N_RANGE = 4;
+const char neg4_t[] PROGMEM = "-4V";
+const char bip4_t[] PROGMEM = "+-4";
+const char pos4_t[] PROGMEM = "+4V";
+const char pos8_t[] PROGMEM = "+8V";
+const char *rangeTitles[] = {neg4_t, bip4_t, pos4_t, pos8_t};
+
 uint32_t mainPos;
 uint32_t increment;
 
@@ -50,28 +58,25 @@ struct Shape {
   uint32_t increment;
   uint8_t factor = FACTOR_ONE;
   Wave wave = Sine;
+  uint8_t phase = 0; // 0..255 as one period
+  Range range = Bipolar4;
 
   uint16_t save(uint16_t addr) {
-    Storage::write(addr, wave);
-    addr++;
-
-    Storage::write(addr, factorNom[factor]);
-    addr++;
-    Storage::write(addr, factorDen[factor]);
-    addr++;
+    addr = Storage::write(addr, wave);
+    addr = Storage::write(addr, factorNom[factor]);
+    addr = Storage::write(addr, factorDen[factor]);
+    addr = Storage::write(addr, phase);
+    addr = Storage::write(addr, range);
 
     return addr;
   }
 
   uint16_t load(uint16_t addr) {
-    Storage::read(addr, wave);
-    addr++;
+    addr = Storage::read(addr, wave);
 
     uint8_t nom, den;
-    Storage::read(addr, nom);
-    addr++;
-    Storage::read(addr, den);
-    addr++;
+    addr = Storage::read(addr, nom);
+    addr = Storage::read(addr, den);
 
     for (uint8_t i = 0; i <= MAX_FACTOR; i++) {
       if (nom == factorNom[i] && den == factorDen[i]) {
@@ -80,9 +85,10 @@ struct Shape {
       }
     }
 
+    addr = Storage::read(addr, phase);
+    addr = Storage::read(addr, range);
     return addr;
   }
-
 
   void recalc(uint32_t mainIncrement) {
     increment = mainIncrement / factorNom[factor] * factorDen[factor];
@@ -106,15 +112,29 @@ struct Shape {
     }
   }
 
-  int16_t getTableValue(){
-    switch (wave) {
-      case Sine: return Waves::Sine::get(tablePos);
-      case Triangle: return Waves::Triangle::get(tablePos);
-      case SawUp: return Waves::SawUp::get(tablePos);
-      case SawDown: return Waves::SawDown::get(tablePos);
-      case Square: return Waves::Square::get(tablePos);
+  int16_t applyRange(int16_t value) {
+    switch(range) {
+      case Negative4: return (value / 2) - 2000;
+      case Bipolar4: return value;
+      case Positive4: return (value / 2) + 2000;
+      case Positive8: return value + 4000;
     }
     return 0;
+  }
+
+  int16_t getRawTableValue(){
+    switch (wave) {
+      case Sine: return Waves::Sine::get(tablePos, phase);
+      case Triangle: return Waves::Triangle::get(tablePos, phase);
+      case SawUp: return Waves::SawUp::get(tablePos, phase);
+      case SawDown: return Waves::SawDown::get(tablePos, phase);
+      case Square: return Waves::Square::get(tablePos, phase);
+    }
+    return 0;
+  }
+
+  int16_t getTableValue() {
+    return applyRange(getRawTableValue());
   }
 };
 
@@ -171,12 +191,18 @@ void draw() {
 
     drawSelected(12, y, controlIdx);
     drawTextPgm(18, y, waveTitles[shapes[s].wave]);
+
     drawSelected(36, y, controlIdx + 1);
     char str[4];
     formatFactor(str, shapes[s].factor);
     drawText(42, y, str);
+
     drawSelected(72, y, controlIdx + 2);
-    drawSelected(96, y, controlIdx + 3);
+    uint32_t ph = (uint32_t(shapes[s].phase) * 360) >> 8;
+    drawDecimal(78, y, ph, 3);
+
+    drawSelected(100, y, controlIdx + 3);
+    drawTextPgm(106, y, rangeTitles[shapes[s].range]);
   }
 }
 
@@ -197,6 +223,12 @@ void adjust(int8_t d) {
         case 1:
           shapes[shapeIdx].factor = applyDelta<uint32_t>(shapes[shapeIdx].factor, d, 0, MAX_FACTOR);
           recalc();
+          break;
+        case 2:
+          shapes[shapeIdx].phase = applyDelta<uint8_t>(shapes[shapeIdx].phase, d, 0, 255);
+          break;
+        case 3:
+          shapes[shapeIdx].range = Range(applyDelta<uint8_t>(shapes[shapeIdx].range, d, 0, N_RANGE - 1));
           break;
       }
   }

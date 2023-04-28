@@ -36,13 +36,15 @@ template <typename T> struct OpsImpl<T,2> {
 };
 
 template <typename T>
-void read(uint16_t addr, T &target) {
-  return OpsImpl<T, sizeof(T)>::read(addr, target);
+uint16_t read(uint16_t addr, T &target) {
+  OpsImpl<T, sizeof(T)>::read(addr, target);
+  return addr + sizeof(T);
 }
 
 template <typename T>
-void write(uint16_t addr, const T &target) {
+uint16_t write(uint16_t addr, const T &target) {
   OpsImpl<T, sizeof(T)>::write(addr, target);
+  return addr + sizeof(T);
 }
 
 void savePreset(uint8_t index);
