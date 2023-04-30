@@ -15,6 +15,7 @@ void drawSelected(uint8_t x, uint8_t y, uint8_t control);
 void drawChar(uint8_t x, uint8_t y, char ch);
 void drawDecimal(uint8_t x, uint8_t y, int16_t value);
 void drawDecimal(uint8_t x, uint8_t y, int16_t value, uint8_t expectedChars);
+void drawDecimal(uint8_t x, uint8_t y, int16_t value, char suffix, uint8_t expectedChars);
 void drawText(uint8_t x, uint8_t y, const char *s);
 void drawTextPgm(uint8_t x, uint8_t y, const char *s);
 

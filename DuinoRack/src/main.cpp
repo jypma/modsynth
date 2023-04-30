@@ -73,7 +73,6 @@ void setModuleIdx(int8_t idx) {
   currentMod.adjust(0);
 }
 
-
 void drawText(uint8_t x, uint8_t y, const char *s) {
   if (!*s) return;
   display.setTextCursor(x, y);
@@ -120,6 +119,16 @@ void drawDecimal(uint8_t x, uint8_t y, int16_t value, uint8_t expectedChars) {
   clearChars(x + len * 6, y, (expectedChars > len) ? expectedChars - len : 0);
 }
 
+void drawDecimal(uint8_t x, uint8_t y, int16_t value, char suffix, uint8_t expectedChars) {
+  char str[7];
+  itoa(value, str, 10);
+  drawText(x, y, str);
+  uint8_t len = strlen(str);
+  drawChar(x + len * 6, y, suffix);
+  len++;
+  clearChars(x + len * 6, y, (expectedChars > len) ? expectedChars - len : 0);
+}
+
 void drawTextPgm(uint8_t x, uint8_t y, const char *s) {
   uint8_t ch = pgm_read_byte(s);
   if (!ch) return;
@@ -153,7 +162,8 @@ void handleEncoder2Rotate(int8_t rotation) {
   static uint32_t prevTime = 0;
   static uint8_t accel = 1;
   auto time = millis();
-  if ((time - prevTime < 100) && (accel < 8)) {
+  uint8_t maxAccel = (currentControlIdx == 0) ? 1 : 16;
+  if ((time - prevTime < 100) && (accel < maxAccel)) {
     accel <<= 1;
   } else {
     accel = 1;
@@ -182,13 +192,13 @@ void handleEncoder1Rotate(int8_t rotation) {
   static uint32_t prevTime = 0;
   static uint8_t accel = 1;
   auto time = millis();
-  if ((time - prevTime < 100) && (accel < 16)) {
+  uint8_t maxAccel = 4;
+  if ((time - prevTime < 100) && (accel < maxAccel)) {
     accel <<= 1;
   } else {
     accel = 1;
   }
   prevTime = time;
-  // TODO control acceleration differently for different controls
   rotation *= accel;
 
   // Don't draw to screen here, as this may be called in the middle of drawing to the screen!

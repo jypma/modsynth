@@ -4,7 +4,7 @@
 #include "Inline.h"
 
 template <typename T>
-inline T applyDelta(T value, int8_t delta, T min, T max) {
+T applyDelta(T value, int8_t delta, T min, T max) {
   if (delta > 0) {
     if (value < max - delta) {
       return value + delta;
@@ -21,7 +21,7 @@ inline T applyDelta(T value, int8_t delta, T min, T max) {
 }
 
 template <typename T>
-inline T applyDelta16(T value, int16_t delta, T min, T max) {
+T applyDelta16(T value, int16_t delta, T min, T max) {
   if (delta > 0) {
     if (value < max - delta) {
       return value + delta;
