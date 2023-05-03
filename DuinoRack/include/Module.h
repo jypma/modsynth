@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "OutputBuf.h"
 
-constexpr uint16_t SAMPLERATE = 12000;
+constexpr uint16_t SAMPLERATE = 12195; // To limit rounding errors when calculating OCR2A
 constexpr uint8_t MODULE_COUNT = 6;
 
 // TODO replace with clearChars

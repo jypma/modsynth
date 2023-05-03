@@ -17,6 +17,7 @@ namespace OutputBuf {
   extern volatile OutputFrame *next;
   extern volatile uint8_t overruns;
   extern volatile uint8_t currentPos;
+  extern volatile uint16_t samples;
 
   typedef OutputFrame Buffer[OUTBUFSIZE];
 
@@ -27,6 +28,7 @@ namespace OutputBuf {
   // One transmission to MCP takes 5us.
   // Whole ISR takes 15us.
   INLINE void advance() {
+    samples++;
     if (current == NULL) {
       overruns++;
       return;

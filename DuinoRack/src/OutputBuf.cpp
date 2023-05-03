@@ -7,6 +7,7 @@ volatile OutputFrame *current = NULL;
 volatile OutputFrame *next = NULL;
 volatile uint8_t currentPos = 0;
 volatile uint8_t overruns = 0;
+volatile uint16_t samples = 0;
 
 bool needNextBuffer() {
   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {

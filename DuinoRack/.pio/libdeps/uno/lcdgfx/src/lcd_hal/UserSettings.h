@@ -48,10 +48,10 @@
  * and want to reduce memory consumption.                               */
 
 /** Define this macro if you need to enable software I2C module for compilation */
-#define CONFIG_SOFTWARE_I2C_ENABLE
+//#define CONFIG_SOFTWARE_I2C_ENABLE
 
 /** Define this macro if you need to enable TWI I2C module for compilation */
-//#define CONFIG_TWI_I2C_ENABLE
+#define CONFIG_TWI_I2C_ENABLE
 
 /** Define this macro if you need to enable AVR SPI module for compilation */
 //#define CONFIG_AVR_SPI_ENABLE
@@ -89,7 +89,7 @@
 #define CONFIG_LINUX_SPI_ENABLE
 
 /** Define this macro if you need to enable Arduino Wire module for compilation */
-//#define CONFIG_ARDUINO_I2C_ENABLE
+#define CONFIG_ARDUINO_I2C_ENABLE
 
 /** Define this macro if you need to enable Arduino SPI module for compilation */
 #define CONFIG_ARDUINO_SPI_ENABLE

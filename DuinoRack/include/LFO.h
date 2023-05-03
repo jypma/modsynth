@@ -196,7 +196,7 @@ constexpr uint8_t N_SHAPES = 4;
 constexpr uint8_t CONTROLS_PER_SHAPE = 8;
 Shape shapes[N_SHAPES];
 
-uint16_t bpm = 120;
+uint16_t bpm = 60;
 
 const char title[] PROGMEM = "LFO      ";
 const char bpm_t[] PROGMEM = "BPM:  ";

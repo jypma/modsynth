@@ -22,12 +22,12 @@ void savePreset(uint8_t index) {
 }
 
 void loadPreset(uint8_t index) {
-  if (!currentMod.load) return;
   uint16_t addr = getPresetAddr(index);
   uint8_t module;
   Storage::read(addr, module);
   if (module < MODULE_COUNT) {
     setModuleIdx(module);
+    if (!currentMod.load) return;
     currentMod.load(addr + 1);
   }
 }

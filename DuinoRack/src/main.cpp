@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "MCP_DAC.h"
 #include <lcdgfx.h>
 #include <Versatile_RotaryEncoder.h>
@@ -15,11 +16,15 @@
 #include "Storage.hpp"
 #include "Debug.hpp"
 
+
+//#define TIMING
+
 // display: 300 bytes RAM
 
-Module currentMod = FuncGen::module;
-uint8_t shownModIdx = 0;
-uint8_t currentModIdx = 0;
+Module currentMod = LFO::module;//FuncGen::module;
+uint8_t currentModIdx = 3;
+
+uint8_t shownModIdx = currentModIdx;
 uint8_t currentControlIdx = 0;
 
 // Encoder 1 is "Select"
@@ -33,14 +38,21 @@ OutputFrame *current = b;
 DisplaySSD1306_128x64_I2C display(-1);
 
 MCP4821 MCP;
-uint16_t count;
+uint16_t bufferCount;
 uint32_t lastTime = 0;
 uint8_t oldOverruns = 0;
 
 void fillBuffer() {
   if (OutputBuf::needNextBuffer()) {
     current = (current == a) ? b : a;
-    currentMod.fillBuffer(current);
+    bufferCount++;
+#ifdef TIMING
+    PORTD |= (1 << 3);
+#endif
+    currentMod.fillBuffer(current);  // On arduino boot: ~500us
+#ifdef TIMING
+    PORTD &= ~(1 << 3);
+#endif
     OutputBuf::setNextBuffer(current);
   } else if (encoder1.ReadEncoder()) {
     debugSerial("E1");
@@ -51,8 +63,14 @@ void fillBuffer() {
   }
 }
 
-ISR(TIMER2_COMPA_vect){
+ISR(TIMER2_COMPA_vect) {
+#ifdef TIMING
+  PORTD |= (1 << 2);
+#endif
   OutputBuf::advance();
+#ifdef TIMING
+  PORTD &= ~(1 << 2);
+#endif
 }
 
 void setModuleIdx(int8_t idx) {
@@ -217,11 +235,12 @@ void handleEncoder1LongPressRelease() {
 }
 
 void setup() {
-#ifdef DEBUG_SERIAL
   Serial.begin(31250);
+#ifdef DEBUG_SERIAL
   debugSerial("DuinoRack");
   Serial.flush();
 #endif
+
   IO::setup();
   Storage::load();
 
@@ -251,17 +270,26 @@ void setup() {
   MCP.fastWriteA(0);
   MCP.fastWriteB(0);
 
+#ifdef TIMING
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+#endif
+
   // Set up timer2 for maximum speed
   TCCR2A = 0;// set entire TCCR2A register to 0
   TCCR2B = 0;// same for TCCR2B
   TCNT2  = 0;//initialize counter value to 0
   // set compare match register to sample rate (def. 12000)
-  constexpr uint8_t ovfValue = uint32_t(F_CPU) / 8 / SAMPLERATE;
+  constexpr uint8_t ovfValue = uint32_t(F_CPU) / 32 / SAMPLERATE;
   OCR2A = ovfValue;
   // turn on CTC mode
   TCCR2A |= (1 << WGM21);
   // 8 prescaler
-  TCCR2B = (1 << CS21);
+  //TCCR2B = (1 << CS21);
+  // 32 prescaler
+  TCCR2B = (1 << CS21) | (1 << CS20);
   // enable timer compare interrupt
   TIMSK2 |= (1 << OCIE2A);
 }
@@ -280,8 +308,26 @@ void loop() {
 
   if (now - lastTime > 100000)
   {
-    showModule();
+    lastTime = now;
+    debugSerial(bufferCount); // bufferCount: ~36 per 100ms, for SAMPLERATE 12000
+    bufferCount = 0;
+    //debugSerial(OutputBuf::samples); // samples: ~600 per 100ms, or 6000 per second, for SAMPLERATE 12000
+    // SAMPLERATE 8000 -> 400 samples per 10ms. PRescaler wrong?
+    OutputBuf::samples = 0;
+#ifdef TIMING
+    PORTD |= (1 << 5);
+#endif
+    showModule(); // takes 10ms
+#ifdef TIMING
+    PORTD &= ~(1 << 5);
+#endif
     fillBuffer();
-    currentMod.draw();
+#ifdef TIMING
+    PORTD |= (1 << 6);
+#endif
+    currentMod.draw(); // For LFO: takes 50ms on 2000Hz. 100ms on 4000Hz.
+#ifdef TIMING
+    PORTD &= ~(1 << 6);
+#endif
   }
 }
