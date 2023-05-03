@@ -234,6 +234,21 @@ void handleEncoder1LongPressRelease() {
   showLongPress = false;
 }
 
+void displayExtraInit() {
+  // Copied from lcdgfx' own avr_twi implementation, but they forget(?) to call it
+#define SSD1306_TWI_FREQ 400000
+
+  DDRC &= ~(1 << PINC4);
+  PORTC |= (1 << PINC4);
+  DDRC &= ~(1 << PINC5);
+  PORTC |= (1 << PINC5);
+
+  TWSR = 0;
+
+  TWBR = ((F_CPU / SSD1306_TWI_FREQ) - 16) / 2 / (1); // Always use prescaler 1 (TWSR 0x00)
+  TWCR = (1 << TWEN) | (1 << TWEA);
+}
+
 void setup() {
   Serial.begin(31250);
 #ifdef DEBUG_SERIAL
@@ -257,6 +272,7 @@ void setup() {
   encoder2.setHandleRotate(handleEncoder2Rotate);
   encoder2.setHandlePressRelease(handleEncoder2PressRelease);
 
+  displayExtraInit();
   display.begin();
   display.fill(0x00);
   display.setFixedFont(ssd1306xled_font6x8);
