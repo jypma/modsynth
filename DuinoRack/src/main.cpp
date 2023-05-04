@@ -8,7 +8,7 @@
 #include "Calibrate.h"
 #include "ADSR.hpp"
 #include "IO.h"
-#include "LFO.h"
+#include "LFO.hpp"
 #include "Quantize.h"
 #include "MIDIMod.h"
 #include "canvas/canvas.h"
@@ -250,8 +250,8 @@ void displayExtraInit() {
 }
 
 void setup() {
-  Serial.begin(31250);
 #ifdef DEBUG_SERIAL
+  Serial.begin(31250);
   debugSerial("DuinoRack");
   Serial.flush();
 #endif
