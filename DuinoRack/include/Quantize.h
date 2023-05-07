@@ -86,7 +86,7 @@ uint8_t toMidiNote(int16_t in) {
   return octave * 12 + note;
 }
 
-void fillBuffer(OutputFrame *buf) {
+void fillBuffer(OutputBuf::Buffer &buf) {
   //noteA = toMidiNote(IO::getCV1In());
   noteA = scale.quantize(IO::getCV1In());
   uint16_t valueA = IO::calcCV1Out(noteToVoltage(noteA));
@@ -98,13 +98,7 @@ void fillBuffer(OutputFrame *buf) {
   uint16_t gate1 = IO::calcGate1Out(0);
   uint16_t gate2 = IO::calcGate2Out(0);
 
-  for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cv1 = valueA;
-    buf->cv2 = valueB;
-    buf->gate1 = gate1;
-    buf->gate2 = gate2;
-    buf++;
-  }
+  buf.setAll(valueA, valueB, gate1, gate2, false);
 }
 
 void save(uint16_t addr) {

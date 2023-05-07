@@ -72,11 +72,14 @@ bool getGate1In();
 bool getGate2In();
 bool getGate3In();
 
-INLINE void setGate1Out(uint16_t value) {
-  OCR1A = value;
-}
-INLINE void setGate2Out(uint16_t value) {
-  OCR1B = value;
+INLINE void setGate1Out(uint16_t value) { OCR1A = value; }
+INLINE void setGate2Out(uint16_t value) { OCR1B = value; }
+INLINE void setGate3Out(bool value) {
+  if (value) {
+    PORTD |= (1 << 1);
+  } else {
+    PORTD &= ~(1 << 1);
+  }
 }
 
 int16_t getCV1In();

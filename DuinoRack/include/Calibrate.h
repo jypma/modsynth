@@ -140,7 +140,7 @@ void adjust(int8_t d) {
     }
   }
 
-void fillBuffer(OutputFrame *buf) {
+void fillBuffer(OutputBuf::Buffer &buf) {
   bool calibInCV4V = (currentControlIdx == 2 || currentControlIdx == 4);
   auto out_mVa = (calibInCV4V || (currentControlIdx == 6)) ? 4000 : 0;
   auto out_mVb = (calibInCV4V || (currentControlIdx == 8)) ? 4000 : 0;
@@ -148,13 +148,8 @@ void fillBuffer(OutputFrame *buf) {
   auto outB = IO::calcCV2Out(out_mVb);
   auto gate1 = IO::calcGate1Out((currentControlIdx == 10) ? 4000 : 0);
   auto gate2 = IO::calcGate2Out((currentControlIdx == 12) ? 4000 : 0);
-  for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cv1 = outA;
-    buf->cv2 = outB;
-    buf->gate1 = gate1;
-    buf->gate2 = gate2;
-    buf++;
-  }
+
+  buf.setAll(outA, outB, gate1, gate2, false);
 }
 
 constexpr Module module = {

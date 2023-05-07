@@ -38,7 +38,8 @@ constexpr int16_t getCV(uint8_t note) {
   return uint16_t(note) * 1000 / 12;
 }
 
-void fillBuffer(OutputFrame *buf) {
+void fillBuffer(OutputBuf::Buffer &buf) {
+  // TODO: Decide if we have time to handle multiple MIDI messages in 1 fillBuffer()
   if (Serial.available()) {
     uint8_t in = Serial.read();
     if (midiParser.parse(in)) {
@@ -60,13 +61,8 @@ void fillBuffer(OutputFrame *buf) {
     }
   }
 
-  // TODO: Decide if we have time to handle multiple MIDI messages in 1 fillBuffer()
-  for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cv1 = out1;
-    buf->cv2 = out2;
-    buf->gate1 = gate1;
-    buf++;
-  }
+  uint16_t gate2 = IO::calcGate2Out(0);
+  buf.setAll(out1, out2, gate1, gate2, false);
 }
 
 void start() {

@@ -83,7 +83,7 @@ int16_t getWaveValue() {
   return 0;
 }
 
-  void fillBuffer(OutputFrame *buf) {
+void fillBuffer(OutputBuf::Buffer &buffer) {
     if (recalc == 0) {
       // TODO if this works, refactor getCV1In to return Q16n16 instead for a bit of extra speed?
       int16_t in = IO::getCV1In();
@@ -104,6 +104,7 @@ int16_t getWaveValue() {
       recalc--;
     }
 
+    OutputFrame *buf = buffer.analog;
     for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
       sinePos = (sinePos + increment);
       if (sinePos > sinePosMod) {

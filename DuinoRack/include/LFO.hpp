@@ -30,25 +30,25 @@ constexpr Q16n16 MIN_NOTE = 65536;   // Note 1
 
 enum Wave: uint8_t { Sine = 0, Triangle = 1, SawUp = 2, SawDown = 3, Square = 4 };
 
-enum Range: uint8_t { Negative4, Bipolar4, Positive4, Positive8 };
+enum Range: uint8_t { Negative4, Bipolar4, Positive4, Positive8, Positive5 };
 
 static constexpr uint8_t factorNom[] = { 4, 3, 2, 1, 1, 1, 1 };
 static constexpr uint8_t factorDen[] = { 1, 1, 1, 1, 2, 3, 4 };
 constexpr uint8_t FACTOR_ONE = 3; // The factor of 1/1, i.e. normal BPM
 constexpr uint8_t MAX_FACTOR = 6;
 
-constexpr uint8_t N_SHAPES = 4;
+constexpr uint8_t N_SHAPES = 5;
 constexpr uint8_t CONTROLS_PER_SHAPE = 8;
 
 constexpr uint32_t NO_TIME = 0xFFFFFFFF;
 
 struct Shape {
   uint32_t tablePos = 0;
-  //uint32_t incrementA; // For period one
-  //uint32_t incrementB; // For period two
   uint32_t increment;  // For further periods
+  uint8_t prob = 100;
   int8_t swing = 0;
-  int8_t period = 0; // TODO: Have an actual reset input reset this
+  int8_t period = 0;
+  uint8_t mainPeriod = 0;
   int8_t swingPeriods = 2;
   // slop: 7 random values around +/- 49%(?), add them up, 8th is to bring it back in sync.
   // Always resync after 8 periods.
@@ -58,6 +58,7 @@ struct Shape {
   uint8_t phase = 0; // 0..255 as one period
   Range range = Bipolar4;
 
+  uint8_t resetAfterMainPeriods();
   uint16_t save(uint16_t addr);
   uint16_t load(uint16_t addr);
   void recalc(uint32_t mainIncrement);
@@ -86,7 +87,7 @@ public:
   void draw();
   void adjust(int8_t d);
   void start();
-  void fillBuffer(OutputFrame *buf);
+  void fillBuffer(OutputBuf::Buffer &buf);
   void save(uint16_t addr);
   void load(uint16_t addr);
 };
@@ -97,7 +98,7 @@ inline void draw() { lfo.draw(); }
 inline void start() { lfo.start(); }
 inline void stop() {}
 inline void adjust(int8_t d) { lfo.adjust(d); }
-inline void fillBuffer(OutputFrame *buf) { lfo.fillBuffer(buf); }
+inline void fillBuffer(OutputBuf::Buffer &buf) { lfo.fillBuffer(buf); }
 inline void save(uint16_t addr) { lfo.save(addr); }
 inline void load(uint16_t addr) { lfo.load(addr); }
 

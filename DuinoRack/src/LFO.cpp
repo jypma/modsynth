@@ -16,18 +16,20 @@ const char neg4_t[] PROGMEM = "-4 0V";
 const char bip4_t[] PROGMEM = "+/-4V";
 const char pos4_t[] PROGMEM = "0 +4V";
 const char pos8_t[] PROGMEM = "0 +8V";
+const char pos5_t[] PROGMEM = "0 +5V";
 
 const char bpm_t[] PROGMEM = "BPM:  ";
 const char wave1_t[] PROGMEM = "A:";
 const char wave2_t[] PROGMEM = "B:";
 const char wave3_t[] PROGMEM = "1:";
 const char wave4_t[] PROGMEM = "2:";
+const char wave5_t[] PROGMEM = "3:";
 const char page1[] PROGMEM = "Wave Spd. Phase Range";
 const char page2[] PROGMEM = "Swing SwPer Prob Slop";
 
 LFO lfo;
 const char * waveTitles[] = {sine_t, triangle_t, saw_up_t, saw_down_t, square_t};
-const char *rangeTitles[] = {neg4_t, bip4_t, pos4_t, pos8_t};
+const char *rangeTitles[] = {neg4_t, bip4_t, pos4_t, pos8_t, pos5_t };
 
 void formatFactor(char *str, uint8_t factor) {
   str[3] = 0;
@@ -72,11 +74,12 @@ uint16_t Shape::load(uint16_t addr) {
 }
 
 void Shape::recalc(uint32_t mainIncrement) {
-  increment = mainIncrement / factorNom[factor] * factorDen[factor];
+  increment = mainIncrement / factorDen[factor] * factorNom[factor];
 }
 
 void Shape::reset() {
   period = 0;
+  mainPeriod = 0;
 }
 
 void Shape::nextPeriod() {
@@ -86,16 +89,49 @@ void Shape::nextPeriod() {
   }
 }
 
-void Shape::resetPhase() {
-  constexpr auto OK_TO_RESET_MIN = uint32_t(2) << sinePosScaleBits;
-  constexpr auto OK_TO_RESET_MAX = uint32_t(254) << sinePosScaleBits;
+/* RESET AFTER
+MULTIPLIER > 1
+No swing → 1
+multiplier is multiple of swingPeriod → 1
+Otherwise → multiplier
 
-  if (factor >= FACTOR_ONE) {
+MULTIPLIER == 1
+Reset after swingPeriods (or 1 if no swing)
+
+MULTIPLIER < 1
+No swing → 1/multiplier
+Otherwise → swingPeriod times 1/multiplier
+ */
+uint8_t Shape::resetAfterMainPeriods() {
+  if (factor < FACTOR_ONE) { // this LFO is running faster than main
+    if (swing == 0) {
+      return 1;
+    } else if (factorDen[factor] == 1 && (factorNom[factor] % swingPeriods) == 0) {
+      return 1;
+    } else {
+      return factorDen[factor] * factorNom[factor];
+    }
+  } else if (factor == FACTOR_ONE) {
+    if (swing == 0) {
+      return 1;
+    } else {
+      return swingPeriods;
+    }
+  } else { // this LFO is running slower than main
+    if (swing == 0) {
+      return factorDen[factor] * factorNom[factor];
+    } else {
+      return factorDen[factor] * factorNom[factor] * swingPeriods;
+    }
+  }
+}
+
+void Shape::resetPhase() {
+  mainPeriod++;
+  if (mainPeriod >= resetAfterMainPeriods()) {
     tablePos = 0;
-    nextPeriod();
-  } else if (tablePos < OK_TO_RESET_MIN || tablePos > OK_TO_RESET_MAX) {
-    tablePos = 0;
-    nextPeriod();
+    period = 0;
+    mainPeriod = 0;
   }
 }
 
@@ -103,6 +139,7 @@ void Shape::performStep() {
   tablePos += increment;
   if (tablePos > sinePosMod) {
     tablePos -= sinePosMod;
+    nextPeriod();
   }
 }
 
@@ -111,6 +148,7 @@ int16_t Shape::applyRange(int16_t value) {
     case Negative4: return (value / 2) - 2000;
     case Bipolar4: return value;
     case Positive4: return (value / 2) + 2000;
+    case Positive5: return (value * 5 / 8) + 2500;
     case Positive8: return value + 4000;
   }
   return 0;
@@ -162,7 +200,7 @@ void Shape::draw(uint8_t y, uint8_t controlIdx) {
     drawDecimal(54, y, swingPeriods, 1);
 
     drawSelected(66, y, controlIdx + 6);
-    drawText(72, y, "100%");
+    drawDecimal(72, y, prob, '%', 4);
 
     drawSelected(96, y, controlIdx + 7);
     drawText(102, y, "100%");
@@ -210,6 +248,7 @@ void LFO::draw() {
   drawTextPgm(0, 32, wave2_t);
   drawTextPgm(0, 40, wave3_t);
   drawTextPgm(0, 48, wave4_t);
+  drawTextPgm(0, 56, wave5_t);
 
   for (uint8_t s = 0; s < N_SHAPES; s++) {
     uint8_t controlIdx = s * CONTROLS_PER_SHAPE + 2;
@@ -231,17 +270,21 @@ void LFO::adjust(int8_t d) {
 
       switch(controlIdx) {
         case 0:
-          shapes[shapeIdx].wave = Wave(applyDelta<uint8_t>(shapes[shapeIdx].wave, d, 0, N_WAVES - 1));
+          if (shapeIdx != 4) {
+            shapes[shapeIdx].wave = Wave(applyDelta<uint8_t>(shapes[shapeIdx].wave, d, 0, N_WAVES - 1));
+          }
           break;
         case 1:
-          shapes[shapeIdx].factor = applyDelta<uint32_t>(shapes[shapeIdx].factor, d, 0, MAX_FACTOR);
+          shapes[shapeIdx].factor = applyDelta<uint32_t>(shapes[shapeIdx].factor, -d, 0, MAX_FACTOR);
           shapes[shapeIdx].recalc(increment);
           break;
         case 2:
           shapes[shapeIdx].phase = applyDelta<uint8_t>(shapes[shapeIdx].phase, d, 0, 255);
           break;
         case 3:
-          shapes[shapeIdx].range = Range(applyDelta<uint8_t>(shapes[shapeIdx].range, d, 0, N_RANGE - 1));
+          if (shapeIdx != 4) {
+            shapes[shapeIdx].range = Range(applyDelta<uint8_t>(shapes[shapeIdx].range, d, 0, N_RANGE - 1));
+          }
           break;
         case 4:
           shapes[shapeIdx].swing = applyDelta<int8_t>(shapes[shapeIdx].swing, d, /*-25*/0, 25);
@@ -250,6 +293,9 @@ void LFO::adjust(int8_t d) {
         case 5:
           shapes[shapeIdx].swingPeriods = applyDelta<int8_t>(shapes[shapeIdx].swingPeriods, d, 2, 8);
           shapes[shapeIdx].recalc(increment);
+          break;
+        case 6:
+          shapes[shapeIdx].prob = applyDelta<uint8_t>(shapes[shapeIdx].prob, d, 1, 100);
           break;
       }
   }
@@ -291,13 +337,15 @@ void LFO::reset() {
 }
 
 void LFO::start() {
+  shapes[4].wave = Square;
+  shapes[4].range = Positive4;
   recalc();
   reset();
   lastGate = IO::getGate1In();
   lastGateTime = NO_TIME;
 }
 
-void LFO::fillBuffer(OutputFrame *buf) {
+void LFO::fillBuffer(OutputBuf::Buffer &buf) {
   checkGate();
 
   // only use one value for the entire buffer. 750Hz is perfectly acceptable for an LFO.
@@ -314,14 +362,9 @@ void LFO::fillBuffer(OutputFrame *buf) {
   const uint16_t value2 = IO::calcCV2Out(shapes[1].getTableValue());
   const uint16_t value3 = IO::calcGate1Out(shapes[2].getTableValue());
   const uint16_t value4 = IO::calcGate2Out(shapes[3].getTableValue());
+  const bool value5 = shapes[4].getTableValue() > 0;
 
-  for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
-    buf->cv1 = value1;
-    buf->cv2 = value2;
-    buf->gate1 = value3;
-    buf->gate2 = value4;
-    buf++;
-  }
+  buf.setAll(value1, value2, value3, value4, value5);
 }
 
 void LFO::save(uint16_t addr) {

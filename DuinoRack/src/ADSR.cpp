@@ -249,7 +249,7 @@ void adjust(int8_t d) {
   }
 }
 
-void fillBuffer(OutputFrame *buf) {
+void fillBuffer(OutputBuf::Buffer &buffer) {
   auto gate2 = IO::calcGate2Out(0); // unused, always 0V
 
   // TODO disable interpolation and calculate each buffer value for "fast" curves.
@@ -259,6 +259,7 @@ void fillBuffer(OutputFrame *buf) {
   auto cv2 = adsr2.nextLevel();
   adsr3.handleGate(IO::getGate3In());
   auto gate1 = adsr3.nextLevel();
+  OutputFrame *buf = buffer.analog;
   for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
     buf->cv1 = cv1;
     buf->cv2 = cv2;

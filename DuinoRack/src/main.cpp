@@ -15,7 +15,7 @@
 #include "pins_arduino.h"
 #include "Storage.hpp"
 #include "Debug.hpp"
-
+#include "Random.hpp"
 
 //#define TIMING
 
@@ -33,7 +33,7 @@ auto encoder1 = Versatile_RotaryEncoder(2,3,4); // PD2, PD3, PD4
 auto encoder2 = Versatile_RotaryEncoder(5,6,7); // PD5, PD6, PD7
 
 OutputBuf::Buffer a, b;
-OutputFrame *current = b;
+OutputBuf::Buffer *current = &b;
 
 DisplaySSD1306_128x64_I2C display(-1);
 
@@ -44,12 +44,12 @@ uint8_t oldOverruns = 0;
 
 void fillBuffer() {
   if (OutputBuf::needNextBuffer()) {
-    current = (current == a) ? b : a;
+    current = (current == &a) ? &b : &a;
     bufferCount++;
 #ifdef TIMING
     PORTD |= (1 << 3);
 #endif
-    currentMod.fillBuffer(current);  // On arduino boot: ~500us
+    currentMod.fillBuffer(*current);  // On arduino boot: ~500us
 #ifdef TIMING
     PORTD &= ~(1 << 3);
 #endif
@@ -254,9 +254,13 @@ void setup() {
   Serial.begin(31250);
   debugSerial("DuinoRack");
   Serial.flush();
+#else
+  // TODO move to IO::setup
+  pinMode(1, OUTPUT); // TX (PD1) is Gate 3
 #endif
 
   IO::setup();
+  IO::setGate3Out(true);
   Storage::load();
 
   // We need input pull-ups for our encoder inputs
@@ -264,6 +268,12 @@ void setup() {
   pinMode(3, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
+
+  Random::addSeed(uint16_t(IO::getCV1In()));
+  Random::addSeed(uint16_t(IO::getCV2In()));
+  Random::addSeed(TCNT0);
+  Random::addSeed(TCNT1);
+  Random::addSeed(TCNT2);
 
   currentMod.start();
   encoder1.setHandleRotate(handleEncoder1Rotate);
@@ -308,6 +318,7 @@ void setup() {
   TCCR2B = (1 << CS21) | (1 << CS20);
   // enable timer compare interrupt
   TIMSK2 |= (1 << OCIE2A);
+  IO::setGate3Out(false);
 }
 
 void loop() {

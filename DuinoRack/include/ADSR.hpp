@@ -85,7 +85,7 @@ extern void draw();
 extern void start();
 extern void stop();
 extern void adjust(int8_t d);
-extern void fillBuffer(OutputFrame *buf) ;
+extern void fillBuffer(OutputBuf::Buffer &buf) ;
 extern void load(uint16_t d);
 extern void save(uint16_t d);
 

@@ -24,7 +24,7 @@ struct Module {
   using Callback = void (*)();
   using AdjustCallback = void (*)(int8_t);
   using PresetCallback = void (*)(uint16_t);
-  using BufferCallback = void (*)(OutputFrame *);
+  using BufferCallback = void (*)(OutputBuf::Buffer &);
 
   const char *name;
   uint8_t controlCount;
