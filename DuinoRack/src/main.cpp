@@ -336,7 +336,7 @@ void loop() {
   if (now - lastTime > 100000)
   {
     lastTime = now;
-    debugSerial(bufferCount); // bufferCount: ~36 per 100ms, for SAMPLERATE 12000
+    //debugSerial(bufferCount); // bufferCount: ~36 per 100ms, for SAMPLERATE 12000
     bufferCount = 0;
     //debugSerial(OutputBuf::samples); // samples: ~600 per 100ms, or 6000 per second, for SAMPLERATE 12000
     // SAMPLERATE 8000 -> 400 samples per 10ms. PRescaler wrong?

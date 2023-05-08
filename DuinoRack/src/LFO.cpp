@@ -1,8 +1,10 @@
 #include "LFO.hpp"
+#include "Debug.hpp"
+#include "Random.hpp"
 
 namespace LFO {
 
- const char title[] PROGMEM = "LFO      ";
+const char title[] PROGMEM = "LFO      ";
 
 constexpr uint8_t N_WAVES = 5;
 const char sine_t[] PROGMEM = "Sin";
@@ -80,10 +82,15 @@ void Shape::recalc(uint32_t mainIncrement) {
 void Shape::reset() {
   period = 0;
   mainPeriod = 0;
+  skipThisPeriod = false;
+  skippedPrevPeriod = false;
 }
 
 void Shape::nextPeriod() {
   period++;
+  skippedPrevPeriod = skipThisPeriod;
+  uint8_t roll = ((uint16_t(Random::nextByte()) * 100) >> 8);
+  skipThisPeriod = roll > prob;
   if (period >= swingPeriods) {
     period -= swingPeriods;
   }
@@ -129,8 +136,9 @@ uint8_t Shape::resetAfterMainPeriods() {
 void Shape::resetPhase() {
   mainPeriod++;
   if (mainPeriod >= resetAfterMainPeriods()) {
+    nextPeriod(); // To see if we have to skip the next period
+    period = 0;   // We're still going to count from 0, though.
     tablePos = 0;
-    period = 0;
     mainPeriod = 0;
   }
 }
@@ -158,21 +166,38 @@ int16_t Shape::getRawTableValue() {
   uint32_t pos;
   if (swing > 0) {
     if (period == 0) {
+      if (skipThisPeriod) {
+        return 0;
+      }
       // We should be swing% slower
       pos = (tablePos * (100 - swing)) / 100;
     } else if (period == 1) {
       uint8_t period0End = uint16_t(255) * (swing) / 100;
       if ((tablePos >> sinePosScaleBits) <= period0End) {
+        // We're still completing the "slow" part of the swing
+        if (skippedPrevPeriod) {
+          return 0;
+        }
         uint8_t zero = uint16_t(256) * (100 - swing) / 100;
         uint8_t end = 255;
         pos = (uint32_t(zero) << sinePosScaleBits) + (tablePos * (end - zero) / period0End);
       } else {
+        // We're now in the "fast" part of the swing
+        if (skipThisPeriod) {
+          return 0;
+        }
         pos = (tablePos - (uint32_t(period0End) << sinePosScaleBits)) * 256 / (uint16_t(256) - period0End);
       }
     } else {
+      if (skipThisPeriod) {
+        return 0;
+      }
       pos = tablePos;
     }
   } else {
+    if (skipThisPeriod) {
+      return 0;
+    }
     pos = tablePos;
   }
 

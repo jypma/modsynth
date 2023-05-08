@@ -48,6 +48,8 @@ struct Shape {
   uint8_t prob = 100;
   int8_t swing = 0;
   int8_t period = 0;
+  bool skipThisPeriod = false;
+  bool skippedPrevPeriod = false;
   uint8_t mainPeriod = 0;
   int8_t swingPeriods = 2;
   // slop: 7 random values around +/- 49%(?), add them up, 8th is to bring it back in sync.

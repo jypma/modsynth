@@ -7,7 +7,6 @@
 #include "Module.h"
 #include "IO.h"
 #include "OutputBuf.h"
-#include "midi_Defs.h"
 #include "Debug.hpp"
 
 namespace MIDIMod {
