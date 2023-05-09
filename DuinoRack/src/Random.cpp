@@ -7,7 +7,7 @@ constexpr uint32_t M = 0x7FFFFFFF;
 
 uint32_t getNext() {  //random number generator; call with 1 <= x <=M-1
   x = (x >> 16) + ((x << 15) & M)  - (x >> 21) - ((x << 10) & M);
-  if (x < 0) x += M;
+  //if (x < 0) x += M;
   return x;
 }
 

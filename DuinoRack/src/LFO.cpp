@@ -82,33 +82,38 @@ void Shape::recalc(uint32_t mainIncrement) {
 void Shape::reset() {
   period = 0;
   mainPeriod = 0;
+  slopOffset1 = 0;
+  slopOffset2 = 0;
+  skipNextPeriod = false;
   skipThisPeriod = false;
   skippedPrevPeriod = false;
 }
 
+bool rollSkip(uint8_t prob) {
+  uint8_t roll = ((uint16_t(Random::nextByte()) * 100) >> 8);
+  return roll > prob;
+}
+
 void Shape::nextPeriod() {
   period++;
+
   skippedPrevPeriod = skipThisPeriod;
-  uint8_t roll = ((uint16_t(Random::nextByte()) * 100) >> 8);
-  skipThisPeriod = roll > prob;
+  skipThisPeriod = skipNextPeriod;
+  skipNextPeriod = rollSkip(prob);
+
   if (period >= swingPeriods) {
     period -= swingPeriods;
   }
+
+  slopOffset1 = slopOffset2;
+  if (slop == 0 || skipThisPeriod || skipNextPeriod) {
+    slopOffset2 = 0;
+  } else {
+    int32_t roll = int32_t(Random::nextLong());
+    slopOffset2 = ((roll >> (32 - sinePosScaleBits - 8)) * slop) / 50; // Should be /100 here, but somehow a factor 2 is nice...
+  }
 }
 
-/* RESET AFTER
-MULTIPLIER > 1
-No swing → 1
-multiplier is multiple of swingPeriod → 1
-Otherwise → multiplier
-
-MULTIPLIER == 1
-Reset after swingPeriods (or 1 if no swing)
-
-MULTIPLIER < 1
-No swing → 1/multiplier
-Otherwise → swingPeriod times 1/multiplier
- */
 uint8_t Shape::resetAfterMainPeriods() {
   if (factor < FACTOR_ONE) { // this LFO is running faster than main
     if (swing == 0) {
@@ -200,13 +205,17 @@ int16_t Shape::getRawTableValue() {
     }
     pos = tablePos;
   }
+  // TODO allow full precision of slop to be passed as phase (might be needed for very slow tempos)
+  int32_t partial = (((slopOffset2 - slopOffset1) * (int32_t(tablePos) >> sinePosScaleBits)) >> 8);
+  int32_t slopOffset = slopOffset1 + partial;
+  int8_t slopPhase = slopOffset >> sinePosScaleBits;
 
   switch (wave) {
-    case Sine: return Waves::Sine::get(pos, phase);
-    case Triangle: return Waves::Triangle::get(pos, phase);
-    case SawUp: return Waves::SawUp::get(pos, phase);
-    case SawDown: return Waves::SawDown::get(pos, phase);
-    case Square: return Waves::Square::get(pos, phase);
+    case Sine: return Waves::Sine::get(pos, phase + slopPhase);
+    case Triangle: return Waves::Triangle::get(pos, phase + slopPhase);
+    case SawUp: return Waves::SawUp::get(pos, phase + slopPhase);
+    case SawDown: return Waves::SawDown::get(pos, phase + slopPhase);
+    case Square: return Waves::Square::get(pos, phase + slopPhase);
   }
   return 0;
 }
@@ -228,7 +237,7 @@ void Shape::draw(uint8_t y, uint8_t controlIdx) {
     drawDecimal(72, y, prob, '%', 4);
 
     drawSelected(96, y, controlIdx + 7);
-    drawText(102, y, "100%");
+    drawDecimal(102, y, slop, '%', 4);
   } else {
     drawSelected(12, y, controlIdx);
     drawTextPgm(18, y, waveTitles[wave]);
@@ -321,6 +330,9 @@ void LFO::adjust(int8_t d) {
           break;
         case 6:
           shapes[shapeIdx].prob = applyDelta<uint8_t>(shapes[shapeIdx].prob, d, 1, 100);
+          break;
+        case 7:
+          shapes[shapeIdx].slop = applyDelta<uint8_t>(shapes[shapeIdx].slop, d, 0, 99);
           break;
       }
   }

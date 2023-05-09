@@ -46,8 +46,11 @@ struct Shape {
   uint32_t tablePos = 0;
   uint32_t increment;  // For further periods
   uint8_t prob = 100;
+  uint8_t slop = 0;
+  int32_t slopOffset1 = 0, slopOffset2 = 0;
   int8_t swing = 0;
   int8_t period = 0;
+  bool skipNextPeriod = false;
   bool skipThisPeriod = false;
   bool skippedPrevPeriod = false;
   uint8_t mainPeriod = 0;
