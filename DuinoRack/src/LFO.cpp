@@ -27,7 +27,12 @@ const char wave3_t[] PROGMEM = "1:";
 const char wave4_t[] PROGMEM = "2:";
 const char wave5_t[] PROGMEM = "3:";
 const char page1[] PROGMEM = "Wave Spd. Phase Range";
+/*
 const char page2[] PROGMEM = "Swing SwPer Prob Slop";
+const char page2[] PROGMEM = "Swing SwPer Prob Slop";
+*/
+const char page2[] PROGMEM = "   Swing Prb Slop PWM";
+//                            A: 25% /2 ALL 10% 50%
 
 LFO lfo;
 const char * waveTitles[] = {sine_t, triangle_t, saw_up_t, saw_down_t, square_t};
@@ -106,7 +111,7 @@ void Shape::nextPeriod() {
   }
 
   slopOffset1 = slopOffset2;
-  if (slop == 0 || skipThisPeriod || skipNextPeriod) {
+  if (slop == 0 || skipThisPeriod || skipNextPeriod || skippedPrevPeriod) {
     slopOffset2 = 0;
   } else {
     int32_t roll = int32_t(Random::nextLong());
@@ -205,17 +210,20 @@ int16_t Shape::getRawTableValue() {
     }
     pos = tablePos;
   }
-  // TODO allow full precision of slop to be passed as phase (might be needed for very slow tempos)
+
+  pos += (phase << sinePosScaleBits);
+
   int32_t partial = (((slopOffset2 - slopOffset1) * (int32_t(tablePos) >> sinePosScaleBits)) >> 8);
   int32_t slopOffset = slopOffset1 + partial;
-  int8_t slopPhase = slopOffset >> sinePosScaleBits;
+
+  pos += slopOffset;
 
   switch (wave) {
-    case Sine: return Waves::Sine::get(pos, phase + slopPhase);
-    case Triangle: return Waves::Triangle::get(pos, phase + slopPhase);
-    case SawUp: return Waves::SawUp::get(pos, phase + slopPhase);
-    case SawDown: return Waves::SawDown::get(pos, phase + slopPhase);
-    case Square: return Waves::Square::get(pos, phase + slopPhase);
+    case Sine: return Waves::Sine::get(pos);
+    case Triangle: return Waves::Triangle::get(pos);
+    case SawUp: return Waves::SawUp::get(pos);
+    case SawDown: return Waves::SawDown::get(pos);
+    case Square: return Waves::Square::get(pos);
   }
   return 0;
 }
@@ -227,17 +235,24 @@ void Shape::draw(uint8_t y, uint8_t controlIdx) {
 
   if (selectedControlIdx > 3 && selectedControlIdx < CONTROLS_PER_SHAPE) {
     drawSelected(12, y, controlIdx + 4);
-    drawDecimal(18, y, swing, '%', 4);
+    drawDecimal(18, y, swing, '%', 3);
 
-    drawSelected(42, y, controlIdx + 5);
-    drawText(48, y, "x");
-    drawDecimal(54, y, swingPeriods, 1);
+    drawSelected(36, y, controlIdx + 5);
+    drawText(42, y, "/");
+    drawDecimal(48, y, swingPeriods, 1);
 
-    drawSelected(66, y, controlIdx + 6);
-    drawDecimal(72, y, prob, '%', 4);
+    drawSelected(54, y, controlIdx + 6);
+    if (prob == 100) {
+      drawText(60, y, "ALL");
+    } else {
+      drawDecimal(60, y, prob, '%', 3);
+    }
 
-    drawSelected(96, y, controlIdx + 7);
-    drawDecimal(102, y, slop, '%', 4);
+    drawSelected(78, y, controlIdx + 7);
+    drawDecimal(84, y, slop, '%', 3);
+
+    drawSelected(102, y, controlIdx + 8);
+    drawDecimal(108, y, width, '%', 3);
   } else {
     drawSelected(12, y, controlIdx);
     drawTextPgm(18, y, waveTitles[wave]);
@@ -333,6 +348,9 @@ void LFO::adjust(int8_t d) {
           break;
         case 7:
           shapes[shapeIdx].slop = applyDelta<uint8_t>(shapes[shapeIdx].slop, d, 0, 99);
+          break;
+        case 8:
+          shapes[shapeIdx].width = applyDelta<uint8_t>(shapes[shapeIdx].width, d, 1, 99);
           break;
       }
   }

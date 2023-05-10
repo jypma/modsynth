@@ -38,7 +38,7 @@ constexpr uint8_t FACTOR_ONE = 3; // The factor of 1/1, i.e. normal BPM
 constexpr uint8_t MAX_FACTOR = 6;
 
 constexpr uint8_t N_SHAPES = 5;
-constexpr uint8_t CONTROLS_PER_SHAPE = 8;
+constexpr uint8_t CONTROLS_PER_SHAPE = 9;
 
 constexpr uint32_t NO_TIME = 0xFFFFFFFF;
 
@@ -50,6 +50,7 @@ struct Shape {
   int32_t slopOffset1 = 0, slopOffset2 = 0;
   int8_t swing = 0;
   int8_t period = 0;
+  uint8_t width = 50;
   bool skipNextPeriod = false;
   bool skipThisPeriod = false;
   bool skippedPrevPeriod = false;

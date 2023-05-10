@@ -33,8 +33,8 @@ namespace Waves {
     }
 
   template<typename T, uint8_t tablePosUnusedBits>
-  static T waveGet(const T *table, uint32_t pos, uint8_t phase) {
-    uint8_t idx1 = (pos >> posScaleBits) + phase;
+  static T waveGet(const T *table, uint32_t pos) {
+    uint8_t idx1 = (pos >> posScaleBits);
     // Let idx wrap around since table is 256 entries
     uint8_t idx2 = idx1 + 1;
 
@@ -58,12 +58,8 @@ namespace Waves {
     }
 
     /** Gets and interpolates a value between two table values. */
-    static T get(uint32_t pos, uint8_t phase) {
-      return Internal::waveGet<T, tablePosUnusedBits>(table, pos, phase);
-    }
-
-    inline static T get(uint32_t pos) {
-      return get(pos, 0);
+    static T get(uint32_t pos) {
+      return Internal::waveGet<T, tablePosUnusedBits>(table, pos);
     }
   };
 
@@ -72,13 +68,10 @@ namespace Waves {
       return (pos < 128) ? 4000 : -4000;
     }
 
-  inline int16_t get(uint32_t pos, uint8_t phase) {
-    return (pos + (uint32_t(phase) << posScaleBits) < q2pos) ? 4000 : -4000;
+  inline int16_t get(uint32_t pos) {
+    return (pos < q2pos) ? 4000 : -4000;
   }
 
-  inline int16_t get(uint32_t pos) {
-    return get(pos, 0);
-  }
   }
 
   namespace SawUp {
@@ -87,16 +80,12 @@ namespace Waves {
       return int16_t(intermediate) - 4000;
     }
 
-    inline int16_t get(uint32_t pos, uint8_t phase) {
+    inline int16_t get(uint32_t pos) {
       // now 8 bits pos, 8 bits fraction, i.e. 0..65536
-      uint16_t intermediate = uint16_t(pos >> (posScaleBits - 8)) + (uint16_t(phase) << 8);
+      uint16_t intermediate = uint16_t(pos >> (posScaleBits - 8));
       uint32_t scaled = (uint32_t(intermediate) * 8000) >> 16;     // Now 0..8000
       return int16_t(scaled) - 4000;
     }
-
-  inline int16_t get(uint32_t pos) {
-    return get(pos, 0);
-  }
   }
 
   namespace SawDown {
@@ -105,16 +94,12 @@ namespace Waves {
       return int16_t(intermediate) - 4000;
     }
 
-    inline int16_t get(uint32_t pos, uint8_t phase) {
+    inline int16_t get(uint32_t pos) {
       // now 8 bits pos, 8 bits fraction, i.e. 0..65536
-      uint16_t intermediate = uint16_t((maxFractionPos - pos) >> (posScaleBits - 8)) + (uint16_t(phase) << 8);
+      uint16_t intermediate = uint16_t((maxFractionPos - pos) >> (posScaleBits - 8));
       uint32_t scaled = (uint32_t(intermediate) * 8000) >> 16;     // Now 0..8000
       return int16_t(scaled) - 4000;
     }
-
-  inline int16_t get(uint32_t pos) {
-    return get(pos, 0);
-  }
   }
 
   namespace Triangle {
@@ -129,8 +114,8 @@ namespace Waves {
       }
     }
 
-    inline int16_t get(uint32_t pos, uint8_t phase) {
-      uint8_t p = (pos >> posScaleBits) + phase;
+    inline int16_t get(uint32_t pos) {
+      uint8_t p = (pos >> posScaleBits);
       if (p < 64) {
         uint32_t intermediate = pos >> (posScaleBits - 8); // now 8 bits pos, 8 bits fraction, i.e. 0..65536
         uint32_t scaled = (intermediate * 8000) >> 15;
@@ -144,10 +129,6 @@ namespace Waves {
         uint32_t scaled = (intermediate * 8000) >> 15;
         return int16_t(scaled);
       }
-    }
-
-    inline int16_t get(uint32_t pos) {
-      return get(pos, 0);
     }
   }
 
