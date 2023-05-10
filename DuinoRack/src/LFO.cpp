@@ -172,6 +172,19 @@ int16_t Shape::applyRange(int16_t value) {
   return 0;
 }
 
+uint32_t adjustPosForWidth(uint32_t pos, uint8_t width) {
+  if (width == 50) {
+    return pos;
+  } else {
+    uint8_t mid = (uint16_t(width) * 256) / 100;
+    if ((pos >> sinePosScaleBits) <= mid) {
+      return pos * 128 / mid;
+    } else {
+      return (uint32_t(128) << sinePosScaleBits) + ((pos - (uint32_t(mid) << sinePosScaleBits)) * 128 / (uint16_t(256) - mid));
+    }
+  }
+}
+
 int16_t Shape::getRawTableValue() {
   uint32_t pos;
   if (swing > 0) {
@@ -217,6 +230,8 @@ int16_t Shape::getRawTableValue() {
   int32_t slopOffset = slopOffset1 + partial;
 
   pos += slopOffset;
+
+  pos = adjustPosForWidth(pos, width);
 
   switch (wave) {
     case Sine: return Waves::Sine::get(pos);
