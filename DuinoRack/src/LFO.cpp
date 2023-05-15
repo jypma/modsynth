@@ -27,12 +27,7 @@ const char wave3_t[] PROGMEM = "1:";
 const char wave4_t[] PROGMEM = "2:";
 const char wave5_t[] PROGMEM = "3:";
 const char page1[] PROGMEM = "Wave Spd. Phase Range";
-/*
-const char page2[] PROGMEM = "Swing SwPer Prob Slop";
-const char page2[] PROGMEM = "Swing SwPer Prob Slop";
-*/
 const char page2[] PROGMEM = "   Swing Prb Slop PWM";
-//                            A: 25% /2 ALL 10% 50%
 
 LFO lfo;
 const char * waveTitles[] = {sine_t, triangle_t, saw_up_t, saw_down_t, square_t};
@@ -57,6 +52,11 @@ uint16_t Shape::save(uint16_t addr) {
     addr = Storage::write(addr, factorDen[factor]);
     addr = Storage::write(addr, phase);
     addr = Storage::write(addr, range);
+    addr = Storage::write(addr, swing);
+    addr = Storage::write(addr, swingPeriods);
+    addr = Storage::write(addr, prob);
+    addr = Storage::write(addr, slop);
+    addr = Storage::write(addr, width);
 
     return addr;
 }
@@ -77,6 +77,12 @@ uint16_t Shape::load(uint16_t addr) {
 
   addr = Storage::read(addr, phase);
   addr = Storage::read(addr, range);
+  addr = Storage::read(addr, swing);
+  addr = Storage::read(addr, swingPeriods);
+  addr = Storage::read(addr, prob);
+  addr = Storage::read(addr, slop);
+  addr = Storage::read(addr, width);
+
   return addr;
 }
 
@@ -115,7 +121,7 @@ void Shape::nextPeriod() {
     slopOffset2 = 0;
   } else {
     int32_t roll = int32_t(Random::nextLong());
-    slopOffset2 = ((roll >> (32 - sinePosScaleBits - 8)) * slop) / 50; // Should be /100 here, but somehow a factor 2 is nice...
+    slopOffset2 = ((roll >> (32 - Waves::posScaleBits - 8)) * slop) / 50; // Should be /100 here, but somehow a factor 2 is nice...
   }
 }
 
@@ -177,10 +183,10 @@ uint32_t adjustPosForWidth(uint32_t pos, uint8_t width) {
     return pos;
   } else {
     uint8_t mid = (uint16_t(width) * 256) / 100;
-    if ((pos >> sinePosScaleBits) <= mid) {
+    if ((pos >> Waves::posScaleBits) <= mid) {
       return pos * 128 / mid;
     } else {
-      return (uint32_t(128) << sinePosScaleBits) + ((pos - (uint32_t(mid) << sinePosScaleBits)) * 128 / (uint16_t(256) - mid));
+      return (Waves::toPos(128)) + ((pos - Waves::toPos(mid)) * 128 / (uint16_t(256) - mid));
     }
   }
 }
@@ -196,20 +202,20 @@ int16_t Shape::getRawTableValue() {
       pos = (tablePos * (100 - swing)) / 100;
     } else if (period == 1) {
       uint8_t period0End = uint16_t(255) * (swing) / 100;
-      if ((tablePos >> sinePosScaleBits) <= period0End) {
+      if ((tablePos >> Waves::posScaleBits) <= period0End) {
         // We're still completing the "slow" part of the swing
         if (skippedPrevPeriod) {
           return 0;
         }
         uint8_t zero = uint16_t(256) * (100 - swing) / 100;
         uint8_t end = 255;
-        pos = (uint32_t(zero) << sinePosScaleBits) + (tablePos * (end - zero) / period0End);
+        pos = Waves::toPos(zero) + (tablePos * (end - zero) / period0End);
       } else {
         // We're now in the "fast" part of the swing
         if (skipThisPeriod) {
           return 0;
         }
-        pos = (tablePos - (uint32_t(period0End) << sinePosScaleBits)) * 256 / (uint16_t(256) - period0End);
+        pos = (tablePos - Waves::toPos(period0End)) * 256 / (uint16_t(256) - period0End);
       }
     } else {
       if (skipThisPeriod) {
@@ -224,9 +230,9 @@ int16_t Shape::getRawTableValue() {
     pos = tablePos;
   }
 
-  pos += (phase << sinePosScaleBits);
+  pos += Waves::toPos(phase);
 
-  int32_t partial = (((slopOffset2 - slopOffset1) * (int32_t(tablePos) >> sinePosScaleBits)) >> 8);
+  int32_t partial = (((slopOffset2 - slopOffset1) * (int32_t(tablePos) >> Waves::posScaleBits)) >> 8);
   int32_t slopOffset = slopOffset1 + partial;
 
   pos += slopOffset;
@@ -289,7 +295,7 @@ void Shape::draw(uint8_t y, uint8_t controlIdx) {
 
 void LFO::recalc() {
   // Multiply by OUTBUFSIZE, since we increment only once per buffer
-  increment = (((uint32_t(bpm) * TABLE_SIZE) << sinePosScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
+  increment = (((uint32_t(bpm) * TABLE_SIZE) << Waves::posScaleBits)) / 60 * OUTBUFSIZE / SAMPLERATE;
   for (uint8_t i = 0; i < N_SHAPES; i++) {
     shapes[i].recalc(increment);
   }

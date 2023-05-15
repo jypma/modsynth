@@ -19,10 +19,8 @@ constexpr uint16_t TABLE_SIZE = Waves::TABLE_SIZE;
 constexpr uint16_t Q_TABLE_SIZE = TABLE_SIZE / 4;
 constexpr uint16_t Q3_TABLE_SIZE = Q_TABLE_SIZE * 3;
 
-constexpr uint8_t sinePosScaleBits = Waves::posScaleBits;
-
-constexpr uint32_t sinePosScale = (uint32_t(1) << sinePosScaleBits);
-constexpr uint32_t sinePosFractionMask = (uint32_t(1) << sinePosScaleBits) - 1;
+constexpr uint32_t sinePosScale = (uint32_t(1) << Waves::posScaleBits);
+constexpr uint32_t sinePosFractionMask = (uint32_t(1) << Waves::posScaleBits) - 1;
 constexpr uint32_t sinePosMod = uint32_t(TABLE_SIZE) * sinePosScale;
 
 constexpr Q16n16 MAX_NOTE = 5242880; // Note 80, ~800H
@@ -56,9 +54,6 @@ struct Shape {
   bool skippedPrevPeriod = false;
   uint8_t mainPeriod = 0;
   int8_t swingPeriods = 2;
-  // slop: 7 random values around +/- 49%(?), add them up, 8th is to bring it back in sync.
-  // Always resync after 8 periods.
-  // Directly affects tablePos (unlike swing)
   uint8_t factor = FACTOR_ONE;
   Wave wave = Sine;
   uint8_t phase = 0; // 0..255 as one period

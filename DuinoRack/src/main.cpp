@@ -16,6 +16,7 @@
 #include "Storage.hpp"
 #include "Debug.hpp"
 #include "Random.hpp"
+#include "Sequencer.hpp"
 
 //#define TIMING
 
@@ -84,6 +85,7 @@ void setModuleIdx(int8_t idx) {
     case 2: currentMod = MIDIMod::module; break;
     case 3: currentMod = LFO::module; break;
     case 4: currentMod = Quantize::module; break;
+    case 5: currentMod = Sequencer::module; break;
     default: currentMod = Calibrate::module;
   }
   // Startup trigger

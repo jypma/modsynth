@@ -1,10 +1,10 @@
 #pragma once
 
 #include <Arduino.h>
-#include <cstdlib>
 #include "IO.h"
 #include "OutputBuf.h"
-#include "Random.hpp"
+
+#include "Module.h"
 
 // This is a CV sequencer. Let's do a drums-only sequencer separately (which could use multiple patterns since it uses much less memory).
 
@@ -77,6 +77,10 @@ struct Format {
   uint8_t flags;
   uint8_t prob;
   uint8_t values[Size];
+
+  uint8_t getLength() {
+    return (flags & 0xF) + 1;
+  }
 };
 
 union Steps {
@@ -84,9 +88,7 @@ union Steps {
   Format<2> format2[Format<2>::MAX_STEPS];
 };
 
-bool probToGate(uint8_t prob) {
-  return (prob == 0) ? false : (prob == 255) ? true : (Random::nextByte() <= prob);
-}
+bool probToGate(uint8_t prob);
 
 template <uint16_t calcOut(int16_t), uint16_t OutputFrame::*field>
 struct Channel {
@@ -107,8 +109,9 @@ struct Channel {
     }
   }
 
-  void applyGate(uint8_t prob, OutputBuf::Buffer &buf) {
-    auto val = probToGate(prob) ? max : min;
+  void applyGate(bool gate, uint8_t prob, OutputBuf::Buffer &buf) {
+    // FIXME always high if step < currentLength
+    auto val = (gate && probToGate(prob)) ? max : min;
     for (uint8_t i = 0; i < OUTBUFSIZE; i++) {
       buf.analog[i].*field = val;
     }
@@ -133,28 +136,79 @@ enum FormatType: uint8_t { NoteGate, NoteNoteGate };
 class Sequencer {
   Steps steps;
   FormatType format = NoteNoteGate;
-  // FIXME: Different pos per sequencer
   uint8_t pos;
+  uint8_t step = 0;
+  uint8_t length = 8;
 
   ChannelA channelA;
   ChannelB channelB;
   Channel1 channel1;
   Channel2 channel2;
+
+  bool oldGate = false;
+
+  uint8_t getMaxSteps() {
+    switch(format) {
+      case NoteGate: return Format<1>::MAX_STEPS;
+      case NoteNoteGate: return Format<2>::MAX_STEPS;
+    }
+    return 1;
+  }
+
+  uint8_t getCurrentLength() {
+    switch(format) {
+      case NoteGate:
+        return steps.format1[pos].getLength();
+      case NoteNoteGate:
+        return steps.format2[pos].getLength();
+    }
+    return 0;
+  }
+  
+  void advance() {
+    step++;
+    if (step >= getCurrentLength()) {
+      step = 0;
+      pos++;
+      if (pos >= length) {
+        pos -= length;
+      }
+    }
+  }
+  //const char page1[] PROGMEM = "Wave Spd. Phase Range";
+  //const char title[] PROGMEM = " 2x1  EXT       L: 24";
+  //                          A: Range (0..8V)
+  //                             Offset (-4..4V)
+  //                             Scale (none, or scale)
 public:
   // TODO: Handle length
   // TODO: Handle glide
 
+  void draw() {
+    // We do specify a fixed pattern length, but the number of notes we can do within that might be limited.
+    // SELECT scrolls amonst the pattern
+    // ADJUST rolls a value up or down (or to pause if all the way down)
+    // Value is always a CV, always goes through offset + range, and optionally goes through a scale quantifier after that.
+
+  }
+
   void fillBuffer(OutputBuf::Buffer &buf) {
-    auto rnd = rand();
+    bool gate = IO::getGate1In();
+    if (gate && !oldGate) {
+      advance();
+    }
+    oldGate = gate;
+
     switch(format) {
       case NoteGate:
         channelA.apply(steps.format1[pos].values[0], buf);
-        channel1.applyGate(steps.format1[pos].prob, buf);
+        channel1.applyGate(gate, steps.format1[pos].prob, buf);
         break;
       case NoteNoteGate:
         channelA.apply(steps.format2[pos].values[0], buf);
         channelB.apply(steps.format2[pos].values[1], buf);
-        channel1.applyGate(steps.format2[pos].prob, buf);
+        channel1.applyGate(gate, steps.format2[pos].prob, buf);
+        break;
     }
   }
 };
@@ -181,5 +235,29 @@ public:
 // - 4 bytes per step
 // - 56 steps
 
+extern Sequencer sequencer;
+
+inline void draw() { sequencer.draw(); }
+inline void start() { }
+inline void stop() {}
+inline void adjust(int8_t d) {  }
+inline void fillBuffer(OutputBuf::Buffer &buf) { sequencer.fillBuffer(buf); }
+inline void save(uint16_t addr) {  }
+inline void load(uint16_t addr) {  }
+
+extern const char title[] PROGMEM;
+
+constexpr Module module = {
+  title,
+  1,
+  &draw,
+  &start,
+  &stop,
+  &adjust,
+  &fillBuffer,
+  NULL,
+  &save,
+  &load
+};
 
 }

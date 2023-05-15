@@ -3,7 +3,7 @@
 #include "OutputBuf.h"
 
 constexpr uint16_t SAMPLERATE = 12195; // To limit rounding errors when calculating OCR2A
-constexpr uint8_t MODULE_COUNT = 6;
+constexpr uint8_t MODULE_COUNT = 7;
 
 // TODO replace with clearChars
 const char clear[] PROGMEM = "                ";
