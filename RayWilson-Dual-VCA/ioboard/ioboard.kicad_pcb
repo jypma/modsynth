@@ -280,7 +280,7 @@
       (effects (font (size 0.937484 0.937484) (thickness 0.078516)) (justify right))
       (tstamp b2c5fc0f-7f8c-45f5-9041-55502dc446b6)
     )
-    (fp_text value "50k" (at -3.81 3.81 -90) (layer "F.Fab") hide
+    (fp_text value "50k" (at 1.2989 3.6461 -90) (layer "F.SilkS")
       (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
       (tstamp 24e74b55-faf6-4b74-ad5a-1de0a6fea22e)
     )
@@ -1014,7 +1014,7 @@
       (effects (font (size 0.937484 0.937484) (thickness 0.078516)) (justify right))
       (tstamp bf671402-9123-4787-9bc8-ac87adaa1d57)
     )
-    (fp_text value "100k" (at -3.81 3.81 -90) (layer "F.Fab") hide
+    (fp_text value "100k" (at 1.8789 3.1261 -90) (layer "F.SilkS")
       (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
       (tstamp e8973b51-44f1-4171-8141-0ca5b163d21d)
     )
@@ -1191,7 +1191,7 @@
       (effects (font (size 0.937484 0.937484) (thickness 0.078516)) (justify right))
       (tstamp 5314e506-2cc6-4420-9749-1bf1aba6ac42)
     )
-    (fp_text value "50k" (at -3.81 3.81 -90) (layer "F.Fab") hide
+    (fp_text value "50k" (at 1.0089 3.7761 -90) (layer "F.SilkS")
       (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
       (tstamp 4cfa9127-9106-4d68-bfb4-824b6438413b)
     )
@@ -1903,7 +1903,7 @@
       (effects (font (size 0.937484 0.937484) (thickness 0.078516)) (justify right))
       (tstamp a11599bf-1170-4963-b407-87b8d2a01766)
     )
-    (fp_text value "100k" (at -3.81 3.81 -90) (layer "F.Fab") hide
+    (fp_text value "100k" (at 1.2989 3.5161 -90) (layer "F.SilkS")
       (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
       (tstamp c8bd3425-f352-4248-8bf4-4d6035148906)
     )

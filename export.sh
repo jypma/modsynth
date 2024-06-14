@@ -69,6 +69,7 @@ handleDir power-board
 
 handleDir AS3340-VCO/mainboard
 handleDir AS3340-VCO/ioboard
+handleDir AS3340-VCO/faceplate
 
 handleDir DuinoRack/mainboard
 handleDir DuinoRack/ioboard

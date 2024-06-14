@@ -20,10 +20,36 @@ Encoder 2: Change value (immediate)
 - Run ATMega and MCP4822 off 5V, it'll be easier
 - We might need a 5V precision reference for the ATMega's ADC (MCP4822 has internal reference)
 
+## Notes for mainboard v1
+- Remember: one TL074, one MCP6004!
+- Zener diode is an inconvenient footprint. Just make it a normal zener THT.
+- Value silkscreen is missing for C29 and C31 (both are 1 µF)
+- Value silkscreen for ICs should be outside of the IC area
+- No markings for power connector orientation
+- Power connector is too close to the board edge
+- MCP6004 isn't stable with the noise from the LEDs and screen. Add 2x 100nF (value needs to be tested) in parallel to R17 and R18.
+- To reduce noise, C2 (AVCC cap for the ATMega) should be increased to 10uF (or perhaps in parallel to 100nF)
+- C1 also to 10uF
+- Replace the inrush resistors with links (test: 1Ohm ok?)
+- 1k series resistors for OUTA (R10) and OUTB (R11) mess with the LEDs. Replace with 0k (see ioboard for replacement)
+- In order for GATE OUT to reach -4V to +8V:
+  + R49, R50 should be 15k (instead of 75k)
+  + R47, R48 should be 20k (instead of 100k)
+  + 2 extra 15k resistors from the common point of the above 2, to +5V (middle pin of the nearby voltage regulator), with modwire
+
+## Notes for ioboard v1
+- Value silkscreen is missing for R17, R18, R19 (should be 3.9k)
+- Power and GND pins for screen are reversed, and should be cut and patched. Cause is that an earlier selected screen had these in reverse... From bottom view of  ioboard:
+  - Rightmost screen pin should be VCC, scrape off solder mask of the actual VCC plane right below the pin, and blob connect.
+  - Pin left of that should be GND, route to left button pin of rightmost encoder (still from bottom view of board). Unfortunately, the screen mislabeled GND pin was also the only route for GND to get onto the board. So, pin 15 of J4 (top right, bottom view) needs a jumper wire to that same GND encoder leg as well.
+- GND plane wasn't regenerated properly. Use copper wire to connect several GND pins after assembly (see prototype). Combine with mod above.
+- Attenuator pots are in reverse (bend pins 1 and 3 up, and swap with wires)
+- LEDs for OUTA and OUTB should have 2k series resistor (THT) before going into GND hole.
+- TODO Find a way to inject a 1k series resistor to the actual output jacks for OUTA and OUTB (might only be possible in next revision...)
+
 # Software
 - For high-detail modules (envelopes, LFO) try to update the MCP from a timer interrupt, so we can update the screen simultaneously? Perhaps only interrupt-driven WHILE we update the screen.
   - Otherwise, only update the screen after manual input, or on a low derivative...
-
 
 # Potential modules
 
@@ -62,6 +88,15 @@ Hints [here](https://github.com/baritonomarchetto/Programmable-Envelope-Generato
 - toggle unipolar / bipolar
 
 Hints [here](https://github.com/robertgallup/arduino-DualLFO). Need to check quality of the waveform using the MCP4822.
+
+### To add:
+
+- Offset, Attn (in addition to bidi? Instead of bidi?).
+- Width (insert silence in middle of wave, where all waves are zero)
+- Delay: Divide (2), Amount (%)... too complicated?
+- Skip chance %
+- EStep / ETrig (eucledean)
+- Slop (earlier / later %,  but still in time?)
 
 ## LFO ADSR
 
@@ -126,6 +161,26 @@ Original [midi2cv](https://github.com/elkayem/midi2cv)
 - Noise with colors
 - Random walk
 - Sample & hold
+
+## Chord quantizer mode
+
+- Melody should pick different notes than just the chord
+
+- Melody has fixed root note, scale is CV in, pitch is CV in
+
+- Chord has root note (pitch) as CV in, chord type as CV in (scale is set to chromatic)
+- Chord has 4 CV outputs
+- Chord is stored as 16 bits (3x5 bit, for max 31 semitones offset).
+- Use as mode for quantizer:
+  + 2-channel note quantizer to one scale
+  + 1-channel note quantizer with scale as CV-in
+  + 1-channel chord quantizer with chord type as CV-in (selecting scale as chromatic, or anything that fits the sequencer before)
+
+  Hence, for new Quantizer:
+  - Mode: 2 notes, 1 note, chord
+ - Clock input to sample and hold pitch, and rotate notes when in chord mode
+
+ - Have quantizer create a gate when the pitch changes
 
 # Simulation
 
