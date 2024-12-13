@@ -34,11 +34,11 @@ knob_height = 15;
 knob_smoothness = 40;
 
 shaft_radius = 3.0;
-shaft_height = 7;
+shaft_height = 12;
 shaft_smoothness = 20;
 
-shaft_is_flatted = false;
-flat_size_adjustment = -0.0;
+shaft_is_flatted = true;
+flat_size_adjustment = 0.5;
 // you won't need to mess with this. less than 5 makes it disappear. you can, however,
 // set the adjustment to be a negative decimal if you need a flat but not as big as the default.
 // go positive if you need a bigger flat
@@ -81,7 +81,7 @@ pad = 0.2;							// Padding to maintain manifold
 
 pointy_external_indicator = true;
 pointy_external_indicator_height = 3;
-pointy_external_indicator_pokey_outey_ness = 0.5; //
+pointy_external_indicator_pokey_outey_ness = 1.0; //
 pokey_outey_value = pointy_external_indicator_pokey_outey_ness - 1 - pad;
 pokey_outey = [pokey_outey_value, pokey_outey_value,0];
 
@@ -194,7 +194,7 @@ module external_direction_indicator() {
 
 
 						// outer pointy indicator
-						rotate([0,0,45])
+						rotate([0,0,135])
 						translate(pokey_outey)
 						// cube size of 8 minimum to point out
 						cube(size=[knob_radius_bottom,knob_radius_bottom,pointy_external_indicator_height],center=false);

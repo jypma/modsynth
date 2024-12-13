@@ -80,10 +80,10 @@ pad = 0.2;							// Padding to maintain manifold
 // you can use it instead of the arrow shaped cutout in the top if you like. Or both.
 
 pointy_external_indicator = true;
-pointy_external_indicator_height = 3;
+pointy_external_indicator_height = 2;
 pointy_external_indicator_pokey_outey_ness = 0.5; //
 pokey_outey_value = pointy_external_indicator_pokey_outey_ness - 1 - pad;
-pokey_outey = [pokey_outey_value, pokey_outey_value,0];
+pokey_outey = [pokey_outey_value, pokey_outey_value,1];
 
 // there's an arrow shaped hole you can have. There aren't a lot of controls for this.
 // please feel free to improve on this script here.

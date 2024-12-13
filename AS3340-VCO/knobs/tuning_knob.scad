@@ -33,8 +33,8 @@ knob_radius_bottom = 6;
 knob_height = 15;
 knob_smoothness = 40;
 
-shaft_radius = 3.0;
-shaft_height = 7;
+shaft_radius = 3.1;
+shaft_height = 12;
 shaft_smoothness = 20;
 
 shaft_is_flatted = false;
@@ -81,7 +81,7 @@ pad = 0.2;							// Padding to maintain manifold
 
 pointy_external_indicator = true;
 pointy_external_indicator_height = 3;
-pointy_external_indicator_pokey_outey_ness = 0.5; //
+pointy_external_indicator_pokey_outey_ness = 0.7; //
 pokey_outey_value = pointy_external_indicator_pokey_outey_ness - 1 - pad;
 pokey_outey = [pokey_outey_value, pokey_outey_value,0];
 

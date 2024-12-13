@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-VERSION=ki6.0.7_Debian
 
 function handleDir {
     USER_ID=$(id -u)
@@ -25,13 +24,19 @@ function handleDir {
            --volume="/etc/group:/etc/group:ro" \
            --volume="/etc/passwd:/etc/passwd:ro" \
            --volume="/etc/shadow:/etc/shadow:ro" \
-           setsoft/kicad_auto_test:${VERSION} /bin/bash -c "cd workdir/$SUBDIR; kibot"
+           ghcr.io/inti-cmnb/kicad8_auto:1.8.1 /bin/bash -c "cd workdir/$SUBDIR; kibot"
 
     rm ${WORKDIR}/${SUBDIR}/kibot_generated.kibot.yaml
 
     # The generated SVG has a date timestamp in its title, let's get rid of that so we don't create a diff each time.
     sed -E -i 's/svg date [0-9 /:]+/svg/g' ${SUBDIR}/export/Schematic/*.svg
 }
+
+if [ $# -eq 1 ]; then
+    handleDir $1
+    exit 
+fi
+
 
 # Can't do this in parallel, since there's contention on files in ~/.config/kicad
 
