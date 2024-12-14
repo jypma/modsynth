@@ -1933,15 +1933,15 @@
 	(symbol
 		(lib_id "Device:R_Potentiometer")
 		(at 86.36 64.77 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "271ef10b-28bc-4ead-ba5c-31b3dabdd0b3")
 		(property "Reference" "DRY_WET1"
-			(at 83.82 63.4999 0)
+			(at 83.82 66.0401 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1950,7 +1950,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 83.82 66.0399 0)
+			(at 83.82 63.5001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
