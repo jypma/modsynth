@@ -1316,7 +1316,7 @@
 		(descr "CP, Radial series, Radial, pin pitch=1.50mm, , diameter=4mm, Electrolytic Capacitor")
 		(tags "CP Radial series Radial pin pitch 1.50mm  diameter 4mm Electrolytic Capacitor")
 		(property "Reference" "C18"
-			(at -2.19 1.14 360)
+			(at -2.19 1.14 0)
 			(layer "F.SilkS")
 			(uuid "2efd178f-6492-488b-8190-5366f3752da5")
 			(effects
@@ -1327,7 +1327,7 @@
 			)
 		)
 		(property "Value" "10u"
-			(at -3.33 1.4 360)
+			(at -3.33 1.4 0)
 			(layer "F.SilkS")
 			(uuid "0880dd00-cc33-41a3-9222-c0ef9f075d07")
 			(effects
@@ -17749,7 +17749,7 @@
 			(uuid "7552c9c9-4301-4bbe-9cc1-2e38dd0d1766")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 2.54 -4.27 360)
+			(at 2.54 -4.27 0)
 			(layer "F.Fab")
 			(uuid "aa107ffc-41ba-4523-8d7b-7cceb3a57382")
 			(effects
@@ -21944,7 +21944,7 @@
 		(descr "Through hole straight pin header, 2x05, 2.54mm pitch, double rows")
 		(tags "Through hole pin header THT 2x05 2.54mm double row")
 		(property "Reference" "J1"
-			(at 1.27 2.33 90)
+			(at -0.73 2.43 90)
 			(layer "B.SilkS")
 			(uuid "aba2f6e7-3c3c-4361-908c-66a53044695b")
 			(effects
@@ -22623,6 +22623,30 @@
 		(fill none)
 		(layer "Edge.Cuts")
 		(uuid "60dafed1-df7c-40b5-b9d8-3651064e58ed")
+	)
+	(gr_text "-12V"
+		(at 77.62 139.08 90)
+		(layer "B.SilkS")
+		(uuid "8adb0792-6d8b-4513-94ea-663dd7abab4e")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "+12V"
+		(at 92.81 138.53 90)
+		(layer "B.SilkS")
+		(uuid "e469583d-8bc6-4181-850e-adeb86b96639")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
 	)
 	(gr_text "7805"
 		(at 86.74 124.04 0)
