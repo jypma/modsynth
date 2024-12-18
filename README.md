@@ -1,5 +1,7 @@
 # Eurorack modules collection
 
+![Photograph of various of the modules from here](image.jpg)
+
 This repository contains a collection of eurorack module open hardware designs. It is a combination of designs found elsewhere (with references where relevant), and designs by me.
 
 All schematics and boards are in Kicad format, and schematics, board and gerber exports are automated using KiBot and docker (see [export.sh](export.sh)).
@@ -8,12 +10,13 @@ All schematics and boards are in Kicad format, and schematics, board and gerber 
 
 The following modules are available:
 
+* A [AS3340-based oscillator](AS3340-VCO) designed by me (based on a combination of earlier designs from the internet)
+* A [PT2399-based delay](PT2399-Delay) designed by me (based on a combination of earlier designs from the internet)
 - A [Dual 4-channel mixer](DualMixer) module designed by me (based on basic opamp mixer essentials)
-- [Ornament & Crime](OrnamentCrime), a well-known open hardware design
 - A [Quad Attenuverter](QuadAttenuverter) with offset, based on an internet design
+- [Ornament & Crime](OrnamentCrime), a well-known open hardware design
 - Ray Wilson's  [Dual-VCA](RayWilson-Dual-VCA) as originally designed by Gerbrand Sterrenburg
 - [Roland System 100 ADSR](SCM-140-ADSR) as originally designed by Gerbrand Sterrenburg
-- Thomas Henry's [555 VCO](TH-555-VCO) as originally designed by Gerbrand Sterrenburg
 - The YUSynth [Steiner VCF](Steiner-VCF) as originally designed by Gerbrand Sterrenburg
 - Music Thing Modular's [Turing Machine](TuringMachine), a well-known open hardware design
 

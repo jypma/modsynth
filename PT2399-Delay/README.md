@@ -2,6 +2,8 @@
 
 The schematic for this version is based on the [Encore](https://github.com/m0xpd/encore?tab=readme-ov-file) delay module. However, I've removed the VCA's and simplified the connections so it fits in a 20mm wide small module.
 
+Also, the anti-latchup circuit was replaced with a more modern MOSFET, so the current source that sets the delay time is more easily regulated, independently from the latch-up circuit.
+
 ## Main board
 
 ### Schematic
