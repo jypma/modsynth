@@ -1,8 +1,40 @@
-# Errors in rev1 boards
+# AS3340 VCO
 
-- Mainboard silkscreen has the positions of values for R28 and R31 swapped. R28 should be 30k, and R31 should be 10k.
-- Mainboard R41 should not have been to ground, it should be to -12V instead. Solder it to the left pad only (pointing left), and wire the other terminal to the bottom of R7 (which is -12V).
-- IO board tune pot hole needs to be 7mm, to accommodate pots that are mounted
+This design is a VCO based on the AS3340 chip, built up from a combination of designs found on the internet, resulting in the following features:
+- Compact size
+- Octave selector
+- Holds tuning over time and temperature
+* Precise finetune by note
+* The usual linear FM, exponential FM and PWM inputs
+
+
+## Main board
+
+### Schematic
+
+![schematic](mainboard/export/Schematic/mainboard-schematic.svg)
+
+### PCB
+
+![top](mainboard/export/PCB/2D_render/jlcpcb_green_enig/mainboard-top.jpg)
+
+![bottom](mainboard/export/PCB/2D_render/jlcpcb_green_enig/mainboard-bottom.jpg)
+
+## IO Board
+
+### Schematic
+
+![schematic](ioboard/export/Schematic/ioboard-schematic.svg)
+
+### PCB
+
+![top](ioboard/export/PCB/2D_render/jlcpcb_green_enig/ioboard-top.jpg)
+
+![bottom](ioboard/export/PCB/2D_render/jlcpcb_green_enig/ioboard-bottom.jpg)
+
+## Face plate
+
+![faceplate](faceplate/export/PCB/2D_render/jlcpcb_green_enig/faceplate-top.jpg)
 
 # Calibration
 - Set to lowest octave
@@ -51,3 +83,9 @@
 - Need a buffer opamp after the fine tune as well.
 
 - Put the high frequency tracking in the schematic, but don't need to initially populate.
+
+# Errors in rev1 boards (obsolete)
+
+- Mainboard silkscreen has the positions of values for R28 and R31 swapped. R28 should be 30k, and R31 should be 10k.
+- Mainboard R41 should not have been to ground, it should be to -12V instead. Solder it to the left pad only (pointing left), and wire the other terminal to the bottom of R7 (which is -12V).
+- IO board tune pot hole needs to be 7mm, to accommodate pots that are mounted
